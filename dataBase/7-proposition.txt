@@ -1,0 +1,10 @@
+CREATE TABLE proposition(
+pid int PRIMARY KEY AUTO_INCREMENT,
+mid int NOT NULL,
+propositionDate date default NOW() NOT NULL,
+accepted boolean default false NOT NULL,
+mediaType tinyint NOT NULL CHECK (0 >= mediaType AND mediaType <= 2),
+deliveryDate date NOT NULL,
+received boolean default false NOT NULL
+)
+engine=INNODB;

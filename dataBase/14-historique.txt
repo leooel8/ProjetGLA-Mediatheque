@@ -1,0 +1,13 @@
+CREATE TABLE historique(
+hid int PRIMARY KEY AUTO_INCREMENT,
+cid int NOT NULL,
+mid int NOT NULL,
+borrowingDate date NOT NULL,
+renderingDate date NOT NULL,
+clientPremium boolean NOT NULL,
+extend boolean default false NOT NULL,
+lost boolean default false NOT NULL,
+FOREIGN KEY (cid) REFERENCES client(cid),
+FOREIGN KEY (mid) REFERENCES media(mid)
+)
+engine=INNODB;

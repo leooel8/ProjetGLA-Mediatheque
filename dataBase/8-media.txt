@@ -1,0 +1,19 @@
+CREATE TABLE media(
+mid int PRIMARY KEY AUTO_INCREMENT,
+pid int, 
+fid int, 
+format varchar(16) NOT NULL CHECK (format = 'livre' OR format = 'audio' OR format = 'film' OR format = 'periodique'),
+titre varchar(64) NOT NULL,
+author varchar(64) NOT NULL,
+price float NOT NULL CHECK (price > 0),
+quantity int NOT NULL CHECK (quantity >= 0),
+genre varchar(32) NOT NULL,
+description text NOT NULL,
+releaseDate date NOT NULL,
+type varchar(32) NOT NULL,
+mediaType int NOT NULL CHECK (0 <= mediaType && mediaType <= 2),
+FOREIGN KEY (pid) REFERENCES proposition(pid),
+FOREIGN KEY (fid) REFERENCES fournisseur(fid)
+)
+engine=INNODB;
+ALTER TABLE proposition ADD FOREIGN KEY (mid) REFERENCES media(mid);

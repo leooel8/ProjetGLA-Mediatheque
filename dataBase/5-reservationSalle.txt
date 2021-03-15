@@ -1,0 +1,10 @@
+CREATE TABLE reservationSalle(
+rsid int PRIMARY KEY AUTO_INCREMENT,
+cid int NOT NULL,
+number int NOT NULL,
+sheduledDate date NOT NULL,
+morning boolean NOT NULL,
+FOREIGN KEY (cid) REFERENCES client(cid),
+FOREIGN KEY (number) REFERENCES salle(number)
+)
+engine=INNODB;
