@@ -1,0 +1,31 @@
+main {
+	width: 100%;
+	margin-top: 70px;
+	padding-top: 30px;
+}
+
+#searchTitle {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+#list {
+	display: flex;	
+	flex-wrap: wrap;
+}
+
+.media {
+	background: red;
+	width: 25%;
+	height: 300px;
+	margin: 0 4.16% 4.16% 4.16%;
+}
+
+@media (max-width: 1200px) {
+	.media {
+		background: red;
+		width: 37.5%;
+		height: 300px;
+		margin: 0 6.25% 6.25% 6.25%;
+	}
+}

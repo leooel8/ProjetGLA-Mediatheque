@@ -3,6 +3,7 @@
 
 require("model/db.php");
 require("controller/mainPageController.php");
+require_once("model/class/Client_anonyme.php");
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,8 +13,8 @@ try {
 			if($_GET['action'] === 'login') {
 				echo 'login';
 			}
-		} else if(isset($_GET['search'])) {
-			search();
+		} else if(isset($_GET['search']) && trim($_GET['search']) != "") {
+			search($_GET['search']);
 		}
     } else {
 		mainPage();

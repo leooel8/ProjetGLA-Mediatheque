@@ -4,18 +4,17 @@
 		<meta charset = "utf-8"/>
 		<meta name="viewport" content="width=device-width">
 		<title> Bienvenue dans votre médiathèque </title>
-		<link href='public/css/mainPageStyle.css' rel='stylesheet' />
+		<link href='public/css/mainStyle.css' rel='stylesheet'/>
+		<link href='public/css/mainPageStyle.css' rel='stylesheet'/>
+		<link href='public/css/headerStyle.css' rel='stylesheet'/>
+		<link href='public/css/footerStyle.css' rel='stylesheet'/>
 	</head>
 
 	<body>
-		<header>
-			<div></div>
-			<h1 id='title'> Bienvenue sur le site Officiel de votre médiathéque </h1>
-			<a id='login' href='index.php?action=login'> 
-				<img src='public/images/login.png'>
-				<p> Se connecter </p>
-			</a>
-		</header>
+		<?php
+		/* logo de mediatheque */
+			require("view/headerView.php");
+		?>
 						
 		<main>
 			<form action="index.php" method="get" id='searchBarWrapper'>
@@ -32,9 +31,7 @@
 					<div> </div>
 				</div>
 			</div>
-			
-		
-		
+						
 			<!--<div class="flex-container">
 			<div class="flex-item-left">
 				<div style="pretty-button">Livre</div>
@@ -43,6 +40,11 @@
 			<div class="flex-item-right"><button type="button">Réserver une salle</button></div>
 			</div>-->
 		</main>
+		
+		<?php
+			require("view/footerView.html");
+		/* Footer => date ouverture*/
+		?>
 	</body>
 	
 </div>

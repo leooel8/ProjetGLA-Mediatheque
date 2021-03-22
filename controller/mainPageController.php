@@ -1,10 +1,12 @@
 <?php
-require("model/mainPageModel.php");
-   
+
 function mainPage() {	
 	require("view/mainPageView.php");
 }
 
-function search() {
-	bdSearch('Voyage');
+function search($keyword) {	
+	$ca = new Client_anonyme;
+	$medias = $ca->bdSearch($keyword);
+	
+	require("view/mediaListView.php");
 }
