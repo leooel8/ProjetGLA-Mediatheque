@@ -1,6 +1,16 @@
 body > footer {
 	display: flex;
+	position: absolute;
 	justify-content: center;
 	align-items: center;
-	background: red;
+	background: rgb(100,125,255);
+	border-top: 5px solid rgb(75, 75, 255);
+	width: 100%;
+	height: 70px;
+    bottom: 0;
+	left: 0;	
+}
+
+body > footer > p > strong {
+	color: white;
 }
