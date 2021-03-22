@@ -1,0 +1,201 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+/*----- Header -----*/
+body > header {
+	display: flex;
+	flex-direction: row;
+    justify-content: space-around;
+	align-items: center;
+	position: fixed;
+	background: rgb(100,125,255);
+	height: 70px;
+	top: 0;
+	width: 100%;
+	border-bottom: 5px solid rgb(75, 75, 255);
+}
+
+body > header > * {
+	width: 30%;
+	color: white;
+	text-align: center;
+}
+
+#title {
+	flex: 2;
+}
+
+#login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+}
+
+#login > * {
+	margin: 5px;
+}
+
+#login > img {
+	width: 40px;
+	height: 40px;
+}
+
+#login > p {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+	
+/*----- Main -----*/
+main {
+	width: 100%;
+	margin-top: 70px;
+}
+
+#searchBarWrapper {
+	display: flex;
+	justify-content: center;
+	background-image: url(../images/banner.jpg);
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+
+#searchBar {
+	width: 40%;
+	font-size: 2em;
+	border-radius: 10px;
+	background: rgb(100,125,255);
+	border: 4px double white;
+	padding: 5px;
+	color: white;
+}
+
+#searchBar:focus {
+	background: rgb(125,135,255);
+	outline: none;
+}
+
+#search {
+	margin-left: 15px;
+	width: 100px;
+	background: rgb(100,125,255);
+	border-radius: 10px;
+	border: none;
+	color: white;
+}
+
+#search:hover {
+	background: rgb(125,135,255);
+}
+
+#lastUpdate {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 75px;
+	text-align: center;
+}
+
+#lastUpdate > div {
+	display: flex;
+	justify-content: space-around;	
+}
+
+#lastUpdate > div > div {
+	width: 300px;
+	height: 500px;
+	background: red;
+}
+
+.flex-container {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 30px;
+	text-align: center;
+}
+
+.flex-item-left {
+	background-color: #f1f1f1;
+	padding: 10px;
+	flex: 50%;
+}
+
+.flex-item-right {
+	background-color: dodgerblue;
+	padding: 10px;
+	flex: 50%;
+}
+
+
+.flex-nothing{
+	padding: 10px;
+	flex: 50%;
+
+}
+.pretty-button{
+	display: inline-block;
+	border:8px solid rgb(64, 124, 204);
+	border-radius:20px;
+	padding:14px;
+	background:linear-gradient(to bottom,,rgb(3, 74, 187));
+	color:
+}
+
+@media (max-width: 1920px) {
+	body > header {
+		font-size: 0.8em;
+	}
+	
+	#lastUpdate {
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+
+	#lastUpdate > div > div {
+		width: 225px;
+		height: 375px;
+		background: red;
+	}
+}
+
+@media (max-width: 1600px) {
+	body > header {
+		font-size: 0.7em;
+	}
+	
+	#lastUpdate {
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+	
+	#lastUpdate > div > div {
+		width: 190px;
+		height: 305px;
+		background: red;
+	}
+}
+
+@media (max-width: 1200px) {
+	body > header {
+		font-size: 0.6em;
+	}
+	
+	#lastUpdate {
+		margin-left: 2.5%;
+		margin-right: 2.5%;
+	}
+	
+	#lastUpdate > div > div {
+		width: 150px;
+		height: 250px;
+		background: red;
+	}
+}
+
+@media (max-width: 800px) {
+  body > header {
+	  font-size: 0.5em;
+  }
+}

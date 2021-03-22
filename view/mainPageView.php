@@ -4,74 +4,45 @@
 		<meta charset = "utf-8"/>
 		<meta name="viewport" content="width=device-width">
 		<title> Bienvenue dans votre médiathèque </title>
-		<style type="text/css">
-		  * {
-			  box-sizing: border-box;
-			}
-
-			.flex-container {
-			  display: flex;
-			  flex-wrap: wrap;
-			  font-size: 30px;
-			  text-align: center;
-			}
-
-			.flex-item-left {
-			  background-color: #f1f1f1;
-			  padding: 10px;
-			  flex: 50%;
-			}
-
-			.flex-item-right {
-			  background-color: dodgerblue;
-			  padding: 10px;
-			  flex: 50%;
-			}
-			.myButton {
-
-			    padding: 30px;
-			    display:block;
-			    background-color: green;
-			    color: white;
-			    text-align:center;
-			    position: absolute;
-			    top: 10px;
-			    right: 10px;
-
-			}
-
-			.flex-nothing{
-				 padding: 10px;
-			  	flex: 50%;
-
-			}
-			.pretty-button{
-				display: inline-block;
-				border:8px solid rgb(64, 124, 204);
-				border-radius:20px;
-				padding:14px;
-				background:linear-gradient(to bottom,,rgb(3, 74, 187));
-				color:
-			}
-			@media (max-width: 800px) {
-			  .flex-item-right, .flex-item-left {
-			    flex: 100%;
-			  }
-			}
-		</style>
+		<link href='public/css/mainPageStyle.css' rel='stylesheet' />
 	</head>
 
 	<body>
-		<p> Bienvenue sur le site Officiel de notre médiathéque </p>
-		<div class="myButton"> <button type="button">Se connecter</button> </div>
-
-		<div class="flex-container">
-		<div class="flex-item-left">
-			<div style="pretty-button">Livre</div>
-		<div class="flex-item-right"><button type="button">Audiovisuel</button></div>
-		<div class="flex-item-left"><button type="button">Horaires</button></div>
-		<div class="flex-item-right"><button type="button">Réserver une salle</button></div>
-		</div>
+		<header>
+			<div></div>
+			<h1 id='title'> Bienvenue sur le site Officiel de votre médiathéque </h1>
+			<a id='login' href='loginPage.php'> 
+				<img src='public/images/login.png'>
+				<p> Se connecter </p>
+			</a>
+		</header>
+						
+		<main>
+			<form action="index.php" method="get" id='searchBarWrapper'>
+				<div> </div>
+				<input type='text' name='search' id='searchBar'> </input>
+				<input type='submit' value='Rechercher' id='search'> </input>
+			</form>
+			
+			<div id='lastUpdate'>
+				<h2> Dernière Sortie : </h2>
+				<div>
+					<div> </div>
+					<div> </div>
+					<div> </div>
+				</div>
+			</div>
+			
+		
+		
+			<!--<div class="flex-container">
+			<div class="flex-item-left">
+				<div style="pretty-button">Livre</div>
+			<div class="flex-item-right"><button type="button">Audiovisuel</button></div>
+			<div class="flex-item-left"><button type="button">Horaires</button></div>
+			<div class="flex-item-right"><button type="button">Réserver une salle</button></div>
+			</div>-->
+		</main>
 	</body>
 	
 </div>
