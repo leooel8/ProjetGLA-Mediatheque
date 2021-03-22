@@ -1,0 +1,3 @@
+INSERT INTO media (format, titre, author, price, quantity, genre, description, releaseDate, type, mediaType)
+ VALUES
+ ("livre", "Voyage au centre de la terre", "Jules Verne", 13.90, 13, "aventure", "Un bon livre", "2010-04-02", "roman", 2)

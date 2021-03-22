@@ -11,7 +11,7 @@
 		<header>
 			<div></div>
 			<h1 id='title'> Bienvenue sur le site Officiel de votre médiathéque </h1>
-			<a id='login' href='loginPage.php'> 
+			<a id='login' href='index.php?action=login'> 
 				<img src='public/images/login.png'>
 				<p> Se connecter </p>
 			</a>
