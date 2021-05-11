@@ -4,5 +4,4 @@ editor varchar(64) NOT NULL,
 edition int NOT NULL,
 duration int NOT NULL CHECK (duration > 0),
 FOREIGN KEY (mid) REFERENCES media(mid)
-)
-engine=INNODB;
+);

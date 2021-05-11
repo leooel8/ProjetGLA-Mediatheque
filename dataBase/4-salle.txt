@@ -2,5 +2,4 @@ CREATE TABLE salle(
 number int PRIMARY KEY,
 capacity int NOT NULL CHECK (capacity > 0),
 description text NOT NULL
-)
-engine=INNODB;
+);

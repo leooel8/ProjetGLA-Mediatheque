@@ -3,5 +3,4 @@ mid int PRIMARY KEY,
 editor varchar(64) NOT NULL,
 edition int NOT NULL,
 FOREIGN KEY (mid) REFERENCES media(mid)
-)
-engine=INNODB;
+);

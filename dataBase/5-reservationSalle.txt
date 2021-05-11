@@ -6,5 +6,4 @@ sheduledDate date NOT NULL,
 morning boolean NOT NULL,
 FOREIGN KEY (cid) REFERENCES client(cid),
 FOREIGN KEY (number) REFERENCES salle(number)
-)
-engine=INNODB;
+);

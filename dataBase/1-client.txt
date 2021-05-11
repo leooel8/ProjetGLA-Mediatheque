@@ -4,11 +4,11 @@ lastName varchar(32)  NOT NULL,
 firstName varchar(32) NOT NULL,
 email varchar(46) NOT NULL,
 gender boolean NOT NULL,
-password varchar(32) NOT NULL,
 adress varchar(128) NOT NULL,
+password varchar(32) NOT NULL,
 premium boolean default false NOT NULL,
 inOrder boolean default false NOT NULL,
+subscribeDate datetime default NOW() NOT NULL,
 validate boolean default false NOT NULL,
 banned boolean default false NOT NULL
-)
-engine=INNODB;
+);

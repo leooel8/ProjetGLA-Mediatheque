@@ -2,8 +2,7 @@ CREATE TABLE reservationMedia(
 rmid int PRIMARY KEY AUTO_INCREMENT,
 cid int NOT NULL,
 mid int NOT NULL,
-sheduledDate date NOT NULL,
+sheduledDate datetime NOT NULL,
 FOREIGN KEY (cid) REFERENCES client(cid),
 FOREIGN KEY (mid) REFERENCES media(mid)
-)
-engine=INNODB;
+);
