@@ -1,9 +1,19 @@
 <?php
-//session_start(); // Cookie
+if(!isset($_SESSION)){
+	session_start();
+}
 
 require("model/db.php");
 require("controller/mainPageController.php");
-require_once("model/class/Client_anonyme.php");
+require_once("model/class/AnonymousCustomer.php");
+require_once("model/class/Customer.php");
+require_once("model/class/Provider.php");
+require_once("model/class/Manager.php");
+require_once("model/class/Administrator.php");
+require_once("model/class/Authenticated.php");
+use PHPMailer\PHPMailer\PHPMailer;
+require 'model/PHPMailer/src/PHPMailer.php';
+require 'model/PHPMailer/src/SMTP.php';
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

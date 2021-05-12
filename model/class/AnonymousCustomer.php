@@ -39,7 +39,7 @@ class AnonymousCustomer {
 	}
 	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
-		$res = isValidPassword($email, $password, $cpassword);
+		$res = isValidLogin($email, $password, $cpassword);
 		
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -55,7 +55,7 @@ class AnonymousCustomer {
 	}
 	
 	public function createProviderAccount($compagnyName, $email, $password, $cpassword, $adress) {
-		$res = isValidPassword($email ,$password, $cpassword);
+		$res = isValidLogin($email ,$password, $cpassword);
 		
 		if($res === true) {		
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -71,7 +71,7 @@ class AnonymousCustomer {
 	}
 	
 	public function Authenticate($email, $password) {
-		$res = isValidPassword($email, $password, $password);
+		$res = isValidLogin($email, $password, $password);
 		
 		if($res === true) {			
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -158,10 +158,19 @@ class AnonymousCustomer {
 	}
 	
 	private function isValidLogin($email, $password, $cpassword) {
-		// Check email
+		// Check valid email
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return 'invalidEmail';
 		}
+		
+		// Check email taken
+		$db = dbConnect();
+		$req = $db->prepare('SELECT null FROM client AS c, fournisseur AS f, gestionnaire AS g, administrateur AS a WHERE c.email = ? OR f.email = ? OR g.email = ? OR a.email = ?');	
+		$req->execute(array($email));
+
+		if($req->rowCount() > 0) {
+			return 'emailTaken';
+		}		
 		
 		// Check password difference
 		if($password !== $cpassword) {
