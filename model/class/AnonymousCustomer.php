@@ -51,7 +51,7 @@ class AnonymousCustomer {
 			
 			return $req;
 		}
-		return $res	
+		return $res;	
 	}
 	
 	public function createProviderAccount($compagnyName, $email, $password, $cpassword, $adress) {
@@ -67,7 +67,7 @@ class AnonymousCustomer {
 			
 			return $req;
 		}
-		return $res	
+		return $res;	
 	}
 	
 	public function Authenticate($email, $password) {
@@ -116,7 +116,7 @@ class AnonymousCustomer {
 			
 			return false;
 		} 
-		return $res					
+		return $res;					
 	}
 	
 	public function forgottenPassword($email) {
@@ -157,7 +157,7 @@ class AnonymousCustomer {
 		}    	
 	}
 	
-	private isValidLogin($email, $password, $cpassword) {
+	private function isValidLogin($email, $password, $cpassword) {
 		// Check email
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return 'invalidEmail';
