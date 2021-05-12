@@ -163,14 +163,26 @@ class AnonymousCustomer {
 			return 'invalidEmail';
 		}
 		
-		// Check email taken
 		$db = dbConnect();
-		$req = $db->prepare('SELECT null FROM client AS c, fournisseur AS f, gestionnaire AS g, administrateur AS a WHERE c.email = ? OR f.email = ? OR g.email = ? OR a.email = ?');	
+		// Check banned
+		$req = $db->prepare('SELECT null FROM client WHERE email = ? AND banned = true');	
 		$req->execute(array($email));
+		
+		if($req->rowCount() > 0) {
+			return 'banned';
+		}
+		
+		// Check email taken	
+		$req = $db->prepare('SELECT null FROM client AS c, fournisseur AS f, gestionnaire AS g, administrateur AS a WHERE c.email = ? OR f.email = ? OR g.email = ? OR a.email = ?');	
+		$req->execute(array($email, $email, $email, $email));
 
 		if($req->rowCount() > 0) {
 			return 'emailTaken';
-		}		
+		}
+
+		if($req->rowCount() > 0) {
+			return 'emailTaken';
+		}			
 		
 		// Check password difference
 		if($password !== $cpassword) {
