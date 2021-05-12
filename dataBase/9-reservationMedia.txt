@@ -3,6 +3,7 @@ rmid int PRIMARY KEY AUTO_INCREMENT,
 cid int NOT NULL,
 mid int NOT NULL,
 sheduledDate datetime NOT NULL,
+cancelled boolean DEFAULT false,
 FOREIGN KEY (cid) REFERENCES client(cid),
 FOREIGN KEY (mid) REFERENCES media(mid)
 );
