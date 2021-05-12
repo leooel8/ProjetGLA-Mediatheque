@@ -41,11 +41,13 @@ class AnonymousCustomer {
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
 		$res = isValidPassword($email, $password, $cpassword);
 		
-		if($res === true) {			
+		if($res === true) {
+			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+			
 			$db = dbConnect();
 			
 			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
-			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $password, $premium));
+			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $passwordHash, $premium));
 			
 			return $req;
 		}
@@ -56,10 +58,12 @@ class AnonymousCustomer {
 		$res = isValidPassword($email ,$password, $cpassword);
 		
 		if($res === true) {		
+			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+		
 			$db = dbConnect();
 			
 			$req = $db->prepare("INSERT INTO fournisseur (compagnyName, email, password, adress) VALUES(?, ?, ?, ?)");
-			$req->execute(array($compagnyName, $email, $password, $adress));
+			$req->execute(array($compagnyName, $email, $passwordHash, $adress));
 			
 			return $req;
 		}
@@ -70,13 +74,13 @@ class AnonymousCustomer {
 		$res = isValidPassword($email, $password, $password);
 		
 		if($res === true) {			
-			$passwordHash = password_hash($searched_password, PASSWORD_DEFAULT);
+			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 			
 			$db = dbConnect();
 			
 			// Is client
 			$req = $db->prepare('SELECT null FROM client WHERE email = ? and password = ?');	
-			$req->execute(array($email, $password));	
+			$req->execute(array($email, $passwordHash));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'customer';
@@ -85,7 +89,7 @@ class AnonymousCustomer {
 			
 			// Is provider
 			$req = $db->prepare('SELECT null FROM fournisseur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $password));	
+			$req->execute(array($email, $passwordHash));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'provider';
@@ -94,7 +98,7 @@ class AnonymousCustomer {
 			
 			// Is manager
 			$req = $db->prepare('SELECT null FROM gestionnaire WHERE email = ? and password = ?');	
-			$req->execute(array($email, $password));	
+			$req->execute(array($email, $passwordHash));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'manager';
@@ -103,7 +107,7 @@ class AnonymousCustomer {
 			
 			// Is administrator
 			$req = $db->prepare('SELECT null FROM administrateur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $password));	
+			$req->execute(array($email, $passwordHash));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'administrator';
