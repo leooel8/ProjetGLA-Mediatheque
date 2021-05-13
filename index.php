@@ -19,7 +19,6 @@ require_once("model/class/Provider.php");
 require_once("model/class/Manager.php");
 require_once("model/class/Administrator.php");
 require_once("model/class/Authenticated.php");
-use PHPMailer\PHPMailer\PHPMailer;
 require 'model/PHPMailer/src/PHPMailer.php';
 require 'model/PHPMailer/src/SMTP.php';
 

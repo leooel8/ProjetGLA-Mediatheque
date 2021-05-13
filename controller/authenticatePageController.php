@@ -9,7 +9,7 @@ function authenticate($email, $password) {
     if ($res===true) {
         header('Location: index.php');
         exit;
-    } 
+    }
     else {
         echo "<p>Identifiant ou mot de passe incorrect</p>";
         echo $res;
