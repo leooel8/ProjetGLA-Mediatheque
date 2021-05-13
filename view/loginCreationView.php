@@ -1,8 +1,3 @@
-<?php
-    session_start();
-    require_once("controller/loginCreationPageController.php");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

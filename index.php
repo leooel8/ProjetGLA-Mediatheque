@@ -1,10 +1,11 @@
 <?php
-session_start();
-// if(!isset($_SESSION)){
-// 	session_start();
-// 	$_SESSION['status'] = 'anonymous';
-// }
+if(!isset($_SESSION)){
+ 	session_start();
+}
 
+if(!isset($_SESSION['status'])) {
+	$_SESSION['status'] = 'anonymous';
+}
 
 require("model/db.php");
 require("controller/mainPageController.php");

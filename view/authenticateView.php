@@ -1,9 +1,3 @@
-<?php
-    session_start();
-    require_once("controller/authenticatePageController.php");
-   
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
