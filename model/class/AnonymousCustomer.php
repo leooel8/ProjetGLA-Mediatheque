@@ -120,14 +120,16 @@ class AnonymousCustomer {
 		// Get user id and password
 		$req = $db->prepare('SELECT id, password FROM compte WHERE email = ?');
 		$req->execute(array($email));
-		$passwordHash = $req->fetch()['password'];
-		$id = $req->fetch()['id'];
+		$res = $req->fetch();
+		$passwordHash = $res['password'];
+		$id = $res['id'];
 		
 		// Password match
-		if(password_verify($password, $passwordHash)) {	
+		if(password_verify($password, $passwordHash)) {
 			// Is client
 			$req = $db->prepare('SELECT null FROM client WHERE cid = ?');	
 			$req->execute(array($id));	
+			
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'customer';

@@ -1,8 +1,9 @@
 <?php
-if(!isset($_SESSION)){
-	session_start();
-	$_SESSION['status'] = 'anonymous';
-}
+session_start();
+// if(!isset($_SESSION)){
+// 	session_start();
+// 	$_SESSION['status'] = 'anonymous';
+// }
 
 
 require("model/db.php");
