@@ -1,6 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class AnonymousCustomer {
-	
 	/*---------- Public functions ----------*/
 	public function lastUpdate() {
 		$db = dbConnect();
@@ -57,7 +57,7 @@ class AnonymousCustomer {
 	}
 	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
-		$res = isValidLogin($email, $password, $cpassword);
+		$res = $this->isValidLogin($email, $password, $cpassword);
 		
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -65,9 +65,12 @@ class AnonymousCustomer {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
-			$id = $req->fetch()['id'];
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
 			
 			// Add client
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
@@ -79,7 +82,7 @@ class AnonymousCustomer {
 	}
 	
 	public function createProviderAccount($compagnyName, $email, $password, $cpassword, $adress) {
-		$res = isValidLogin($email ,$password, $cpassword);
+		$res = $this->isValidLogin($email ,$password, $cpassword);
 		
 		if($res === true) {		
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -87,9 +90,12 @@ class AnonymousCustomer {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
-			$id = $req->fetch()['id'];
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
 			
 			// Add provider
 			$req = $db->prepare("INSERT INTO fournisseur (fid, companyName) VALUES(?, ?)");
@@ -101,7 +107,7 @@ class AnonymousCustomer {
 	}
 	
 	public function Authenticate($email, $password) {
-		$res = isValidLogin($email, $password, $password);
+		$res = $this->isValidLogin($email, $password, $password);
 		
 		if($res === true) {					
 			$db = dbConnect();
@@ -156,7 +162,7 @@ class AnonymousCustomer {
 			}
 			
 			return false;
-		} 
+		}
 		return $res;					
 	}
 	
@@ -167,7 +173,7 @@ class AnonymousCustomer {
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
-			forgottenPasswordMail($email);
+			$this->forgottenPasswordMail($email);
 		}		
 	}
 	
@@ -237,7 +243,7 @@ class AnonymousCustomer {
 		
 		// Check password valid character
 		$pwdValid = array('-', '_', '!');
-		if(!ctype_alnum(str_replace($pwdValid, '', $password))) {
+		if (!ctype_alnum(str_replace($pwdValid, '', $password))) {
 			return 'invalidPassword';
 		}
 		
