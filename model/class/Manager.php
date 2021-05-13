@@ -67,7 +67,7 @@ class Manager {
 		return $req;
 	}
 	
-	public function validReservation($rmid, ) {
+	public function validReservation($rmid) {
 		$db = dbConnect();
 		
 		// Get media id and customer id
