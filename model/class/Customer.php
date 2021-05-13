@@ -100,7 +100,7 @@ class Customer {
 		} else if($format === 'audio' || $format === 'film') {
 			$req->execute(array($cid, $format));
 		} else {
-			throw new Exception('Unknow media format');
+			throw new Exception('Format de média inconnu');
 		}
 		$reservedNumber = $req->rowCount();
 				

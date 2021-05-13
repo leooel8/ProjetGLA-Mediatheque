@@ -5,7 +5,7 @@ class AnonymousCustomer {
 	public function mediaSearch($keyword) {
 		$db = dbConnect();
 		
-		$req = $db->prepare("SELECT mid, format, title, author, quantity, kind, type FROM media WHERE title LIKE ? OR author LIKE ?");
+		$req = $db->prepare("SELECT m.mid, format, title, author, quantity, kind, type FROM media AS m, proposition AS p WHERE p.mid = m.mid AND p.validate = true AND title LIKE ? OR author LIKE ?");
 		$req->execute(array("%".$keyword."%", "%".$keyword."%"));	
 		
 		return $req;	
@@ -49,7 +49,7 @@ class AnonymousCustomer {
 			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
 			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $passwordHash, $premium));
 			
-			return $req;
+			return true;
 		}
 		return $res;	
 	}
@@ -65,7 +65,7 @@ class AnonymousCustomer {
 			$req = $db->prepare("INSERT INTO fournisseur (compagnyName, email, password, adress) VALUES(?, ?, ?, ?)");
 			$req->execute(array($compagnyName, $email, $passwordHash, $adress));
 			
-			return $req;
+			return true;
 		}
 		return $res;	
 	}

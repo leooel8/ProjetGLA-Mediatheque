@@ -1,9 +1,11 @@
 CREATE TABLE proposition(
 pid int PRIMARY KEY AUTO_INCREMENT,
+fid int NOT NULL,
 mid int NOT NULL,
 propositionDate datetime default NOW() NOT NULL,
 accepted boolean,
 mediaType tinyint NOT NULL CHECK (0 >= mediaType AND mediaType <= 2),
-deliveryDate date NOT NULL,
-received boolean default false NOT NULL
+deliveryDate date,
+received boolean default false NOT NULL,
+FOREIGN KEY (fid) REFERENCES fournisseur(fid)
 );
