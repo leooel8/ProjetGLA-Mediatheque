@@ -6,15 +6,22 @@ class Provider {
 		$db = dbConnect();
 		
 		// Create media
-		$req = $db->prepare('INSERT INTO media (fid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) OUTPUT Inserted.mid VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+		$req = $db->prepare('INSERT INTO media (fid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($fid, $format, $title, $author, $price, $quentity, $kind, $description, $releaseDate, $type, $mediaType));
-		$mid = $req->fetch()['mid'];
-		// 
+
+		// Get mid
+		$req = $db->prepare('SELECT LAST_INSERT_ID()');
+		$req->execute();
+		$mid = $req->fetch()[0];
 		
 		// Create proposition
-		$req = $db->prepare('INSERT INTO proposition (fid, mid, mediaType, deliveryDate) OUTPUT Inserted.pid VALUES(?, ?, ?, ?)');
+		$req = $db->prepare('INSERT INTO proposition (fid, mid, mediaType, deliveryDate) VALUES(?, ?, ?, ?)');
 		$req->execute(array($fid, $mid, $mediaType, $deliveryDate));
-		$pid = $req->fetch()['pid'];
+		
+		// Get pid
+		$req = $db->prepare('SELECT LAST_INSERT_ID()');
+		$req->execute();
+		$pid = $req->fetch()[0];
 		
 		// Update media
 		$req = $db->prepare('UPDATE media SET pid = ? WHERE mid = ?');
@@ -27,7 +34,7 @@ class Provider {
 		$req = $db->prepare('SELECT mid, propositionDate, accepted, mediaType, received FROM proposition WHERE fid = ?');
 		$req->execute(array($fid));	
 		
-		return $req;	
+		return $req->fetch();	
 	}
 	
 }

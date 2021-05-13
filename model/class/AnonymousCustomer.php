@@ -1,11 +1,29 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class AnonymousCustomer {
-	
 	/*---------- Public functions ----------*/
+	public function lastUpdate() {
+		$db = dbConnect();
+		
+		$req = $db->prepare("SELECT mid FROM media ORDER BY mid DESC LIMIT 3");
+		$req->execute();	
+		
+		return $req->fetch();
+	}
+	
 	public function mediaSearch($keyword) {
 		$db = dbConnect();
 		
-		$req = $db->prepare("SELECT m.mid, format, title, author, quantity, kind, type FROM media AS m, proposition AS p WHERE p.mid = m.mid AND p.validate = true AND title LIKE ? OR author LIKE ?");
+		// Get proposition id
+		$req = $db->prepare("SELECT pid FROM media WHERE title LIKE ? OR author LIKE ?");
+		$req->execute(array("%".$keyword."%", "%".$keyword."%"));	
+		$pid = $req->fetch()['pid'];
+			
+		if(isset($pid)) {
+			$req = $db->prepare("SELECT m.mid, format, title, author, quantity, kind, type FROM media AS m, proposition AS p WHERE p.mid = m.mid AND p.validate = true AND title LIKE ? OR author LIKE ?");
+		} else {
+			$req = $db->prepare("SELECT mid, format, title, author, quantity, kind, type FROM media WHERE title LIKE ? OR author LIKE ?");
+		}
 		$req->execute(array("%".$keyword."%", "%".$keyword."%"));	
 		
 		return $req;	
@@ -17,7 +35,7 @@ class AnonymousCustomer {
 		$req = $db->prepare("SELECT mid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType type FROM media WHERE mid = ?");
 		$req->execute(array($mid));
 
-		return $req;
+		return $req->fetch();
 	}
 	
 	public function roomSearch() {
@@ -35,19 +53,28 @@ class AnonymousCustomer {
 		$req = $db->prepare("SELECT * FROM salle WHERE number = ?");
 		$req->execute(array($number));
 
-		return $req;
+		return $req->fetch();
 	}
 	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
-		$res = isValidLogin($email, $password, $cpassword);
+		$res = $this->isValidLogin($email, $password, $cpassword);
 		
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 			
 			$db = dbConnect();
 			
-			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
-			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $passwordHash, $premium));
+			// Add account
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+			$req->execute(array($email, $adress, $passwordHash));
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
+			
+			// Add client
+			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
+			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
 			
 			return true;
 		}
@@ -55,82 +82,103 @@ class AnonymousCustomer {
 	}
 	
 	public function createProviderAccount($compagnyName, $email, $password, $cpassword, $adress) {
-		$res = isValidLogin($email ,$password, $cpassword);
+		$res = $this->isValidLogin($email ,$password, $cpassword);
 		
 		if($res === true) {		
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 		
 			$db = dbConnect();
 			
-			$req = $db->prepare("INSERT INTO fournisseur (compagnyName, email, password, adress) VALUES(?, ?, ?, ?)");
-			$req->execute(array($compagnyName, $email, $passwordHash, $adress));
+			// Add account
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+			$req->execute(array($email, $adress, $passwordHash));
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
+			
+			// Add provider
+			$req = $db->prepare("INSERT INTO fournisseur (fid, companyName) VALUES(?, ?)");
+			$req->execute(array($id, $compagnyName));
 			
 			return true;
 		}
 		return $res;	
 	}
 	
-	public function Authenticate($email, $password) {
-		$res = isValidLogin($email, $password, $password);
+	public function Authenticate($email, $password) {					
+		$db = dbConnect();
 		
-		if($res === true) {			
-			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
-			
-			$db = dbConnect();
-			
+		// Check banned
+		$req = $db->prepare('SELECT null FROM client, compte WHERE id = cid AND email = ? AND banned = true');	
+		$req->execute(array($email));
+		
+		if($req->rowCount() > 0) {
+			return 'banned';
+		}
+		
+		// Get user id and password
+		$req = $db->prepare('SELECT id, password FROM compte WHERE email = ?');
+		$req->execute(array($email));
+		$res = $req->fetch();
+		$passwordHash = $res['password'];
+		$id = $res['id'];
+		
+		// Password match
+		if(password_verify($password, $passwordHash)) {
 			// Is client
-			$req = $db->prepare('SELECT cid FROM client WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
+			$req = $db->prepare('SELECT null FROM client WHERE cid = ?');	
+			$req->execute(array($id));	
+			
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'customer';
-				$_SESSION['id'] = $req->fetch()['cid'];
+				$_SESSION['id'] = $id;
 				return true;
 			}			
 			
 			// Is provider
-			$req = $db->prepare('SELECT fid FROM fournisseur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
+			$req = $db->prepare('SELECT null FROM fournisseur WHERE fid = ?');	
+			$req->execute(array($id));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'provider';
-				$_SESSION['id'] = $req->fetch()['fid'];
+				$_SESSION['id'] = $id;
 				return true;
 			}	
 			
 			// Is manager
-			$req = $db->prepare('SELECT gid FROM gestionnaire WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
+			$req = $db->prepare('SELECT null FROM gestionnaire WHERE gid = ?');	
+			$req->execute(array($id));	
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'manager';
-				$_SESSION['id'] = $req->fetch()['gid'];
+				$_SESSION['id'] = $id;
 				return true;
 			}	
 			
 			// Is administrator
-			$req = $db->prepare('SELECT aid FROM administrateur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
+			$req = $db->prepare('SELECT null FROM administrateur WHERE aid = ?');	
+			$req->execute(array($id));
 			
 			if($req->rowCount() > 0) {
 				$_SESSION['status'] = 'administrator';
-				$_SESSION['id'] = $req->fetch()['aid'];
+				$_SESSION['id'] = $id;
 				return true;
 			}
-			
-			return false;
-		} 
-		return $res;					
+		}
+		
+		return false;				
 	}
 	
 	public function forgottenPassword($email) {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT null FROM client WHERE email = ?');	
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');	
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
-			forgottenPasswordMail($email);
+			$this->forgottenPasswordMail($email);
 		}		
 	}
 	
@@ -163,26 +211,15 @@ class AnonymousCustomer {
 	
 	private function isValidLogin($email, $password, $cpassword) {
 		// Check valid email
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return 'invalidEmail';
 		}
 		
 		$db = dbConnect();
-		// Check banned
-		$req = $db->prepare('SELECT null FROM client WHERE email = ? AND banned = true');	
-		$req->execute(array($email));
-		
-		if($req->rowCount() > 0) {
-			return 'banned';
-		}
 		
 		// Check email taken	
-		$req = $db->prepare('SELECT null FROM client AS c, fournisseur AS f, gestionnaire AS g, administrateur AS a WHERE c.email = ? OR f.email = ? OR g.email = ? OR a.email = ?');	
-		$req->execute(array($email, $email, $email, $email));
-
-		if($req->rowCount() > 0) {
-			return 'emailTaken';
-		}
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');	
+		$req->execute(array($email));
 
 		if($req->rowCount() > 0) {
 			return 'emailTaken';
@@ -204,7 +241,7 @@ class AnonymousCustomer {
 		
 		// Check password valid character
 		$pwdValid = array('-', '_', '!');
-		if(!ctype_alnum(str_replace($pwdValid, '', $password))) {
+		if (!ctype_alnum(str_replace($pwdValid, '', $password))) {
 			return 'invalidPassword';
 		}
 		

@@ -31,19 +31,22 @@
 					<div> </div>
 				</div>
 			</div>
+			
+			
 						
-			<!--<div class="flex-container">
-			<div class="flex-item-left">
-				<div style="pretty-button">Livre</div>
-			<div class="flex-item-right"><button type="button">Audiovisuel</button></div>
-			<div class="flex-item-left"><button type="button">Horaires</button></div>
-			<div class="flex-item-right"><button type="button">Réserver une salle</button></div>
-			</div>-->
+			<div id='actions'>
+				<a href=<?=$link1?>> <button id='action1' class='action'> <?=$action1?> </button> </a>
+				<a href=<?=$link2?>> <button id='action2' class='action'> <?=$action2?> </button> </a>
+				<?php 
+				if(isset($action3)) {
+					echo "<a href=$link3> <button id='action3' class='action'> <?=$action3?> </button> </a>";
+				}
+				?>
+			</div>
 		</main>
 		
 		<?php
 			require("view/footerView.html");
-		/* Footer => date ouverture*/
 		?>
 	</body>
 	

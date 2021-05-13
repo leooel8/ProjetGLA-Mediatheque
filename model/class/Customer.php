@@ -58,6 +58,10 @@ class Customer {
 			$req = $db->prepare('DELETE FROM client WHERE cid = ?');	
 			$req->execute(array($cid));
 			
+			// Delete account
+			$req = $db->prepare('DELETE FROM compte WHERE id = ?');
+			$req->execute(Array($cid));
+			
 			return true;
 		} else {
 			return false;

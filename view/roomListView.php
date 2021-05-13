@@ -14,14 +14,14 @@
 			require("view/headerView.php");
 		?>
 						
-		<main>
-			<h2 id='searchTitle'> Resultat pour la recherche: <?= $keyword ?> </h2>
+		<main>	
+			<h2 id='searchTitle'> Liste des salles: </h2>
 		
 			<div id='list'>
 				<?php
-					while($media = $medias->fetch()) {
-						echo "<a href='index.php?action=mediaPage&id=$media[mid]'> <div class='media'>";
-							print_r($media);
+					while($room = $rooms->fetch()) {
+						echo "<a href='index.php?action=roomPage&number=$room[number]'> <div class='room'>";
+							print_r($room);
 						echo "</div> </a>";
 					}
 				?>

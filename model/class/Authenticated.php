@@ -9,7 +9,7 @@ class Authenticated {
 	public function changePassword($email) {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT null FROM client WHERE email = ?');	
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');	
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
@@ -20,7 +20,7 @@ class Authenticated {
 	public function myAccount($cid) {
 		$db = dbConnect();
 		
-		$req = $db->prepare('SELECT lastName, firstName, email, gender, adress, premium, inOrder, subscribeDate FROM client WHERE cid = ?');	
+		$req = $db->prepare('SELECT lastName, firstName, email, gender, adress, premium, inOrder, subscribeDate FROM client, compte WHERE cid = ? AND id = cid');	
 		$req->execute(array($cid));
 		
 		return $req;

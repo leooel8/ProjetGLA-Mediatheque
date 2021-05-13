@@ -33,7 +33,7 @@ class Manager {
 	public function addMedia($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType) {
 		$db = dbConnect();
 
-		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) OUTPUT Inserted.mid VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType));
 	}
 	
@@ -51,8 +51,18 @@ class Manager {
 		if(accountPasswordMail($email, $password)) {			
 			$db = dbConnect();
 			
-			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
-			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $password, $premium));
+			// Add account
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+			$req->execute(array($email, $adress, $passwordHash));
+			
+			// Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+            $req->execute();
+            $id = $req->fetch()[0];
+			
+			// Add client
+			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
+			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
 		} else {
 			throw new Exception('Erreur lors de l\'envoie du mail');
 		}
