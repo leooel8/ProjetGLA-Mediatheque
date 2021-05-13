@@ -52,7 +52,7 @@ class Manager {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
 			$id = $req->fetch()['id'];
 			

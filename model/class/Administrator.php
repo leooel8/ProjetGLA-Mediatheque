@@ -13,7 +13,7 @@ class Administrator {
 		$db = dbConnect();
 		
 		// Add account
-		$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+		$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
 		$req->execute(array($email, $adress, $passwordHash));
 		$id = $req->fetch()['id'];
 		
@@ -30,7 +30,7 @@ class Administrator {
 		$req->execute(Array($gid));
 		
 		// Delete account
-		$req = $db->prepare('DELETE FROM account WHERE id = ?');
+		$req = $db->prepare('DELETE FROM compte WHERE id = ?');
 		$req->execute(Array($gid));
 	}
 	

@@ -65,7 +65,7 @@ class AnonymousCustomer {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
 			$id = $req->fetch()['id'];
 			
@@ -87,7 +87,7 @@ class AnonymousCustomer {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
 			$id = $req->fetch()['id'];
 			
@@ -107,7 +107,7 @@ class AnonymousCustomer {
 			$db = dbConnect();
 			
 			// Get user id and password
-			$req = $db->prepare('SELECT id, password FROM account WHERE email = ?');
+			$req = $db->prepare('SELECT id, password FROM compte WHERE email = ?');
 			$req->execute(array($email));
 			$passwordHash = $req->fetch()['password'];
 			$id = $req->fetch()['id'];
@@ -163,7 +163,7 @@ class AnonymousCustomer {
 	public function forgottenPassword($email) {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT null FROM account WHERE email = ?');	
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');	
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
@@ -206,7 +206,7 @@ class AnonymousCustomer {
 		
 		$db = dbConnect();
 		// Check banned
-		$req = $db->prepare('SELECT null FROM client, account WHERE id = cid AND email = ? AND banned = true');	
+		$req = $db->prepare('SELECT null FROM client, compte WHERE id = cid AND email = ? AND banned = true');	
 		$req->execute(array($email));
 		
 		if($req->rowCount() > 0) {
@@ -214,7 +214,7 @@ class AnonymousCustomer {
 		}
 		
 		// Check email taken	
-		$req = $db->prepare('SELECT null FROM account WHERE email = ?');	
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');	
 		$req->execute(array($email));
 
 		if($req->rowCount() > 0) {
