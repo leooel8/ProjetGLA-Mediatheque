@@ -3,7 +3,6 @@ if(!isset($_SESSION)){
 	session_start();
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status'] = 'anonymous';
 
 
 require("model/db.php");

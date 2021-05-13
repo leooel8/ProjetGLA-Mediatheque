@@ -108,7 +108,6 @@ class AnonymousCustomer {
 	
 	public function Authenticate($email, $password) {
 		$res = $this->isValidLogin($email, $password, $password);
-		
 		if($res === true) {					
 			$db = dbConnect();
 			
@@ -120,6 +119,7 @@ class AnonymousCustomer {
 			
 			// Password match
 			if(password_verify($password, $passwordHash)) {	
+				
 				// Is client
 				$req = $db->prepare('SELECT null FROM client WHERE cid = ?');	
 				$req->execute(array($id));	

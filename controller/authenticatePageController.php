@@ -11,5 +11,6 @@ function authenticate($email, $password) {
     } 
     else {
         echo "<p>Identifiant ou mot de passe incorrect</p>";
+        echo $res;
     }
 }
