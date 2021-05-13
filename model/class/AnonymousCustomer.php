@@ -2,10 +2,28 @@
 class AnonymousCustomer {
 	
 	/*---------- Public functions ----------*/
+	public function lastUpdate() {
+		$db = dbConnect();
+		
+		$req = $db->prepare("SELECT mid FROM media ORDER BY mid DESC LIMIT 3");
+		$req->execute();	
+		
+		return $req->fetch();
+	}
+	
 	public function mediaSearch($keyword) {
 		$db = dbConnect();
 		
-		$req = $db->prepare("SELECT m.mid, format, title, author, quantity, kind, type FROM media AS m, proposition AS p WHERE p.mid = m.mid AND p.validate = true AND title LIKE ? OR author LIKE ?");
+		// Get proposition id
+		$req = $db->prepare("SELECT pid FROM media WHERE title LIKE ? OR author LIKE ?");
+		$req->execute(array("%".$keyword."%", "%".$keyword."%"));	
+		$pid = $req->fetch()['pid'];
+			
+		if(isset($pid)) {
+			$req = $db->prepare("SELECT m.mid, format, title, author, quantity, kind, type FROM media AS m, proposition AS p WHERE p.mid = m.mid AND p.validate = true AND title LIKE ? OR author LIKE ?");
+		} else {
+			$req = $db->prepare("SELECT mid, format, title, author, quantity, kind, type FROM media WHERE title LIKE ? OR author LIKE ?");
+		}
 		$req->execute(array("%".$keyword."%", "%".$keyword."%"));	
 		
 		return $req;	
@@ -17,7 +35,7 @@ class AnonymousCustomer {
 		$req = $db->prepare("SELECT mid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType type FROM media WHERE mid = ?");
 		$req->execute(array($mid));
 
-		return $req;
+		return $req->fetch();
 	}
 	
 	public function roomSearch() {
@@ -35,7 +53,7 @@ class AnonymousCustomer {
 		$req = $db->prepare("SELECT * FROM salle WHERE number = ?");
 		$req->execute(array($number));
 
-		return $req;
+		return $req->fetch();
 	}
 	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
@@ -163,7 +181,7 @@ class AnonymousCustomer {
 	
 	private function isValidLogin($email, $password, $cpassword) {
 		// Check valid email
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return 'invalidEmail';
 		}
 		
