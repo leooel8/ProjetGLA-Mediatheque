@@ -1,6 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class AnonymousCustomer {
-	
 	/*---------- Public functions ----------*/
 	public function mediaSearch($keyword) {
 		$db = dbConnect();
@@ -39,41 +39,42 @@ class AnonymousCustomer {
 	}
 	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
-		$res = isValidLogin($email, $password, $cpassword);
+		$res = $this->isValidLogin($email, $password, $cpassword);
 		
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+			echo $passwordHash;
 			
 			$db = dbConnect();
 			
 			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
 			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $passwordHash, $premium));
 			
-			return $req;
+			return true;
 		}
 		return $res;	
 	}
 	
 	public function createProviderAccount($compagnyName, $email, $password, $cpassword, $adress) {
-		$res = isValidLogin($email ,$password, $cpassword);
+		$res = $this->isValidLogin($email ,$password, $cpassword);
 		
 		if($res === true) {		
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 		
 			$db = dbConnect();
 			
-			$req = $db->prepare("INSERT INTO fournisseur (compagnyName, email, password, adress) VALUES(?, ?, ?, ?)");
+			$req = $db->prepare("INSERT INTO fournisseur (companyName, email, password, adress) VALUES(?, ?, ?, ?)");
 			$req->execute(array($compagnyName, $email, $passwordHash, $adress));
 			
-			return $req;
+			return true;
 		}
 		return $res;	
 	}
 	
 	public function Authenticate($email, $password) {
-		$res = isValidLogin($email, $password, $password);
+		$res = $this->isValidLogin($email, $password, $password);
 		
-		if($res === true) {			
+		if($res === true) {	
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 			
 			$db = dbConnect();
@@ -83,6 +84,7 @@ class AnonymousCustomer {
 			$req->execute(array($email, $passwordHash));	
 			
 			if($req->rowCount() > 0) {
+				
 				$_SESSION['status'] = 'customer';
 				return true;
 			}			
@@ -115,7 +117,7 @@ class AnonymousCustomer {
 			}
 			
 			return false;
-		} 
+		}
 		return $res;					
 	}
 	
@@ -126,7 +128,7 @@ class AnonymousCustomer {
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
-			forgottenPasswordMail($email);
+			$this->forgottenPasswordMail($email);
 		}		
 	}
 	
@@ -159,18 +161,18 @@ class AnonymousCustomer {
 	
 	private function isValidLogin($email, $password, $cpassword) {
 		// Check valid email
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return 'invalidEmail';
 		}
 		
 		// Check email taken
 		$db = dbConnect();
-		$req = $db->prepare('SELECT null FROM client AS c, fournisseur AS f, gestionnaire AS g, administrateur AS a WHERE c.email = ? OR f.email = ? OR g.email = ? OR a.email = ?');	
-		$req->execute(array($email));
-
+		$req = $db->prepare('SELECT null FROM client WHERE email = ? UNION SELECT null FROM fournisseur WHERE email = ? UNION SELECT null FROM gestionnaire WHERE email = ? UNION SELECT null FROM administrateur WHERE email = ?');	
+		$req->execute(array($email, $email, $email, $email));
+		
 		if($req->rowCount() > 0) {
 			return 'emailTaken';
-		}		
+		}	
 		
 		// Check password difference
 		if($password !== $cpassword) {
@@ -188,7 +190,7 @@ class AnonymousCustomer {
 		
 		// Check password valid character
 		$pwdValid = array('-', '_', '!');
-		if(!ctype_alnum(str_replace($pwdValid, '', $password))) {
+		if (!ctype_alnum(str_replace($pwdValid, '', $password))) {
 			return 'invalidPassword';
 		}
 		
