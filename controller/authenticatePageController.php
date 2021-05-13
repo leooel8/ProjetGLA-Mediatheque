@@ -8,6 +8,7 @@ function authenticate($email, $password) {
     $res = $anonymousCustomer->Authenticate($email, $password);
     if ($res===true) {
         header('Location: index.php');
+        exit;
     } 
     else {
         echo "<p>Identifiant ou mot de passe incorrect</p>";
