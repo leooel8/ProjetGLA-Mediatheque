@@ -3,13 +3,17 @@ if(!isset($_SESSION)){
 	session_start();
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status'] = 'customer';
+$_SESSION['status'] = 'anonymous';
+
 
 require("model/db.php");
 require("controller/mainPageController.php");
+require_once("controller/authenticatePageController.php");
+require_once("controller/loginCreationPageController.php");
 require("controller/mediaPageController.php");
 require("controller/roomPageController.php");
 require_once("model/class/AnonymousCustomer.php");
+
 require_once("model/class/Customer.php");
 require_once("model/class/Provider.php");
 require_once("model/class/Manager.php");
@@ -19,14 +23,29 @@ use PHPMailer\PHPMailer\PHPMailer;
 require 'model/PHPMailer/src/PHPMailer.php';
 require 'model/PHPMailer/src/SMTP.php';
 
+
+
 try {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      echo "<p> Post </p>";
-    } else if(count($_GET) > 0) {
-        if(isset($_GET['action'])) {
-			// Login
-			if($_GET['action'] === 'login') {
-				echo 'login';
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
+			authenticate($_POST['log_email'], $_POST['log_password']);
+		}
+		if (isset($_POST['type_form'])) {
+			if ($_POST['type_form'] === 'customer') {
+				createCustomer($_POST['logCreate_last_name'], $_POST['logCreate_first_name'], $_POST['logCreate_email'], $_POST['genre'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['account_type'], $_POST['logCreate_adress']);
+			} else {
+				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
+			}
+		}
+	} else if(count($_GET) > 0) {
+		if (isset($_GET['action'])) {
+			//Login
+			if ($_GET['action'] === 'login') {
+				loginPage();
+			}
+			//Create account
+			else if ($_GET['action'] === 'create_account') {
+				loginCreationPage();
 			}
 			// Media page
 			else if($_GET['action'] === 'mediaPage' && isset($_GET['id'])) {
@@ -40,12 +59,13 @@ try {
 			else if($_GET['action'] === 'roomPage' && isset($_GET['number'])) {
 				roomPage($_GET['number']);
 			}
-		} else if(isset($_GET['search']) && trim($_GET['search']) != "") {
+		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
-    } else {
+	} else {
 		mainPage();
 	}		
 } catch(Exception $e) {
 	$errorMessage = $e->getMessage();
 }
+
