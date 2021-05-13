@@ -1,8 +1,6 @@
 CREATE TABLE fournisseur(
-fid int PRIMARY KEY AUTO_INCREMENT,
+fid int NOT NULL,
 companyName varchar(32)  NOT NULL,
-email varchar(46) NOT NULL UNIQUE,
-password varchar(32) NOT NULL,
-adress varchar(128) NOT NULL,
-validate boolean default false NOT NULL
+validate boolean default false NOT NULL,
+FOREIGN KEY (fid) REFERENCES account(id)
 );

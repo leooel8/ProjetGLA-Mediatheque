@@ -14,18 +14,12 @@
 			require("view/headerView.php");
 		?>
 						
-		<main>
-			<h2 id='searchTitle'> Resultat pour la recherche: <?= $keyword ?> </h2>
-		
-			<div id='list'>
-				<?php
-					while($media = $medias->fetch()) {
-						echo "<a href='index.php?action=mediaPage&id=$media[mid]'> <div class='media'>";
-							print_r($media);
-						echo "</div> </a>";
-					}
-				?>
-			<div>
+		<main>		
+			<?php			
+				echo "<div>";
+					print_r($media);
+				echo "</div>";
+			?>		
 		</main>
 	</body>
 	
