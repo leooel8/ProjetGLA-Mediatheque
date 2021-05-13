@@ -3,7 +3,7 @@ if(!isset($_SESSION)){
 	session_start();
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status'] = 'customer';
+$_SESSION['status'] = 'anonymous';
 
 
 require("model/db.php");
@@ -60,9 +60,8 @@ try {
 				roomPage($_GET['number']);
 			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
-			search($_GET['search']);
+			searchMedia($_GET['search']);
 		}
-    
 	} else {
 		mainPage();
 	}		

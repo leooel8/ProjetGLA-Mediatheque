@@ -61,22 +61,21 @@ class AnonymousCustomer {
 		
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
-			echo $passwordHash;
 			
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
-			$id = $req->fetch()['id'];
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
 			
-<<<<<<< HEAD
-=======
 			// Add client
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
 			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
 			
->>>>>>> e11273ec125b96d67e3d6bad7d8550f471a53d11
 			return true;
 		}
 		return $res;	
@@ -90,21 +89,18 @@ class AnonymousCustomer {
 		
 			$db = dbConnect();
 			
-<<<<<<< HEAD
-			$req = $db->prepare("INSERT INTO fournisseur (companyName, email, password, adress) VALUES(?, ?, ?, ?)");
-			$req->execute(array($compagnyName, $email, $passwordHash, $adress));
-			
-=======
 			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
-			$id = $req->fetch()['id'];
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
 			
 			// Add provider
 			$req = $db->prepare("INSERT INTO fournisseur (fid, companyName) VALUES(?, ?)");
 			$req->execute(array($id, $compagnyName));
 			
->>>>>>> e11273ec125b96d67e3d6bad7d8550f471a53d11
 			return true;
 		}
 		return $res;	
@@ -113,44 +109,6 @@ class AnonymousCustomer {
 	public function Authenticate($email, $password) {
 		$res = $this->isValidLogin($email, $password, $password);
 		
-<<<<<<< HEAD
-		if($res === true) {	
-			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
-			
-			$db = dbConnect();
-			
-			// Is client
-			$req = $db->prepare('SELECT null FROM client WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
-			
-			if($req->rowCount() > 0) {
-				
-				$_SESSION['status'] = 'customer';
-				return true;
-			}			
-			
-			// Is provider
-			$req = $db->prepare('SELECT null FROM fournisseur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
-			
-			if($req->rowCount() > 0) {
-				$_SESSION['status'] = 'provider';
-				return true;
-			}	
-			
-			// Is manager
-			$req = $db->prepare('SELECT null FROM gestionnaire WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
-			
-			if($req->rowCount() > 0) {
-				$_SESSION['status'] = 'manager';
-				return true;
-			}	
-			
-			// Is administrator
-			$req = $db->prepare('SELECT null FROM administrateur WHERE email = ? and password = ?');	
-			$req->execute(array($email, $passwordHash));	
-=======
 		if($res === true) {					
 			$db = dbConnect();
 			
@@ -159,7 +117,6 @@ class AnonymousCustomer {
 			$req->execute(array($email));
 			$passwordHash = $req->fetch()['password'];
 			$id = $req->fetch()['id'];
->>>>>>> e11273ec125b96d67e3d6bad7d8550f471a53d11
 			
 			// Password match
 			if(password_verify($password, $passwordHash)) {	
@@ -254,14 +211,6 @@ class AnonymousCustomer {
 		}
 		
 		$db = dbConnect();
-<<<<<<< HEAD
-		$req = $db->prepare('SELECT null FROM client WHERE email = ? UNION SELECT null FROM fournisseur WHERE email = ? UNION SELECT null FROM gestionnaire WHERE email = ? UNION SELECT null FROM administrateur WHERE email = ?');	
-		$req->execute(array($email, $email, $email, $email));
-		
-		if($req->rowCount() > 0) {
-			return 'emailTaken';
-		}	
-=======
 		// Check banned
 		$req = $db->prepare('SELECT null FROM client, compte WHERE id = cid AND email = ? AND banned = true');	
 		$req->execute(array($email));
@@ -277,7 +226,6 @@ class AnonymousCustomer {
 		if($req->rowCount() > 0) {
 			return 'emailTaken';
 		}			
->>>>>>> e11273ec125b96d67e3d6bad7d8550f471a53d11
 		
 		// Check password difference
 		if($password !== $cpassword) {
