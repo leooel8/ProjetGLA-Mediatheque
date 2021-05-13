@@ -12,14 +12,25 @@ class Administrator {
 	public function addManager($lastName, $firstName, $email, $gender, $password, $adress) {
 		$db = dbConnect();
 		
-		$req = $db->prepare('INSERT INTO gestionnaire (lastName, firstName, email, gender, password, adress) VALUES(?, ?, ?, ?, ?, ?)');
-		$req->execute(Array($lastName, $firstName, $email, $gender, $password, $adress));
+		// Add account
+		$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+		$req->execute(array($email, $adress, $passwordHash));
+		$id = $req->fetch()['id'];
+		
+		// Add manager
+		$req = $db->prepare('INSERT INTO gestionnaire (lastName, firstName, gender) VALUES(?, ?, ?)');
+		$req->execute(Array($lastName, $firstName, $gender));
 	}
 	
 	public function deleteManager($gid) {
 		$db = dbConnect();
 		
+		// Delete manager
 		$req = $db->prepare('DELETE FROM gestionnaire WHERE gid = ?');
+		$req->execute(Array($gid));
+		
+		// Delete account
+		$req = $db->prepare('DELETE FROM account WHERE id = ?');
 		$req->execute(Array($gid));
 	}
 	

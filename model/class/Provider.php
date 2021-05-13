@@ -9,7 +9,6 @@ class Provider {
 		$req = $db->prepare('INSERT INTO media (fid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) OUTPUT Inserted.mid VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($fid, $format, $title, $author, $price, $quentity, $kind, $description, $releaseDate, $type, $mediaType));
 		$mid = $req->fetch()['mid'];
-		// 
 		
 		// Create proposition
 		$req = $db->prepare('INSERT INTO proposition (fid, mid, mediaType, deliveryDate) OUTPUT Inserted.pid VALUES(?, ?, ?, ?)');
@@ -27,7 +26,7 @@ class Provider {
 		$req = $db->prepare('SELECT mid, propositionDate, accepted, mediaType, received FROM proposition WHERE fid = ?');
 		$req->execute(array($fid));	
 		
-		return $req;	
+		return $req->fetch();	
 	}
 	
 }

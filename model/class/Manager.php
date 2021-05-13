@@ -51,8 +51,14 @@ class Manager {
 		if(accountPasswordMail($email, $password)) {			
 			$db = dbConnect();
 			
-			$req = $db->prepare("INSERT INTO client (lastName, firstName, email, gender, adress, password, premium) VALUES(?, ?, ?, ?, ?, ?, ?)");
-			$req->execute(array($lastName, $firstName, $email, $gender, $adress, $password, $premium));
+			// Add account
+			$req = $db->prepare("INSERT INTO account (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req->execute(array($email, $adress, $passwordHash));
+			$id = $req->fetch()['id'];
+			
+			// Add client
+			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
+			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
 		} else {
 			throw new Exception('Erreur lors de l\'envoie du mail');
 		}
