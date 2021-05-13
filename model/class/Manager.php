@@ -33,7 +33,7 @@ class Manager {
 	public function addMedia($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType) {
 		$db = dbConnect();
 
-		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) OUTPUT Inserted.mid VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType));
 	}
 	
@@ -52,9 +52,13 @@ class Manager {
 			$db = dbConnect();
 			
 			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 			$req->execute(array($email, $adress, $passwordHash));
-			$id = $req->fetch()['id'];
+			
+			// Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+            $req->execute();
+            $id = $req->fetch()[0];
 			
 			// Add client
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");

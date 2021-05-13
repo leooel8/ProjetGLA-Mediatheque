@@ -13,9 +13,13 @@ class Administrator {
 		$db = dbConnect();
 		
 		// Add account
-		$req = $db->prepare("INSERT INTO compte (email, adress, password) OUTPUT Inserted.id VALUES(?, ?, ?)");
+		$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
 		$req->execute(array($email, $adress, $passwordHash));
-		$id = $req->fetch()['id'];
+		
+		// Get id
+		$req = $db->prepare('SELECT LAST_INSERT_ID()');
+        $req->execute();
+        $id = $req->fetch()[0];
 		
 		// Add manager
 		$req = $db->prepare('INSERT INTO gestionnaire (lastName, firstName, gender) VALUES(?, ?, ?)');
