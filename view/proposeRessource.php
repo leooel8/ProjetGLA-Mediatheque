@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -10,19 +13,10 @@
 	<body>
 		<?php
 		/* logo de mediatheque */
-			require("headerView.php");
+			//require("headerView.php");
 		?>
 
 				<main>
-					<?php
-						session_start ();
-						if (isset($_SESSION['login']) && isset($_SESSION['pwd'])) {
-							echo 'Bonjour '.$_SESSION['id'];
-						}
-						else {
-							echo 'Vous n etes pas enregistres.';
-						}
-						?>
 
 				<!--
 						a mettre si l'utilisateur veut faire un recherche pour toruver si la ressource existe déjà
@@ -49,7 +43,8 @@
 			-->
 
 			<!-- à mettre les trucs action=le php pour enregistrer dans la base de données-->
-				<form>
+				<form action="../index.php" method="GET" id="ressource">
+
 					<input type="radio" name="typeR" value="Livre">
 					<label for="Livre">Livre</label>
 					<input type="radio" name="typeR" value="CDaudio">
@@ -59,35 +54,45 @@
 					<input type="radio" name="typeR" value="Periodique">
 					<label for="Periodique">Periodique</label>
 					<br>
+
 					<label for="fname">Titre:</label>
 					<input type="text" id="fname" name="fname">
 					<br>
+
 					<input type="radio" name="Dispo" value="Physique">
 					<label for="Physique">Physique</label>
-					<input type="radio" name="typeR" value="Dematerialise">
+					<input type="radio" name="Dispo" value="Dematerialise">
 					<label for="Dematerialise">Dématérialisé</label>
 					<br>
+
 					<label for="prix">Prix:</label>
 					<input type="text" id="prix" name="prix">
 					<br>
+
 					<label for="genre">Genre:</label>
 					<input type="text" id="genre" name="genre">
 					<br>
+
 					<label for="format">Format:</label>
 					<input type="text" id="format" name="format">
 					<br>
+
 					<label for="auteur">Auteur/Réalisateur:</label>
 					<input type="text" id="auteur" name="auteur">
 					<br>
-					<label for="fname">Date de livraison:</label>
-					<input type="text" id="fname" name="fname">
+
+					<label for="dliv">Date de livraison:</label>
+					<input type="text" id="dliv" name="dliv">
 					<br>
+
 					<label for="qantite">Qauntité(si physique):</label>
 					<input type="text" id="quantite" name="quantite">
 					<br>
+
 					<label for="description">Description:</label>
 					<input type="text" id="description" name="description">
 					<br>
+
 					<h2>Optionnels</h2>
 					<label for="editeur">Editeur:</label>
 					<input type="text" id="editeur" name="editeur">
