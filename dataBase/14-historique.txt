@@ -2,11 +2,12 @@ CREATE TABLE historique(
 hid int PRIMARY KEY AUTO_INCREMENT,
 cid int NOT NULL,
 mid int NOT NULL,
-borrowingDate date NOT NULL,
-renderingDate date NOT NULL,
+borrowingDate date default NOW() NOT NULL,
+renderingDate date,
 clientPremium boolean NOT NULL,
 extend boolean default false NOT NULL,
 lost boolean default false NOT NULL,
+virtual boolean NOT NULL,
 FOREIGN KEY (cid) REFERENCES client(cid),
 FOREIGN KEY (mid) REFERENCES media(mid)
 );
