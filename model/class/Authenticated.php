@@ -1,4 +1,5 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class Authenticated {	
 
 	/*---------- Public functions ----------*/
@@ -13,7 +14,7 @@ class Authenticated {
 		$req->execute(array($email));	
 		
 		if($req->rowCount() > 0) {		
-			changePasswordMail($email);
+			$this->changePasswordMail($email);
 		}	
 	}
 	
