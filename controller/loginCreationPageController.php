@@ -23,9 +23,7 @@ function createCustomer($last_name, $first_name, $email, $gender, $password, $cp
 
     $res = $anonymousCustomer->createClientAccount($last_name, $first_name, $email, $final_gender, $adress, $password, $cpassword, $final_premium);
     if ($res===true) {
-        echo "<p>Created successfully</p>";
-        echo "<p> First Name : " . $first_name . " | Last Name : " . $last_name . " | Email : " . $email . "</p>";
-        echo "<p> Gender : " . $final_gender . " | Password : " . $password . " | Subscribing type : " . $final_premium . " | Adress : " . $adress . "</p>";
+        authenticate($email, $password);
     } else {
         echo "Problem : " . $res;
     }
