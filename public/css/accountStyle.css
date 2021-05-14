@@ -1,0 +1,23 @@
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 60px;
+}
+
+#info p {
+	margin-top: 40px;
+}
+
+ #info input {
+	 margin-top: 10px;
+ }
+
+#editAccount, #validEdition {
+	margin-top: 50px;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}

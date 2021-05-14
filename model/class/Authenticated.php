@@ -23,7 +23,7 @@ class Authenticated {
 		$req = $db->prepare('SELECT lastName, firstName, email, gender, adress, premium, inOrder, subscribeDate FROM client, compte WHERE cid = ? AND id = cid');	
 		$req->execute(array($cid));
 		
-		return $req;
+		return $req->fetch();
 	}
 	
 	/*---------- Private functions ----------*/

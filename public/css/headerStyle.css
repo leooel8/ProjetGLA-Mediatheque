@@ -22,6 +22,11 @@ body > header > a {
 	text-decoration: none;
 }
 
+#myMedia, #myHistory {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
 #title {
 	flex: 2;
 }

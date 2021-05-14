@@ -169,5 +169,21 @@ class Customer {
 		$req = $db->prepare('UPDATE client SET premium = true WHERE cid = ?');	
 		$req->execute(array($cid));	
 	}
+	
+	public function editAccount($cid, $lastName, $firstName, $email, $gender, $adress) {
+		$db = dbConnect();
+		
+		$req = $db->prepare('UPDATE compte SET email = ?, adress = ? WHERE id = ?');	
+		if(!$req->execute(array($email, $adress, $cid))) {
+			return false;
+		}
+		
+		$req = $db->prepare('UPDATE client SET lastName = ?, firstName = ?, gender = ? WHERE cid = ?');	
+		if(!$req->execute(array($lastName, $firstName, $gender, $cid))) {
+			return false;
+		}
+		
+		return true;
+	}
 
 }
