@@ -72,21 +72,30 @@ try {
 			else if($_GET['action'] === 'roomPage' && isset($_GET['number'])) {
 				roomPage($_GET['number']);
 			}
-			// My media 
+			// My media
 			else if($_GET['action'] === 'myMedia') {
 				myMediaPage();
 			}
-			// My History 
+			// My History
 			else if($_GET['action'] === 'myHistory') {
 				myHistoryPage();
 			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
+      }
+      //search a client////////////////
+      else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+       searchClient($_GET['searchClient']);
+     }
+     //ban a client
+     else if (isset($_GET['banClient'])) {
+       //echo $_GET['banClient'];
+      banClient($_GET['banClient']);
+    }
 	} else {
 		mainPage();
-	}		
+	}
 } catch(Exception $e) {
 	$errorMessage = $e->getMessage();
 }
-
