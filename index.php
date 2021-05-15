@@ -22,6 +22,7 @@ require_once("controller/authenticatePageController.php");
 require_once("controller/loginCreationPageController.php");
 require_once("controller/mediaPageController.php");
 require_once("controller/roomPageController.php");
+require_once("controller/borrowMediaController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -42,6 +43,14 @@ try {
 		// Edit account
 		else if(isset($_POST['validEdition'])) {
 			editAccount(htmlspecialchars($_POST['lastName']), htmlspecialchars($_POST['firstName']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['gender']), htmlspecialchars($_POST['adress']));
+		}
+		// Borrow media
+		else if(isset($_POST['borrowMedia'])) {
+			borrowMediaPage($_POST['mid'], $_POST['title']);
+		}
+		// Valid barrow media
+		else if(isset($_POST['validBorrowMedia'])) {
+			borrowMedia($_POST['mid'], $_POST['sheduledDate']);
 		}
 	} else if(count($_GET) > 0) {
 		if (isset($_GET['action'])) {
@@ -79,7 +88,7 @@ try {
 			// My History
 			else if($_GET['action'] === 'myHistory') {
 				myHistoryPage();
-			}
+			} 
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
