@@ -16,10 +16,48 @@
 						
 		<main>		
 			<?php			
-				echo "<div>";
-					print_r($media);
-				echo "</div>";
-			?>		
+			echo "<div>";
+				print_r($media);
+			echo "</div>";
+			?>
+			<h2> <?=$media['title']?> </h2>
+
+			<div id='content'>
+				<img src='' alt='Image du produit'>
+				
+				<div id='labels'> 
+					<p> Auteur: <?=$media['author']?> </p>
+					<?php if($media['mediaType'] != 0) echo "<p>Quantité: $media[quantity] </p>"; ?>
+					<p> Genre: <?=$media['kind']?> </p>
+					<p> Date de sortie: <?=$media['releaseDate']?> </p>
+					<p> Type: <?=$media['type']?> </p>
+					<?php if($media['mediaType'] != 0) echo "<p>Prix: $media[price]€ </p>"; ?>
+				</div>
+				
+				<p id='description'> Description:  <?=$media['description']?> </p>
+				
+				<div id='actions'>
+					<button id='moreDetail' onClick=''> Plus de détail </button>
+					<?php
+					if($_SESSION['status'] == 'anonymous' || $_SESSION['status'] == 'customer') {
+					    if($media['mediaType'] != 0) {
+							echo "<form action='index.php' method='post'>";
+								echo "<input type='submit' name='borrowMedia' value='Emprunter le média'>";
+								echo "<input type='hidden' name='mid' value=$media[mid]>";
+								echo "<input type='hidden' name='title' value=$media[title]>";
+							echo "</form>";
+						}
+						if($media['mediaType'] != 1) echo "<button id='virtualBorrow' onclick=''> Emprunter virtuellement le média </button>";
+					}
+					?>
+					<?php if($_SESSION['status'] === 'Manager') echo "<a href='#'> Modifier le média </a>"; ?>
+				</div>
+			</div>
+
+			<?php
+			if(isset($error))
+				echo "<p class='error'><strong> $error </strong></p>";
+			?>			
 		</main>
 	</body>
 	

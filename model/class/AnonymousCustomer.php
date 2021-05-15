@@ -32,7 +32,7 @@ class AnonymousCustomer {
 	public function mediaPage($mid) {
 		$db = dbConnect();
 		
-		$req = $db->prepare("SELECT mid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType type FROM media WHERE mid = ?");
+		$req = $db->prepare("SELECT mid, format, title, author, price, quantity, kind, description, releaseDate, type, mediaType FROM media WHERE mid = ?");
 		$req->execute(array($mid));
 
 		return $req->fetch();

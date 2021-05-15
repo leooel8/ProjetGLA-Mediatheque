@@ -39,7 +39,19 @@
 				<a href=<?=$link2?>> <button id='action2' class='action'> <?=$action2?> </button> </a>
 				<?php 
 				if(isset($action3)) {
-					echo "<a href=$link3> <button id='action3' class='action'> <?=$action3?> </button> </a>";
+					echo "<a href=$link3> <button id='action3' class='action'> $action3 </button> </a>";
+				}
+				if(isset($action4)) {
+					echo "<a href=$link4> <button id='action4' class='action'> $action4 </button> </a>";
+				}
+				if(isset($action5)) {
+					echo "<a href=$link5> <button id='action5' class='action'> $action5 </button> </a>";
+				}
+				if(isset($action6)) {
+					echo "<a href=$link6> <button id='action6' class='action'> $action6 </button> </a>";
+				}
+				if(isset($action7)) {
+					echo "<a href=$link7> <button id='action7' class='action'> $action7 </button> </a>";
 				}
 				?>
 			</div>

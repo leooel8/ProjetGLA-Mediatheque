@@ -9,7 +9,7 @@ class Manager {
 		$req->execute(array($cid));
 	}
 	
-	public function validproviderAccount($fid) {
+	public function validProviderAccount($fid) {
 		$db = dbConnect();
 		
 		$req = $db->prepare('UPDATE fournisseur SET validate = true WHERE fid = ?');
