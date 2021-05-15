@@ -83,16 +83,14 @@ try {
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
-      }
-      //search a client////////////////
-      else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
-       searchClient($_GET['searchClient']);
-     }
-     //ban a client
-     else if (isset($_GET['banClient'])) {
-       //echo $_GET['banClient'];
-      banClient($_GET['banClient']);
-    }
+		// Search a customer
+		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+			searchClient($_GET['searchClient']);
+		}
+		// Ban a customer
+		else if (isset($_GET['banClient'])) {
+			banClient($_GET['banClient']);
+		}
 	} else {
 		mainPage();
 	}
