@@ -3,6 +3,7 @@
 function loginPage() {
     require("view/authenticateView.php");
 }
+
 function authenticate($email, $password) {
     $anonymousCustomer = new AnonymousCustomer();
     $res = $anonymousCustomer->Authenticate($email, $password);

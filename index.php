@@ -6,11 +6,13 @@ if(!isset($_SESSION)){
 if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
+$_SESSION['status'] = 'manager';
 
 require("model/db.php");
 require("controller/mainPageController.php");
 require_once("controller/authenticatePageController.php");
 require_once("controller/loginCreationPageController.php");
+require_once("controller/mediaCreationPageController.php");
 require("controller/mediaPageController.php");
 require("controller/roomPageController.php");
 require_once("model/class/AnonymousCustomer.php");
@@ -37,6 +39,9 @@ try {
 				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
 			}
 		}
+		if (isset($_POST['media_format'])) {
+			createMedia();
+		}
 	} else if(count($_GET) > 0) {
 		if (isset($_GET['action'])) {
 			//Login
@@ -58,6 +63,10 @@ try {
 			// Room page
 			else if($_GET['action'] === 'roomPage' && isset($_GET['number'])) {
 				roomPage($_GET['number']);
+			}
+			// Media creation
+			else if ($_GET['action'] === 'mediaCreation') {
+				mediaCreationPage();
 			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);

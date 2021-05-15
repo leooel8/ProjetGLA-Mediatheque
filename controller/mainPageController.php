@@ -29,7 +29,7 @@ function mainPage() {
 			$action3 = 'Créer un média';
 			$link1 ='#';
 			$link2 ='#';
-			$link3 ='#';
+			$link3 ='index.php?action=mediaCreation';
 			break;
 		case 'administrator':
 			$action1 = 'Gérer les comptes';
