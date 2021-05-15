@@ -6,6 +6,7 @@ if(!isset($_SESSION)){
 if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
+$_SESSION['status'] = 'manager';
 
 // Model
 require("model/db.php");
