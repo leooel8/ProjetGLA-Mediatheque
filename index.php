@@ -6,7 +6,6 @@ if(!isset($_SESSION)){
 if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status'] = 'manager';
 
 require("model/db.php");
 require("controller/mainPageController.php");
