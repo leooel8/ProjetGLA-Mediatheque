@@ -40,13 +40,24 @@
 					<button id='moreDetail' onClick=''> Plus de détail </button>
 					<?php
 					if($_SESSION['status'] == 'anonymous' || $_SESSION['status'] == 'customer') {
-						echo "<a href='#'> Emprunter le média </a>";
-						echo "<a href='#'> Emprunter virtuellement le média </a>";
+					    if($media['mediaType'] != 0) {
+							echo "<form action='index.php' method='post'>";
+								echo "<input type='submit' name='borrowMedia' value='Emprunter le média'>";
+								echo "<input type='hidden' name='mid' value=$media[mid]>";
+								echo "<input type='hidden' name='title' value=$media[title]>";
+							echo "</form>";
+						}
+						if($media['mediaType'] != 1) echo "<button id='virtualBorrow' onclick=''> Emprunter virtuellement le média </button>";
 					}
 					?>
 					<?php if($_SESSION['status'] === 'Manager') echo "<a href='#'> Modifier le média </a>"; ?>
 				</div>
-			</div>			
+			</div>
+
+			<?php
+			if(isset($error))
+				echo "<p class='error'><strong> $error </strong></p>";
+			?>			
 		</main>
 	</body>
 	
