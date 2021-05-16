@@ -9,3 +9,7 @@ function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $auth
   $p->proposeMedia($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type);
   //var_dump($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type);
 }
+
+function myPropositionPage() {
+	require("view/myPropositionView.php");
+}

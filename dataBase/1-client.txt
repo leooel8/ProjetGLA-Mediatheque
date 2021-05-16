@@ -8,5 +8,5 @@ inOrder boolean default false NOT NULL,
 subscribeDate datetime default NOW() NOT NULL,
 validate boolean default false NOT NULL,
 banned boolean default false NOT NULL,
-FOREIGN KEY (cid) REFERENCES account(id)
+FOREIGN KEY (cid) REFERENCES compte(id)
 );

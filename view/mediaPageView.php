@@ -6,7 +6,6 @@
 		<title> Bienvenue dans votre médiathèque </title>
 		<link href='public/css/mainStyle.css' rel='stylesheet'/>
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
-		<link href='public/css/mediaListStyle.css' rel='stylesheet'/>
 	</head>
 
 	<body>
@@ -14,12 +13,7 @@
 			require("view/headerView.php");
 		?>
 						
-		<main>		
-			<?php			
-			echo "<div>";
-				print_r($media);
-			echo "</div>";
-			?>
+		<main>				
 			<h2> <?=$media['title']?> </h2>
 
 			<div id='content'>
@@ -40,7 +34,7 @@
 					<button id='moreDetail' onClick=''> Plus de détail </button>
 					<?php
 					if($_SESSION['status'] == 'anonymous' || $_SESSION['status'] == 'customer') {
-					    if($media['mediaType'] != 0) {
+						if($media['mediaType'] != 0) {
 							echo "<form action='index.php' method='post'>";
 								echo "<input type='submit' name='borrowMedia' value='Emprunter le média'>";
 								echo "<input type='hidden' name='mid' value=$media[mid]>";
@@ -49,8 +43,9 @@
 						}
 						if($media['mediaType'] != 1) echo "<button id='virtualBorrow' onclick=''> Emprunter virtuellement le média </button>";
 					}
+					
+					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]'> Modifier le média </a>"; 
 					?>
-					<?php if($_SESSION['status'] === 'Manager') echo "<a href='#'> Modifier le média </a>"; ?>
 				</div>
 			</div>
 
