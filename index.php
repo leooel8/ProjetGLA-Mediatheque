@@ -22,6 +22,9 @@ require_once("controller/authenticatePageController.php");
 require_once("controller/loginCreationPageController.php");
 require_once("controller/mediaPageController.php");
 require_once("controller/roomPageController.php");
+require_once("controller/manageClientController.php");
+require_once("controller/manageGestionaireController.php");
+
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -72,21 +75,34 @@ try {
 			else if($_GET['action'] === 'roomPage' && isset($_GET['number'])) {
 				roomPage($_GET['number']);
 			}
-			// My media 
+			// My media
 			else if($_GET['action'] === 'myMedia') {
 				myMediaPage();
 			}
-			// My History 
+			// My History
 			else if($_GET['action'] === 'myHistory') {
 				myHistoryPage();
 			}
+      // My History
+      else if($_GET['action'] === 'gestionnaireListView') {
+        getListGestionnaire();
+      }
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
+		// Search a customer
+		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+			searchClient($_GET['searchClient']);
+		}
+		// Ban a customer
+		else if (isset($_GET['banClient'])) {
+			banClient($_GET['banClient']);
+		}
+
+
 	} else {
 		mainPage();
-	}		
+	}
 } catch(Exception $e) {
 	$errorMessage = $e->getMessage();
 }
-
