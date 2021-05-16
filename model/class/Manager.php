@@ -33,8 +33,31 @@ class Manager {
 	public function addMedia($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType) {
 		$db = dbConnect();
 
+		//Insertion dans la table média générale
 		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType));
+
+		$req = $db->prepare('SELECT LAST_INSERT_ID()');
+		$req->execute();
+		$id = $req->fetch()[0];
+
+		//Insertion dans la table spécialisée pour le format
+		if ($format === "livre") {
+			$req = $db->prepare('INSERT INTO livre (mid, editor, edition) VALUES (?, ?, ?)');
+			$req->execute(array($id, $_POST['media_editor'], $_POST['media_edition']));
+		}
+		else if ($format === "film") {
+			$req = $db->prepare('INSERT INTO film (mid, productor, duration) VALUES (?, ?, ?)');
+			$req->execute(array($id, $_POST['media_productor'], $_POST['media_duration']));
+		}
+		else if ($format === "audio") {
+			$req = $db->prepare('INSERT INTO audio (mid, editor, edition, duration) VALUES (?, ?, ?, ?)');
+			$req->execute(array($id, $_POST['media_editor'], $_POST['media_edition'], $_POST['media_duration']));
+		}
+		else if ($format === "periodique") {
+			$req = $db->prepare('INSERT INTO pariodique (mid, editor) VALUES (?, ?)');
+			$req->execute(array($id, $_POST['media_editor']));
+		}
 	}
 	
 	public function editMedia($mid, $format, $title, $author, $quantity, $kind, $releaseDate, $type, $price, $description, $mediaType, $edition, $editor, $productor, $duration) {

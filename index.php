@@ -6,8 +6,6 @@ if(!isset($_SESSION)){
 if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status']= 'manager';
-$_SESSION['id'] = 1;
 
 // Model
 require("model/db.php");
@@ -23,6 +21,7 @@ require_once("controller/mainPageController.php");
 require_once("controller/authenticatePageController.php");
 require_once("controller/loginCreationPageController.php");
 require_once("controller/mediaPageController.php");
+require_once("controller/mediaCreationPageController.php");
 require_once("controller/roomPageController.php");
 require_once("controller/borrowMediaController.php");
 // PHPMailer
@@ -35,6 +34,7 @@ try {
 		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
 			authenticate($_POST['log_email'], $_POST['log_password']);
 		}
+		// Create account
 		else if (isset($_POST['type_form'])) {
 			if ($_POST['type_form'] === 'customer') {
 				createCustomer($_POST['logCreate_last_name'], $_POST['logCreate_first_name'], $_POST['logCreate_email'], $_POST['genre'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['account_type'], $_POST['logCreate_adress']);
@@ -67,6 +67,10 @@ try {
 
 			editMedia($_POST['mid'], $_POST['format'], $_POST['title'], $_POST['author'], $_POST['quantity'], $_POST['kind'], $_POST['releaseDate'], $_POST['type'], $_POST['price'], $_POST['description'], $_POST['mediaType'], $_POST['edition'], $_POST['editor'], $_POST['productor'], $_POST['duration']);
 		}
+		// Create media
+		else if (isset($_POST['media_format'])) {
+			createMedia();
+		}
 	} else if(count($_GET) > 0) {
 		if (isset($_GET['action'])) {
 			// Login
@@ -95,6 +99,10 @@ try {
 			// Room page
 			else if($_GET['action'] === 'roomPage' && isset($_GET['number'])) {
 				roomPage($_GET['number']);
+			}
+			// Media creation
+			else if ($_GET['action'] === 'mediaCreation') {
+				mediaCreationPage();
 			}
 			// My media
 			else if($_GET['action'] === 'myMedia') {

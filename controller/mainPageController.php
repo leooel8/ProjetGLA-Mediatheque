@@ -36,7 +36,7 @@ function mainPage() {
 			$link3 = '#';
 			$link4 = '#';
 			$link5 = '#';
-			$link6 = '#';
+			$link6 = 'index.php?action=mediaCreation';
 			$link7 = '#';
 			break;
 		case 'administrator':
