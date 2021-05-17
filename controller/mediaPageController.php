@@ -1,7 +1,9 @@
 <?php
 function mediaPage($mid) {
 	$ac = new AnonymousCustomer;
-	$media = $ac->mediaPage($mid);	
+	$media = $ac->mediaPage($mid);
+
+	$imagePath = 'public/images/media/'.$media['mid'].'.jpg';
 	
 	require("view/mediaPageView.php");
 }

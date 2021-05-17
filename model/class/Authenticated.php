@@ -18,11 +18,24 @@ class Authenticated {
 		}
 	}
 
-	public function myAccount($cid) {
+	public function myAccount($id) {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT lastName, firstName, email, gender, adress, premium, inOrder, subscribeDate FROM client, compte WHERE cid = ? AND id = cid');
-		$req->execute(array($cid));
+		switch($_SESSION['status']) {
+			case 'customer':
+				$req = $db->prepare('SELECT lastName, firstName, email, gender, adress, premium, inOrder, subscribeDate FROM client, compte WHERE cid = ? AND id = cid');
+				break;
+			case 'provider':
+				$req = $db->prepare('SELECT companyName, email, adress FROM fournisseur, compte WHERE fid = ? AND id = fid');
+				break;
+			case 'manager':
+				$req = $db->prepare('SELECT lastName, firstName, email, gender, adress FROM gestionnaire, compte WHERE gid = ? AND id = gid');
+				break;
+			case 'administrator':
+				$req = $db->prepare('SELECT lastName, firstName, email, gender, adress FROM administrateur, compte WHERE aid = ? AND id = aid');
+				break;
+		}		
+		$req->execute(array($id));
 
 		return $req->fetch();
 	}

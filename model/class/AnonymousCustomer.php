@@ -5,10 +5,10 @@ class AnonymousCustomer {
 	public function lastUpdate() {
 		$db = dbConnect();
 		
-		$req = $db->prepare("SELECT mid FROM media ORDER BY mid DESC LIMIT 3");
+		$req = $db->prepare("SELECT mid, title FROM media ORDER BY mid DESC LIMIT 3");
 		$req->execute();	
 		
-		return $req->fetch();
+		return $req;
 	}
 	
 	public function mediaSearch($keyword) {

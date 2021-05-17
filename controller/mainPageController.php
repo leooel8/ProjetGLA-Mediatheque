@@ -4,6 +4,19 @@ function mainPage() {
 	$ac = new AnonymousCustomer;
 	$medias = $ac->lastUpdate();
 	
+	if(isset($medias)) {
+		$i = 0;
+		while($media = $medias->fetch()) {
+			$imagePath[$i] = 'public/images/media/'.$media['mid'].'.jpg';
+			$title[$i] = $media['title'];
+			$i++;
+		}
+	} else {
+		$medias[0] = null;
+		$medias[1] = null;
+		$medias[2] = null;
+	}
+	
 	switch ($_SESSION['status']) {
 		case 'anonymous':
 			$action1 = 'Créer un compte';
