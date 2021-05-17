@@ -10,9 +10,6 @@
 	</head>
 
 	<body>
-		<?php
-			require("view/headerView.php");
-		?>
 
 		<main>
 			<h2 id='searchClient'> Resultat pour la recherche du client: <?= $keyword ?> </h2>

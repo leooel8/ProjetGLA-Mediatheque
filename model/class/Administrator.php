@@ -14,7 +14,7 @@ class Administrator {
 
 		// Add account
 		$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
-		$req->execute(array($email, $adress, $passwordHash));
+		$req->execute(array($email, $adress, $password));
 
 		// Get id
 		$req = $db->prepare('SELECT LAST_INSERT_ID()');

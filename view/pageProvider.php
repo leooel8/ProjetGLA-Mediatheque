@@ -13,7 +13,7 @@
 	<body>
 		<?php
 		/* logo de mediatheque */
-			require("headerView.php");
+			//require("headerView.php");
 			//require_once("index.php");
 		?>
 

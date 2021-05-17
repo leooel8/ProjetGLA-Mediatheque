@@ -24,8 +24,7 @@
 						}
 						?>
             <br>
-            <form action="proposeRessource.php">
-   					<input type="submit" value="Proposer une ressource">
+            
    				</form>
 
 

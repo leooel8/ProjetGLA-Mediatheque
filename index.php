@@ -26,14 +26,13 @@ require_once("controller/mediaCreationPageController.php");
 require_once("controller/roomPageController.php");
 require_once("controller/manageClientController.php");
 require_once("controller/manageGestionaireController.php");
-
+require_once("controller/authenticatePageController.php");
 require_once("controller/borrowMediaController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
 require_once 'model/PHPMailer/src/SMTP.php';
 
-try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
 			authenticate($_POST['log_email'], $_POST['log_password']);
@@ -103,12 +102,16 @@ try {
 			else if($_GET['action'] === 'myHistory') {
 				myHistoryPage();
 			}
-			}
-      // My History
       else if($_GET['action'] === 'gestionnaireListView') {
         getListGestionnaire();
       }
-		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
+		}
+
+    else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+      searchClient($_GET['searchClient']);
+    }
+
+     else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
 		// Search a customer
@@ -118,12 +121,22 @@ try {
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
 			banClient($_GET['banClient']);
+    }
+    //ajouter un gestionnaire
+    else if (isset($_GET['type_form'])) {
+      //$lastName, $firstName, $email, $gender, $password, $adress
+      addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
+    }
+    ///Voir la liste des gestionnaires
+
+    else if (isset($_GET['reviewGestionnaire'])) {
+      echo "i get you";
+      getListGestionnaire();
 		}
 
 
-	} else {
+
+     else {
 		mainPage();
 	}
-} catch(Exception $e) {
-	$errorMessage = $e->getMessage();
 }
