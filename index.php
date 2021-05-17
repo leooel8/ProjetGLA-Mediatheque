@@ -32,6 +32,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
 require_once 'model/PHPMailer/src/SMTP.php';
 
+try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
 			authenticate($_POST['log_email'], $_POST['log_password']);
@@ -161,4 +162,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
      else {
 		mainPage();
 	}
+} catch(Exception $e) {
+	$errorMessage = $e->getMessage();
 }
