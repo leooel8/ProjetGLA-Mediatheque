@@ -6,7 +6,6 @@ if(!isset($_SESSION)){
 if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
-$_SESSION['status'] = 'manager';
 
 // Model
 require("model/db.php");
@@ -51,16 +50,29 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Borrow media
 		else if(isset($_POST['borrowMedia'])) {
-			borrowMediaPage($_POST['mid'], $_POST['title']);
+			if($_SESSION['status'] === 'anonymous') {
+				loginPage();
+			} else {
+				borrowMediaPage($_POST['mid'], $_POST['title']);
+			}
 		}
 		// Valid barrow media
 		else if(isset($_POST['validBorrowMedia'])) {
 			borrowMedia($_POST['mid'], $_POST['sheduledDate']);
 		}
+		// Edit media
+		else if(isset($_POST['editMedia'])) {
+			if(!isset($_POST['edition'])) $_POST['edition'] = null;
+			if(!isset($_POST['editor'])) $_POST['editor'] = null;
+			if(!isset($_POST['duration'])) $_POST['duration'] = null;
+			if(!isset($_POST['productor'])) $_POST['productor'] = null;
+
+			editMedia($_POST['mid'], $_POST['format'], $_POST['title'], $_POST['author'], $_POST['quantity'], $_POST['kind'], $_POST['releaseDate'], $_POST['type'], $_POST['price'], $_POST['description'], $_POST['mediaType'], $_POST['edition'], $_POST['editor'], $_POST['productor'], $_POST['duration']);
+		}
+		// Create media
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-
 	} else if(count($_GET) > 0) {
 		if (isset($_GET['action'])) {
 			// Login
@@ -98,9 +110,19 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'myMedia') {
 				myMediaPage();
 			}
-			// My History
+			// My history
 			else if($_GET['action'] === 'myHistory') {
 				myHistoryPage();
+			}
+			// My proposition
+			else if($_GET['action'] === 'myProposition') {
+				myPropositionPage();
+			}
+			// Edit media
+			else if($_GET['action'] === 'editMedia') {
+				editMediaPage($_GET['mid']);
+			}
+		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			}
       else if($_GET['action'] === 'gestionnaireListView') {
         getListGestionnaire();

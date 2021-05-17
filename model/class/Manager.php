@@ -60,11 +60,30 @@ class Manager {
 		}
 	}
 	
-	public function editMedia($mid) {
+	public function editMedia($mid, $format, $title, $author, $quantity, $kind, $releaseDate, $type, $price, $description, $mediaType, $edition, $editor, $productor, $duration) {
 		$db = dbConnect();
 
 		$req = $db->prepare('UPDATE media SET title = ?, author = ?, price = ?, quantity = ?, kind = ?, description = ?, releaseDate = ?, type = ?, mediaType = ? WHERE mid = ?');
 		$req->execute(array($title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType, $mid));
+		
+		switch($format) {
+			case 'livre':
+				$req = $db->prepare('UPDATE livre SET editor = ?, edition = ? WHERE mid = ?');
+				$req->execute(array($editor, $edition, $mid));
+				break;
+			case 'audio':
+				$req = $db->prepare('UPDATE audio SET editor = ?, edition = ?, duration = ? WHERE mid = ?');
+				$req->execute(array($editor, $edition, $duration, $mid));
+				break;
+			case 'film':
+				$req = $db->prepare('UPDATE film SET productor = ?, duration = ? WHERE mid = ?');
+				$req->execute(array($productor, $duration, $mid));
+				break;
+			case 'periodique':
+				$req = $db->prepare('UPDATE periodique SET editor = ? WHERE mid = ?');
+				$req->execute(array($editor, $mid));
+				break;
+		}
 	}
 	
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {

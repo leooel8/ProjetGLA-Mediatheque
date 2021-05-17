@@ -21,7 +21,7 @@ function mainPage() {
 			$action1 = 'Proposer un média';
 			$action2 = 'Voir mes propositions';
 			$link1 ='#';
-			$link2 ='#';
+			$link2 ='index.php?action=myProposition';
 			break;
 		case 'manager':
 			$action1 = 'Gérer les réservations';

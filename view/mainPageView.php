@@ -19,7 +19,7 @@
 		<main>
 			<form action="index.php" method="get" id='searchBarWrapper'>
 				<div> </div>
-				<input type='text' name='search' id='searchBar'> </input>
+				<input type='search' name='search' id='searchBar'> </input>
 				<input type='submit' value='Rechercher' id='search'> </input>
 			</form>
 			
