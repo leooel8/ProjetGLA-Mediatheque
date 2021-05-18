@@ -74,8 +74,11 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-	} else if(count($_GET) > 0) {
-		if (isset($_GET['action'])) {
+	}
+  else if(count($_GET) > 0) {
+
+    ///début des cas GET action
+  	if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
 				loginPage();
@@ -141,21 +144,20 @@ require_once 'model/PHPMailer/src/SMTP.php';
       else if($_GET['action'] === 'gestionnaireListView') {
         getListGestionnaire();
       }
+      else if($_GET['action'] === 'renewSubscription') {
+       renewSubscriptionPage();
+     } else if($_GET['action'] === 'gestionnaireListView') {
+       getListGestionnaire();
+     }
 		}
       else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
       searchClient($_GET['searchClient']);
     }
 
-     else if (isset($_GET['search']) && trim($_GET['search']) != "") {
-			// Renew subscription
-			else if($_GET['action'] === 'renewSubscription') {
-				renewSubscriptionPage();
-			} else if($_GET['action'] === 'gestionnaireListView') {
-				getListGestionnaire();
-			}
-		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
+    else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
-		} else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+		}
+    else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
 			searchClient($_GET['searchClient']);
 		}
 		// Search a customer
@@ -168,9 +170,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			banClient($_GET['banClient']);
 		}
 
-
-
-     else {
 		//ajouter un gestionnaire
 		else if (isset($_GET['type_form'])) {
 			//$lastName, $firstName, $email, $gender, $password, $adress
