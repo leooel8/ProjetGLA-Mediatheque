@@ -18,12 +18,13 @@
 				<?php
         //boolean false si l'appel foire
         var_dump($clients);
+				var_dump($clients[0]);
 				?>
-        <?php echo htmlspecialchars($clients); ?>
+
         <form action="index.php" method="get" id='banClient'>
-          <a>Bannir:</a>
-        <!--  <input type='submit' value="<?php echo htmlspecialchars($clients); ?>" id='banClient'> </input>
-        -->  <input type='submit' value="<?php echo htmlspecialchars($clients); ?>" name='banClient' id='banClient'> </input>
+          <a>Bannir cid =</a>
+
+				<input type='submit' value=<?php echo $clients[0] ?> name='banClient' id='banClient'> </input>
         </form>
 			<div>
 		</main>

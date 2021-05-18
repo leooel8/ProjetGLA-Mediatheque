@@ -13,10 +13,10 @@
 		<?php
 			require("view/headerView.php");
 		?>
-						
+
 		<main>
 			<h2 id='searchTitle'> Mes propositions </h2>
-		
+
 			<div id='list'>
 				<?php
 					while($media = $medias->fetch()) {
@@ -28,6 +28,6 @@
 			<div>
 		</main>
 	</body>
-	
+
 </div>
 </html>
