@@ -17,7 +17,7 @@
 			<h2> <?=$media['title']?> </h2>
 
 			<div id='content'>
-				<img src='' alt='Image du produit'>
+				<img src=<?=$imagePath?> alt='Image du produit'>
 				
 				<div id='labels'> 
 					<p> Auteur: <?=$media['author']?> </p>

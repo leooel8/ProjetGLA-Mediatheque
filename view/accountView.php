@@ -16,13 +16,23 @@
 
 		<main>
 			<div id='info'>
-				<p> Nom: <?= htmlspecialchars($account['lastName']) ?> </p>
-				<p> Prénom: <?= htmlspecialchars($account['firstName']) ?> </p>
+				<?php
+					if($_SESSION['status'] === 'provider') {
+						echo "<p> Nom de la société: " . htmlspecialchars($account['compagnyName']) . "</p>";
+					} else {
+						echo "<p> Nom: " . htmlspecialchars($account['lastName']) . "</p>";
+						echo "<p> Prénom: " . htmlspecialchars($account['firstName']) . "</p>";
+					}
+				?>
 				<p> Email: <?= htmlspecialchars($account['email']) ?> </p>
-				<p> Genre: <?= htmlspecialchars($account['gender']) ?> </p>
 				<p> Adresse: <?= htmlspecialchars($account['adress']) ?> </p>
-				<p> Premium: <?= htmlspecialchars($account['premium']) ?> </p>
-				<p> Temps restant de l'abonnement: <?= $timeLeft ?> </p>
+				<?php
+				if($_SESSION['status'] === 'customer') {
+					echo "<p> Genre: " . htmlspecialchars($account['gender']) . "</p>";
+					echo "<p> Premium: " . htmlspecialchars($account['premium']) . "</p>";
+					echo "<p> Temps restant de l'abonnement: $timeLeft </p>";
+				}
+				?>
 			</div>
 
 			<a href='index.php?action=editAccount' id='editAccount'> Modifier mon compte </a>
@@ -30,6 +40,9 @@
 			<?php
 			if($account['premium'] == 0) {
 				echo "<a href='index.php?action=goPremium' id='goPremium'> Passer au premium </a>";
+			}
+			if(isset($renew)) {
+				echo "<a href='index.php?action=renewSubscription' id='renewSubscription'> Renouveller mon abonnement </a>";
 			}
 			?>
 

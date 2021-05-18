@@ -26,13 +26,16 @@
 			<div id='lastUpdate'>
 				<h2> Dernière Sortie : </h2>
 				<div>
-					<div> </div>
-					<div> </div>
-					<div> </div>
+					<?php
+					for($i=0; $i<count($imagePath); $i++) {
+						echo '<div>';
+						    echo "<h3> $title[$i] </h3>";
+							echo "<img src=$imagePath[$i] alt='Image du produit' class='image'>";
+						echo '</div>';
+					}
+					?>
 				</div>
 			</div>
-
-
 
 			<div id='actions'>
 				<a href=<?=$link1?>> <button id='action1' class='action'> <?=$action1?> </button> </a>

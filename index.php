@@ -147,7 +147,16 @@ require_once 'model/PHPMailer/src/SMTP.php';
     }
 
      else if (isset($_GET['search']) && trim($_GET['search']) != "") {
+			// Renew subscription
+			else if($_GET['action'] === 'renewSubscription') {
+				renewSubscriptionPage();
+			} else if($_GET['action'] === 'gestionnaireListView') {
+				getListGestionnaire();
+			}
+		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
+		} else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+			searchClient($_GET['searchClient']);
 		}
 		// Search a customer
 		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
@@ -157,22 +166,22 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
 			banClient($_GET['banClient']);
-    }
-    //ajouter un gestionnaire
-    else if (isset($_GET['type_form'])) {
-      //$lastName, $firstName, $email, $gender, $password, $adress
-      addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
-    }
-    ///Voir la liste des gestionnaires
-
-    else if (isset($_GET['reviewGestionnaire'])) {
-      echo "i get you";
-      getListGestionnaire();
 		}
-}
+
 
 
      else {
+		//ajouter un gestionnaire
+		else if (isset($_GET['type_form'])) {
+			//$lastName, $firstName, $email, $gender, $password, $adress
+			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
+		}
+		///Voir la liste des gestionnaires
+		else if (isset($_GET['reviewGestionnaire'])) {
+			echo "i get you";
+			getListGestionnaire();
+		}
+	} else {
 		mainPage();
 	}
 /*} catch(Exception $e) {

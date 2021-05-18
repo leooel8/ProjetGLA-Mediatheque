@@ -113,8 +113,8 @@ class Manager {
 	public function reservationList() {
 		$db = dbConnect();
 	
-		$req = $db->prepare('SELECT rmid, format, title, author, firstName, lastName reservationMedia FROM client AS c, reservationMedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
-		$req->execute(array());
+		$req = $db->prepare('SELECT rmid, format, title, author, firstName, lastName FROM client AS c, reservationMedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
+		$req->execute();
 		
 		return $req;
 	}
@@ -142,7 +142,7 @@ class Manager {
 		$premium = $req->fetch()['premium'];
 		
 		// Add history
-		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtual) VALUES(?, ?, ?, false)');
+		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtualMedia) VALUES(?, ?, ?, false)');
 		$req->execute(array($cid, $mid, $premium));
 	}
 	
