@@ -7,8 +7,6 @@ if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
 
-$_SESSION['status'] = 'manager';
-
 // Model
 require("model/db.php");
 require_once("model/class/AnonymousCustomer.php");
@@ -30,6 +28,7 @@ require_once("controller/manageGestionaireController.php");
 require_once("controller/authenticatePageController.php");
 require_once("controller/borrowMediaController.php");
 require_once("controller/manageReservationPageController.php");
+require_once("controller/managerCreatesCustomerPageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -47,6 +46,10 @@ try {
 			} else {
 				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
 			}
+		}
+		// Manager creates account
+		else if (isset($_POST['manager_login_creation'])) {
+			managerCreatesAccount($_POST['log_last_name'], $_POST['log_first_name'], $_POST['log_email'], $_POST['log_gender'], $_POST['log_adress'], $_POST['log_premium']);
 		}
 		// Edit account
 		else if(isset($_POST['validEdition'])) {
@@ -141,6 +144,9 @@ try {
 			}
 			else if($_GET['action'] === 'deleteReservation') {
 				deleteReservation($_GET['id_reservation']);
+			}
+			else if($_GET['action'] === 'managerCreatesCustomer') {
+				managerCreatesCustomerPage();
 			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);

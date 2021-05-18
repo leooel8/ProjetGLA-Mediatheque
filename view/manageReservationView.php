@@ -12,7 +12,6 @@
 </head>
 <body>
     <?php
-        echo "<p>Hi there</p>";
         
         while($current_reservation = $reservation_list->fetch()) {
             echo "<div class='list_reservation_div'>";

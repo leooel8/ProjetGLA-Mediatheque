@@ -48,7 +48,7 @@ function mainPage() {
 			$link2 = '#';
 			$link3 = '#';
 			$link4 = '#';
-			$link5 = '#';
+			$link5 = 'index.php?action=managerCreatesCustomer';
 			$link6 = 'index.php?action=mediaCreation';
 			$link7 = '#';
 			break;

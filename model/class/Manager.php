@@ -90,44 +90,54 @@ class Manager {
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
 		// Generate random password and send it by email
 		$password= bin2hex(openssl_random_pseudo_bytes(5));
-		
-		if($this->accountPasswordMail($email, $password)) {			
-			$db = dbConnect();
-			
-			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
-			$req->execute(array($email, $adress, $passwordHash));
-			
-			// Get id
-			$req = $db->prepare('SELECT LAST_INSERT_ID()');
-            $req->execute();
-            $id = $req->fetch()[0];
-			
-			// Add client
-			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
-			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
+
+		$anoCustomer = new AnonymousCustomer();
+		$success = $anoCustomer->createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $password, $premium);
+		if($success === true) {
+			return $this->accountPasswordMail($email, $password);
 		} else {
-			throw new Exception('Erreur lors de l\'envoie du mail');
+			return $success;
 		}
+		
+		// if($this->accountPasswordMail($email, $password)) {	
+					
+		// 	$db = dbConnect();
+			
+		// 	// Add account
+		// 	$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+		// 	$req->execute(array($email, $adress, $passwordHash));
+			
+		// 	// Get id
+		// 	$req = $db->prepare('SELECT LAST_INSERT_ID()');
+        //     $req->execute();
+        //     $id = $req->fetch()[0];
+			
+		// 	// Add client
+		// 	$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
+		// 	$req->execute(array($id, $lastName, $firstName, $gender, $premium));
+		// } else {
+		// 	throw new Exception('Erreur lors de l\'envoie du mail');
+		// }
 	}
 	
 	public function reservationList() {
 		$db = dbConnect();
 	
-		$req = $db->prepare('SELECT rmid, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
+		$req = $db->prepare('SELECT rmid, cancelled, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
 		$req->execute();
 		
 		return $req;
 	}
 	
 	public function validReservation($rmid) {
-		echo "hi there";
 		$db = dbConnect();
 		
 		// Get media id and customer id
-		$req = $db->prepare('SELECT mid, cid reservationmedia WHERE rmid = ?');
+		$req = $db->prepare('SELECT mid from reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
 		$mid = $req->fetch()['mid'];
+		$req = $db->prepare('SELECT cid from reservationmedia WHERE rmid = ?');
+		$req->execute(array($rmid));
 		$cid = $req->fetch()['cid'];
 		
 		// Decrease quantity
@@ -139,10 +149,9 @@ class Manager {
 		$req->execute(array($rmid));
 		
 		// Is client premium
-		$req = $db->prepare('SELECT premium client WHERE cid = ?');
+		$req = $db->prepare('SELECT premium from client WHERE cid = ?');
 		$req->execute(array($cid));
 		$premium = $req->fetch()['premium'];
-		
 		// Add history
 		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtualMedia) VALUES(?, ?, ?, false)');
 		$req->execute(array($cid, $mid, $premium));
@@ -193,7 +202,7 @@ class Manager {
 		$mail->addAddress($destination);
 
 		$mail->Subject = 'Mot de passe de votre compte pour votre médiathèque en ligne !';
-		$mail->Body = "<p>Voici votre mot de passe:</p> <strong>$password</strong> <p> pensé à le changer </p>";
+		$mail->Body = "<p>Voici votre mot de passe:</p> <strong>$password</strong> <p> ; pensez à le changer </p>";
 		$mail->IsHTML(true);
 
 		if($mail->send()) {
