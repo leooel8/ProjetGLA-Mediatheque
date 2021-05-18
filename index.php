@@ -80,7 +80,8 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-	} else if(count($_GET) > 0) {
+	} 
+	else if(count($_GET) > 0) {
 		if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
@@ -129,32 +130,32 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'editMedia') {
 				editMediaPage($_GET['mid']);
 			}
-      else if($_GET['action'] === 'ClientSee') {
+    else if($_GET['action'] === 'ClientSee') {
         echo "seeClient";
         require("view/reviewClient.php");
-      }
-      else if($_GET['action'] === 'GestionnaireSee') {
+    }
+    else if($_GET['action'] === 'GestionnaireSee') {
         echo "seeGes";
         require("view/reviewGestionnaire.php");
-      }
-      else if($_GET['action'] === 'deconnection') {
+    }
+    else if($_GET['action'] === 'deconnection') {
         //editMediaPage($_GET['mid']);
         //session_destroy();
         //session_start();
         $_SESSION['status']="anonymous";
         mainPage();
-      }
-      else if($_GET['action'] === 'gestionnaireListView') {
+    }
+    else if($_GET['action'] === 'gestionnaireListView') {
         getListGestionnaire();
-      }
+    }
 		}
-      else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
-      searchClient($_GET['searchClient']);
+    else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+      	searchClient($_GET['searchClient']);
     }
 
      else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			// Renew subscription
-			else if($_GET['action'] === 'renewSubscription') {
+			if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
 			} 
 			else if($_GET['action'] === 'gestionnaireListView') {
@@ -191,7 +192,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 
      else {
 		//ajouter un gestionnaire
-		else if (isset($_GET['type_form'])) {
+		if (isset($_GET['type_form'])) {
 			//$lastName, $firstName, $email, $gender, $password, $adress
 			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
 		}
