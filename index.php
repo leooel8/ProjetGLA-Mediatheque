@@ -80,9 +80,11 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-	} 
-	else if(count($_GET) > 0) {
-		if (isset($_GET['action'])) {
+	}
+  else if(count($_GET) > 0) {
+
+    ///début des cas GET action
+  	if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
 				loginPage();
@@ -130,53 +132,47 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'editMedia') {
 				editMediaPage($_GET['mid']);
 			}
-    else if($_GET['action'] === 'ClientSee') {
-        echo "seeClient";
-        require("view/reviewClient.php");
-    }
-    else if($_GET['action'] === 'GestionnaireSee') {
-        echo "seeGes";
-        require("view/reviewGestionnaire.php");
-    }
-    else if($_GET['action'] === 'deconnection') {
-        //editMediaPage($_GET['mid']);
-        //session_destroy();
-        //session_start();
-        $_SESSION['status']="anonymous";
-        mainPage();
-    }
-    else if($_GET['action'] === 'gestionnaireListView') {
-        getListGestionnaire();
-    }
-		}
-    else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
-      	searchClient($_GET['searchClient']);
-    }
 
-     else if (isset($_GET['search']) && trim($_GET['search']) != "") {
-			// Renew subscription
-			if($_GET['action'] === 'renewSubscription') {
-				renewSubscriptionPage();
-			} 
-			else if($_GET['action'] === 'gestionnaireListView') {
-				getListGestionnaire();
-			}
-			else if($_GET['action'] === 'manageReservation') {
-				manageReservationPage();
-			}
 			else if($_GET['action'] === 'validReservation') {
 				validReservation($_GET['id_reservation']);
 			}
+
 			else if($_GET['action'] === 'deleteReservation') {
 				deleteReservation($_GET['id_reservation']);
 			}
+
 			else if($_GET['action'] === 'managerCreatesCustomer') {
 				managerCreatesCustomerPage();
 			}
-		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
+
+			else if($_GET['action'] === 'ClientSee') {
+				echo "seeClient";
+				require("view/reviewClient.php");
+			}
+			else if($_GET['action'] === 'GestionnaireSee') {
+				echo "seeGes";
+				require("view/reviewGestionnaire.php");
+			}
+			else if($_GET['action'] === 'deconnection') {
+				//editMediaPage($_GET['mid']);
+				//session_destroy();
+				//session_start();
+				$_SESSION['status']="anonymous";
+				mainPage();
+			}
+
+			else if($_GET['action'] === 'gestionnaireListView') {
+				getListGestionnaire();
+			}
+
+			else if($_GET['action'] === 'renewSubscription') {
+				renewSubscriptionPage();
+			} 
+			
+		}
+
+		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
-		} else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
-			searchClient($_GET['searchClient']);
 		}
 		// Search a customer
 		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
@@ -188,9 +184,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			banClient($_GET['banClient']);
 		}
 
-
-
-     else {
 		//ajouter un gestionnaire
 		if (isset($_GET['type_form'])) {
 			//$lastName, $firstName, $email, $gender, $password, $adress
@@ -198,7 +191,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {
-			echo "i get you";
 			getListGestionnaire();
 		}
 	} else {
