@@ -13,7 +13,7 @@
 		<?php
 			require("view/headerView.php");
 		?>
-						
+
 		<main>
 			<div id='info'>
 				<?php
@@ -22,9 +22,9 @@
 					} else {
 						echo "<p> Nom: " . htmlspecialchars($account['lastName']) . "</p>";
 						echo "<p> Prénom: " . htmlspecialchars($account['firstName']) . "</p>";
-					}				
+					}
 				?>
-				<p> Email: <?= htmlspecialchars($account['email']) ?> </p>		
+				<p> Email: <?= htmlspecialchars($account['email']) ?> </p>
 				<p> Adresse: <?= htmlspecialchars($account['adress']) ?> </p>
 				<?php
 				if($_SESSION['status'] === 'customer') {
@@ -36,17 +36,18 @@
 			</div>
 
 			<a href='index.php?action=editAccount' id='editAccount'> Modifier mon compte </a>
-			<?php 
-			if($account['premium'] == 0 && $positive === '+') {
+			<a href='index.php?action=deconnection' id='deconnection'> Déconnexion </a>
+			<?php
+			if($account['premium'] == 0) {
 				echo "<a href='index.php?action=goPremium' id='goPremium'> Passer au premium </a>";
 			}
 			if(isset($renew)) {
 				echo "<a href='index.php?action=renewSubscription' id='renewSubscription'> Renouveller mon abonnement </a>";
 			}
 			?>
-			
+
 		</main>
 	</body>
-	
+
 </div>
 </html>

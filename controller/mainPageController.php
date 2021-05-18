@@ -3,7 +3,7 @@
 function mainPage() {
 	$ac = new AnonymousCustomer;
 	$medias = $ac->lastUpdate();
-	
+
 	if(isset($medias)) {
 		$i = 0;
 		while($media = $medias->fetch()) {
@@ -16,7 +16,7 @@ function mainPage() {
 		$medias[1] = null;
 		$medias[2] = null;
 	}
-	
+
 	switch ($_SESSION['status']) {
 		case 'anonymous':
 			$action1 = 'Créer un compte';
@@ -55,26 +55,26 @@ function mainPage() {
 		case 'administrator':
 			$action1 = 'Gérer les comptes';
 			$action2 = 'Gérer les gestionnaires';
-			$link1 ='#';
-			$link2 ='#';
+			$link1 ='index.php?action=ClientSee';
+			$link2 ='index.php?action=GestionnaireSee';
 			break;
 		default:
 			throw new Exception('Statut inconnu');
 	}
-	
+
 	require("view/mainPageView.php");
 }
 
-function searchMedia($keyword) {	
+function searchMedia($keyword) {
 	$ac = new AnonymousCustomer;
 	$medias = $ac->mediaSearch($keyword);
-	
+
 	require("view/mediaListView.php");
 }
 
 function roomList() {
 	$ac = new AnonymousCustomer;
 	$rooms = $ac->roomSearch();
-	
+
 	require("view/roomListView.php");
 }

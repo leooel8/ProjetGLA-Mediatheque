@@ -24,7 +24,7 @@ function banClient($cid){
   $clients = $admin->banCustomer($cid);
     echo "<p>Client banni: </p>";
     echo $cid;
-    require("view/clientListView.php");
+    require("view/ReviewClient.php");
 }
 
 ?>

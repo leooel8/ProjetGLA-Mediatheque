@@ -17,13 +17,9 @@
       <input type='text' name='searchClient' id='searchBarClient'> </input>
       <input type='submit' value='Rechercher un client à gérer ' id='searchClient'> </input>
     </form>
-
-		<form action="index.php" method="get" id='reviewGestionnaire'>
-      <input type='submit' value='Voir les gestionnaires' id='reviewGestionnaire'> </input>
+		<form action="index.php">
+      <input type='submit' value='Retour Page acceuil'> </input>
     </form>
-
-
-
 
 </body>
 </html>

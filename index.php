@@ -34,7 +34,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
 require_once 'model/PHPMailer/src/SMTP.php';
 
-try {
+//try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
 			authenticate($_POST['log_email'], $_POST['log_password']);
@@ -129,6 +129,30 @@ try {
 			else if($_GET['action'] === 'editMedia') {
 				editMediaPage($_GET['mid']);
 			}
+      else if($_GET['action'] === 'ClientSee') {
+        echo "seeClient";
+        require("view/reviewClient.php");
+      }
+      else if($_GET['action'] === 'GestionnaireSee') {
+        echo "seeGes";
+        require("view/reviewGestionnaire.php");
+      }
+      else if($_GET['action'] === 'deconnection') {
+        //editMediaPage($_GET['mid']);
+        //session_destroy();
+        //session_start();
+        $_SESSION['status']="anonymous";
+        mainPage();
+      }
+      else if($_GET['action'] === 'gestionnaireListView') {
+        getListGestionnaire();
+      }
+		}
+      else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
+      searchClient($_GET['searchClient']);
+    }
+
+     else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			// Renew subscription
 			else if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
@@ -157,10 +181,15 @@ try {
 		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
 			searchClient($_GET['searchClient']);
 		}
+
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
 			banClient($_GET['banClient']);
 		}
+
+
+
+     else {
 		//ajouter un gestionnaire
 		else if (isset($_GET['type_form'])) {
 			//$lastName, $firstName, $email, $gender, $password, $adress
@@ -174,6 +203,6 @@ try {
 	} else {
 		mainPage();
 	}
-} catch(Exception $e) {
+/*} catch(Exception $e) {
 	$errorMessage = $e->getMessage();
-}
+}*/
