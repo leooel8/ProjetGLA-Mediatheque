@@ -114,7 +114,7 @@ class Manager {
 	public function reservationList() {
 		$db = dbConnect();
 	
-		$req = $db->prepare('SELECT rmid, cancelled, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
+		$req = $db->prepare('SELECT rmid, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
 		$req->execute();
 		
 		return $req;
