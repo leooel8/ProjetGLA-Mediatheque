@@ -75,7 +75,6 @@ class AnonymousCustomer {
 			// Add client
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
 			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
-
 			return true;
 		}
 		return $res;
