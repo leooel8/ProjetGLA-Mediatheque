@@ -1,4 +1,5 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class Manager {	
 
 	/*---------- Public functions ----------*/
@@ -90,7 +91,7 @@ class Manager {
 		// Generate random password and send it by email
 		$password= bin2hex(openssl_random_pseudo_bytes(5));
 		
-		if(accountPasswordMail($email, $password)) {			
+		if($this->accountPasswordMail($email, $password)) {			
 			$db = dbConnect();
 			
 			// Add account
@@ -113,27 +114,28 @@ class Manager {
 	public function reservationList() {
 		$db = dbConnect();
 	
-		$req = $db->prepare('SELECT rmid, format, title, author, firstName, lastName reservationMedia FROM client AS c, reservationMedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
-		$req->execute(array());
+		$req = $db->prepare('SELECT rmid, cancelled, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
+		$req->execute();
 		
 		return $req;
 	}
 	
 	public function validReservation($rmid) {
+		echo "hi there";
 		$db = dbConnect();
 		
 		// Get media id and customer id
-		$req = $db->prepare('SELECT mid, cid reservationMedia WHERE rmid = ?');
+		$req = $db->prepare('SELECT mid, cid reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
 		$mid = $req->fetch()['mid'];
-		$cid = $req->fetch()['cid'];	
+		$cid = $req->fetch()['cid'];
 		
 		// Decrease quantity
 		$req = $db->prepare('UPDATE media SET quantity = quantity-1 WHERE mid = ?');
 		$req->execute(array($mid));
 		
 		// Delete reservation
-		$req = $db->prepare('DELETE FROM reservationMedia WHERE rmid = ?');
+		$req = $db->prepare('DELETE FROM reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
 		
 		// Is client premium
@@ -142,14 +144,14 @@ class Manager {
 		$premium = $req->fetch()['premium'];
 		
 		// Add history
-		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtual) VALUES(?, ?, ?, false)');
+		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtualMedia) VALUES(?, ?, ?, false)');
 		$req->execute(array($cid, $mid, $premium));
 	}
 	
 	public function cancelReservation($rmid) {
 		$db = dbConnect();
 		
-		$req = $db->prepare('UPDATE reservationMedia SET cancelled = true WHERE rmid = ?');
+		$req = $db->prepare('UPDATE reservationmedia SET cancelled = true WHERE rmid = ?');
 		$req->execute(array($rmid));
 	}
 	

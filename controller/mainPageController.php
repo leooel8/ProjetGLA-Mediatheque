@@ -44,7 +44,7 @@ function mainPage() {
 			$action5 = 'Créer un compte client';
 			$action6 = 'Créer un média';
 			$action7 = 'Planning des salles';
-			$link1 = '#';
+			$link1 = 'index.php?action=manageReservation';
 			$link2 = '#';
 			$link3 = '#';
 			$link4 = '#';

@@ -7,6 +7,8 @@ if(!isset($_SESSION['status'])) {
 	$_SESSION['status'] = 'anonymous';
 }
 
+$_SESSION['status'] = 'manager';
+
 // Model
 require("model/db.php");
 require_once("model/class/AnonymousCustomer.php");
@@ -27,6 +29,7 @@ require_once("controller/manageClientController.php");
 require_once("controller/manageGestionaireController.php");
 require_once("controller/authenticatePageController.php");
 require_once("controller/borrowMediaController.php");
+require_once("controller/manageReservationPageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -126,8 +129,18 @@ try {
 			// Renew subscription
 			else if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
-			} else if($_GET['action'] === 'gestionnaireListView') {
+			} 
+			else if($_GET['action'] === 'gestionnaireListView') {
 				getListGestionnaire();
+			}
+			else if($_GET['action'] === 'manageReservation') {
+				manageReservationPage();
+			}
+			else if($_GET['action'] === 'validReservation') {
+				validReservation($_GET['id_reservation']);
+			}
+			else if($_GET['action'] === 'deleteReservation') {
+				deleteReservation($_GET['id_reservation']);
 			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
