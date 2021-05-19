@@ -7,6 +7,13 @@ $gestionnaires= $admin->searchGestionnaire();
 	require("view/reviewGestionnaire.php");
 }
 
+function banGestionnaire($gid){
+	$admin = new Administrator;
+$gestionnaires= $admin->deleteManager($gid);
+	 echo "it worked";
+	require("view/reviewGestionnaire.php");
+}
+
 function addGestionnaire($lastName, $firstName, $email, $gender, $password, $adress){
 	$admin = new Administrator;
 

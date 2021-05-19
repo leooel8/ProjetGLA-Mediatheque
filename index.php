@@ -146,12 +146,13 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			}
 
 			else if($_GET['action'] === 'ClientSee') {
-				echo "seeClient";
+				//echo "seeClient";
 				require("view/reviewClient.php");
 			}
 			else if($_GET['action'] === 'GestionnaireSee') {
-				echo "seeGes";
-				require("view/reviewGestionnaire.php");
+				//echo "seeGes";
+        getListGestionnaire();
+				//require("view/reviewGestionnaire.php");
 			}
 			else if($_GET['action'] === 'deconnection') {
 				//editMediaPage($_GET['mid']);
@@ -167,8 +168,8 @@ require_once 'model/PHPMailer/src/SMTP.php';
 
 			else if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
-			} 
-			
+			}
+
 		}
 
 		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
@@ -183,6 +184,12 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_GET['banClient'])) {
 			banClient($_GET['banClient']);
 		}
+
+    // Ban a gestionnaire
+    else if (isset($_GET['banGestionnaire'])){
+      banGestionnaire($_GET['banGestionnaire']);
+    }
+
 
 		//ajouter un gestionnaire
 		if (isset($_GET['type_form'])) {

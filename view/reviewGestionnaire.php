@@ -33,13 +33,26 @@
     }
 
       if(isset($gestionnaires) && $gestionnaires!=false){
+
+
+			$ids=array("gid=","gid=","lastName =","lastName=","firstName=","firstName=","gender=","gender=");
       while($gestionnaire = $gestionnaires->fetch()) {
-      //	echo "<a href='index.php?action=gestionnaireListView'> <div class='gestionnaires'>";
-          print_r($gestionnaire);
+				//var_dump($gestionnaire);
+				//var_dump( $gestionnaire[0]);
+				$i=0;
+				$gid=0;
+				foreach($gestionnaire as $elements){
+					if($i==0){$gid=$elements;}
+					if($i%2==0){
+					echo $ids[$i].$elements."  ";
+					}
+					$i++;
+				}
+				/// proto si on veut bannir un gestionnaire
+				echo'<form action="index.php" method="get" id="banGestionnaire"> <a></a> <input type="submit" value='.$gid.' name="banGestionnaire" id="banGestionnaire"> </input> </form>';
+				echo "<br />";
 
-
-        echo "</div> </a>";
-      }
+			}
     }
     ?>
 

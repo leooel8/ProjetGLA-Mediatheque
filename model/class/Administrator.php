@@ -60,12 +60,15 @@ class Administrator {
 	}
 	public function searchGestionnaire(){
 		$db = dbConnect();
-
+		//echo "get all gestionnaire";
 		// Get proposition id
 		$req = $db->prepare("SELECT * FROM gestionnaire");
-		$req->execute();
+		$req->execute(array());
+		/*$res=$req->fetch();
+		var_dump($res);
+*/
 
-		return $req->fetch();
+		return $req;
 
 	}
 
