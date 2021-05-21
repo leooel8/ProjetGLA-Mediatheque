@@ -33,7 +33,7 @@ function mainPage() {
 		case 'provider':
 			$action1 = 'Proposer un média';
 			$action2 = 'Voir mes propositions';
-			$link1 ='#';
+			$link1 ='index.php?action=mediaCreation';
 			$link2 ='index.php?action=myProposition';
 			break;
 		case 'manager':

@@ -182,9 +182,13 @@ require_once 'model/PHPMailer/src/SMTP.php';
 
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
+
 			banClient($_GET['banClient']);
 		}
-
+    //unban a client
+    else if (isset($_GET['unbanClient'])) {
+      unbanClient($_GET['unbanClient']);
+    }
     // Ban a gestionnaire
     else if (isset($_GET['banGestionnaire'])){
       banGestionnaire($_GET['banGestionnaire']);
@@ -193,9 +197,9 @@ require_once 'model/PHPMailer/src/SMTP.php';
 
 		//ajouter un gestionnaire
 		if (isset($_GET['type_form'])) {
-			//$lastName, $firstName, $email, $gender, $password, $adress
-			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
-		}
+			//$lastName, $firstName, $email, $gender, $adress, $password, $cpassword
+			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
+    }
 		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {
 			getListGestionnaire();

@@ -12,14 +12,14 @@
 		<?php
 			require("view/headerView.php");
 		?>
-						
-		<main>				
+
+		<main>
 			<h2> <?=$media['title']?> </h2>
 
 			<div id='content'>
 				<img src=<?=$imagePath?> alt='Image du produit'>
-				
-				<div id='labels'> 
+
+				<div id='labels'>
 					<p> Auteur: <?=$media['author']?> </p>
 					<?php if($media['mediaType'] != 0) echo "<p>Quantité: $media[quantity] </p>"; ?>
 					<p> Genre: <?=$media['kind']?> </p>
@@ -27,9 +27,9 @@
 					<p> Type: <?=$media['type']?> </p>
 					<?php if($media['mediaType'] != 0) echo "<p>Prix: $media[price]€ </p>"; ?>
 				</div>
-				
+
 				<p id='description'> Description:  <?=$media['description']?> </p>
-				
+
 				<div id='actions'>
 					<button id='moreDetail' onClick=''> Plus de détail </button>
 					<?php
@@ -43,8 +43,8 @@
 						}
 						if($media['mediaType'] != 1) echo "<button id='virtualBorrow' onclick=''> Emprunter virtuellement le média </button>";
 					}
-					
-					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]'> Modifier le média </a>"; 
+
+					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]'> Modifier le média </a>";
 					?>
 				</div>
 			</div>
@@ -52,9 +52,12 @@
 			<?php
 			if(isset($error))
 				echo "<p class='error'><strong> $error </strong></p>";
-			?>			
+			?>
 		</main>
+		<?php
+			require("view/footerView.php");
+		?>
 	</body>
-	
+
 </div>
 </html>

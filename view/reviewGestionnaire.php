@@ -4,10 +4,9 @@
 		<meta charset = "utf-8"/>
 		<meta name="viewport" content="width=device-width">
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
-
+		<link href='public/css/footerStyle.css' rel='stylesheet'/>
 
 		<script>
-
       function toggleContent() {
         // Get the DOM reference
         var contentId = document.getElementById("content");
@@ -15,15 +14,19 @@
         contentId.style.display == "block" ? contentId.style.display = "none" :
       contentId.style.display = "block";
       }
-
-
 		</script>
-
 	</head>
 <body>
-  <h1>Liste des Gestionnaire</h1>
+	<?php
+		require("view/headerView.php");
+	?>
+
+<main>
+
+	<h1>Liste des Gestionnaire</h1>
   <!--partie pour avoir les gesionnaires et les gérer-->
   <button id="addGetionnaire_button" type="button"  onclick="toggleContent()">Ajouter un Gestionnaire</button>
+
 
   <!-- la liste des gestionnaires-->
   <div id='listGestionnaire'>
@@ -33,8 +36,6 @@
     }
 
       if(isset($gestionnaires) && $gestionnaires!=false){
-
-
 			$ids=array("gid=","gid=","lastName =","lastName=","firstName=","firstName=","gender=","gender=");
       while($gestionnaire = $gestionnaires->fetch()) {
 				//var_dump($gestionnaire);
@@ -48,9 +49,8 @@
 					}
 					$i++;
 				}
-				/// proto si on veut bannir un gestionnaire
-				echo'<form action="index.php" method="get" id="banGestionnaire"> <a></a> <input type="submit" value='.$gid.' name="banGestionnaire" id="banGestionnaire"> </input> </form>';
-				echo "<br />";
+					echo" Bannir : ".'<form action="index.php" method="get" id="banGestionnaire"> <a></a> <input type="submit" value='.$gid.' name="banGestionnaire" id="banGestionnaire"> </input> </form>';
+		//		echo "<br />";
 
 			}
     }
@@ -88,5 +88,12 @@
         <input type="submit" value="Confirmer " />
     </form>
 </div>
+</main>
+<form action="index.php">
+	<input type='submit' value='Retour Page acceuil'> </input>
+</form>
+<?php
+	require("view/footerView.html");
+?>
 </body >
 </html>
