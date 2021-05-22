@@ -12,6 +12,18 @@ function myHistoryPage() {
 	require("view/myHistoryView.php");
 }
 
+function extendMediaDuration($hid) {
+	$c = new Customer;
+	$medias = $c->extendDuration($hid);
+	require("view/myHistoryView.php");
+}
+
+function lostMedia($hid) {
+	$c = new Customer;
+	$medias = $c->lostMedia($hid);
+	require("view/myHistoryView.php");
+}
+
 function myAccountPage() {
 	if(!isset($_SESSION['id']) || $_SESSION['status'] == 'anonymous') {
 		loginPage();

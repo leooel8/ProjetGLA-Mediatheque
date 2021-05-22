@@ -56,6 +56,15 @@ class AnonymousCustomer {
 		return $req->fetch();
 	}
 	
+	public function getRoomPlanning($number) {
+		$db = dbConnect();
+		
+		$req = $db->prepare("SELECT sheduledDate, morning FROM reservationsalle WHERE number = ?");
+		$req->execute(array($number));
+		
+		return $req;
+	}
+	
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
 		$res = $this->isValidLogin($email, $password, $cpassword);
 		

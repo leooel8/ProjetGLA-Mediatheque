@@ -151,6 +151,13 @@ class Manager {
 		
 		$req = $db->prepare('UPDATE reservationMedia SET cancelled = true WHERE rmid = ?');
 		$req->execute(array($rmid));
+		
+		// Select email and title
+		$req = $db->prepare('SELECT email, title FROM compte AS c, media AS m, reservationmedia AS rm WHERE rm.rmid = ? AND rm.cid = c.id AND m.mid = rm.mid');
+		$req->execute(array($rmid));
+		$res = $red->fetch();
+		
+		cancelReservationMail($res['email'], $res['title']);
 	}
 	
 	public function mediaReturn($mid, $cid) {
@@ -192,6 +199,32 @@ class Manager {
 
 		$mail->Subject = 'Mot de passe de votre compte pour votre médiathèque en ligne !';
 		$mail->Body = "<p>Voici votre mot de passe:</p> <strong>$password</strong> <p> pensé à le changer </p>";
+		$mail->IsHTML(true);
+
+		if($mail->send()) {
+			return true;
+		} else {
+			return false;
+		}    	
+	}
+	
+	private function cancelReservationMail($destination, $title) {
+		$mail = new PHPMailer();
+		$mail->isSMTP();
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 587;
+		$mail->SMTPAuth = true;
+		$mail->CharSet = 'UTF-8';
+		// Authentification
+		$mail->Username = 'mediatheque.noreply@gmail.com';
+		$mail->Password = 'projetGLA';
+
+		$mail->setFrom('mediatheque.noreply@gmail.com');
+
+		$mail->addAddress($destination);
+
+		$mail->Subject = 'Annulation de votre réservation !';
+		$mail->Body = "<p>Bonjour, nous somme désolé de vous annoncer que votre réservation pour le média nommé: $title <strong>à été annulé</strong></p>";
 		$mail->IsHTML(true);
 
 		if($mail->send()) {

@@ -51,15 +51,13 @@ try {
 		}
 		// Borrow media
 		else if(isset($_POST['borrowMedia'])) {
-			if($_SESSION['status'] === 'anonymous') {
-				loginPage();
-			} else {
 				borrowMediaPage($_POST['mid'], $_POST['title']);
-			}
+		} else if(isset($_POST['virtualBorrowMedia'])) {
+				virtualBorrowMedia($_POST['mid']);
 		}
 		// Valid barrow media
 		else if(isset($_POST['validBorrowMedia'])) {
-			borrowMedia($_POST['mid'], $_POST['sheduledDate']);
+			borrowMedia($_POST['mid'], $_POST['sheduledDate'], $_POST['hour']);
 		}
 		// Edit media
 		else if(isset($_POST['editMedia'])) {
@@ -84,6 +82,7 @@ try {
 			else if ($_GET['action'] === 'myAccount') {
 				myAccountPage();
 			}
+			// Edit my account
 			else if($_GET['action'] === 'editAccount') {
 				editAccountPage();
 			}
@@ -129,6 +128,20 @@ try {
 			} else if($_GET['action'] === 'gestionnaireListView') {
 				getListGestionnaire();
 			}
+			// Disconnect
+			else if($_GET['action'] === 'disconnect') {
+				$_SESSION['status'] = 'anonymous';
+				$_SESSION['id'] = null;
+				mainPage();
+			}
+			// Extend media duration
+			else if($_GET['action'] === 'extendDuration' && isset($_GET['hid'])) {
+				extendMediaDuration($_GET['hid']);
+			}	
+			// Lost media
+			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
+				lostMedia($_GET['hid']);
+			}
 		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		} else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
@@ -142,12 +155,12 @@ try {
 		else if (isset($_GET['banClient'])) {
 			banClient($_GET['banClient']);
 		}
-		//ajouter un gestionnaire
+		// Add manager
 		else if (isset($_GET['type_form'])) {
 			//$lastName, $firstName, $email, $gender, $password, $adress
 			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
 		}
-		///Voir la liste des gestionnaires
+		// Manager list
 		else if (isset($_GET['reviewGestionnaire'])) {
 			echo "i get you";
 			getListGestionnaire();

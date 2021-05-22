@@ -1,0 +1,43 @@
+main {
+	margin-top: 100px;
+}
+
+#mainTitle {
+	text-align: center;
+}
+
+.media {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid black;
+	border-radius: 5px;
+	margin-right: 10px;
+}
+
+.content > * {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.extend {
+	background: yellow;
+	margin-right: 10px;
+	padding: 10px; 
+	border-radius: 5px;	
+}
+
+.lost {
+	background: orange;
+	padding: 10px; 
+	border-radius: 5px;	
+}

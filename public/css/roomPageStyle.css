@@ -1,0 +1,58 @@
+main {
+	margin-top: 100px;
+}
+
+#mainTitle {
+	text-align: center;
+}
+
+#contentWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+#contentWrapper > * {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#descriptionWrapper {
+	width: 30%;
+}
+
+#description {
+	background: rgb(220, 220, 220);
+	padding: 5px;
+}
+
+#other {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#book {
+	margin-top: 30px;
+	border: none;
+	background: rgb(0, 200, 100);
+	padding: 5px;
+	color: white;
+	border-radius: 5px;
+}
+
+.taken {
+	background: red;
+}
+
+.avaible {
+	background: green;
+}
+
+.avaible:hover {
+	background: rgb(0, 255, 100);
+}
+
+.past {
+	background: grey;
+}

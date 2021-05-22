@@ -1,5 +1,6 @@
 main {
 	margin-top: 100px;
+	margin-left: 50px;
 }
 
 #searchTitle {
@@ -9,21 +10,29 @@ main {
 
 #list {
 	display: flex;	
-	flex-wrap: wrap;
+	flex-direction: column;
 }
 
 .media {
-	background: red;
-	width: 25%;
-	height: 300px;
-	margin: 0 4.16% 4.16% 4.16%;
+	width: 50%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 20px;
+	border: 1px solid black;
+	background: rgb(150, 200, 255);
+}
+
+.image {
+	width: 75px;
+	height: 125px;
+}
+
+.title {
+	margin-left: 10px;
+	font-size: 1.5em;
 }
 
 @media (max-width: 1200px) {
-	.media {
-		background: red;
-		width: 37.5%;
-		height: 300px;
-		margin: 0 6.25% 6.25% 6.25%;
-	}
+
 }

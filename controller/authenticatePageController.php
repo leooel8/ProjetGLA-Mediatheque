@@ -1,7 +1,11 @@
 <?php
 
-function loginPage() {
-    require("view/authenticateView.php");
+function loginPage() {	
+	if($_SESSION['status'] === 'anonymous') {
+		require("view/authenticateView.php");
+	} else {
+		myAccountPage();
+	}
 }
 
 function authenticate($email, $password) {

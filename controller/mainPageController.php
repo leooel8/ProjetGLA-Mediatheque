@@ -9,6 +9,7 @@ function mainPage() {
 		while($media = $medias->fetch()) {
 			$imagePath[$i] = 'public/images/media/'.$media['mid'].'.jpg';
 			$title[$i] = $media['title'];
+			$mid[$i] = $media['mid'];
 			$i++;
 		}
 	} else {
@@ -68,6 +69,27 @@ function mainPage() {
 function searchMedia($keyword) {	
 	$ac = new AnonymousCustomer;
 	$medias = $ac->mediaSearch($keyword);
+	
+	$books = array();
+	$audios = array();
+	$movies = array();
+	$newspapers = array();
+	while($media = $medias->fetch()) {
+		switch($media['format']) {
+			case 'livre':
+				array_push($books, $media);
+				break;
+			case 'audio':
+				array_push($audios, $media);
+				break;
+			case 'film':
+				array_push($movies, $media);
+				break;
+			case 'periodique':
+				array_push($newspapers, $media);
+				break;
+		}
+	}
 	
 	require("view/mediaListView.php");
 }

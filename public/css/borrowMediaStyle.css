@@ -1,0 +1,17 @@
+main {
+	margin-top: 100px;
+}
+
+#mainTitle {
+	text-align: center;
+}
+
+#dateInputWrapper {
+	display: flex;
+	justify-content: center;
+}
+
+#dateInputWrapper > * {
+	margin-left: 10px;
+	margin-right: 10px;
+}

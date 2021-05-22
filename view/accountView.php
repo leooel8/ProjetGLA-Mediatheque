@@ -43,6 +43,8 @@
 			if(isset($renew)) {
 				echo "<a href='index.php?action=renewSubscription' id='renewSubscription'> Renouveller mon abonnement </a>";
 			}
+			
+			echo "<a href='index.php?action=disconnect' id='disconnect'> Me déconnecter </a>";
 			?>
 			
 		</main>
