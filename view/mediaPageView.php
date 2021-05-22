@@ -76,9 +76,6 @@
 			?>			
 
 		</main>
-		<?php
-			require("view/footerView.php");
-		?>
 	</body>
 </html>
 
