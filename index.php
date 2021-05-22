@@ -29,6 +29,8 @@ require_once("controller/authenticatePageController.php");
 require_once("controller/borrowMediaController.php");
 require_once("controller/manageReservationPageController.php");
 require_once("controller/managerCreatesCustomerPageController.php");
+require_once("controller/managerValidatesAccountPageController.php");
+require_once("controller/managerValidatesMediaPageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -132,6 +134,10 @@ require_once 'model/PHPMailer/src/SMTP.php';
 				editMediaPage($_GET['mid']);
 			}
 
+			else if ($_GET['action'] === 'manageReservation') {
+				manageReservationPage();
+			}
+
 			else if($_GET['action'] === 'validReservation') {
 				validReservation($_GET['id_reservation']);
 			}
@@ -161,6 +167,32 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
 			}
+
+			// Manager validates account page
+			else if($_GET['action'] === 'managerValidatesAccount') {
+				managerValidatesAccountPage();
+			}
+
+			// Manager validates Customer account
+			else if($_GET['action'] === 'validateAccountCustomer') {
+				validateCustomer($_GET['id_account']);
+			}
+
+			// Manager validates Provider account
+			else if($_GET['action'] === 'validateAccountProvider') {
+				validateProvider($_GET['id_account']);
+			}
+
+			// Manager validates media page
+			else if($_GET['action'] === 'managerValidatesMedia') {
+				managerValidatesMediaPage();
+			}
+
+			// Manager validates media
+			else if($_GET['action'] === 'validateMedia') {
+				validateMedia($_GET['id_media']);
+			}
+
 			// Disconnect
 			else if($_GET['action'] === 'disconnect') {
 				$_SESSION['status'] = 'anonymous';
@@ -187,11 +219,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_GET['banClient'])) {
 
 			banClient($_GET['banClient']);
-		}
-		// Add manager
-		else if (isset($_GET['type_form'])) {
-			//$lastName, $firstName, $email, $gender, $password, $adress
-			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
 		}
 		// Unban a client
 		else if (isset($_GET['unbanClient'])) {

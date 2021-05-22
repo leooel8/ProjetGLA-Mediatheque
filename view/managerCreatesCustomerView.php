@@ -5,8 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <link href='public/css/mainStyle.css' rel='stylesheet'/>
+    <link href='public/css/mainPageStyle.css' rel='stylesheet'/>
+    <link href='public/css/headerStyle.css' rel='stylesheet'/>
+    <link href='public/css/footerStyle.css' rel='stylesheet'/>
+    
 </head>
 <body>
+    <?php
+		/* logo de mediatheque */
+		require("view/headerView.php");
+	?>
     <div id="loginCreation_div">
         <div id="logCustomerForm_div">
             <form method="post" action="index.php">

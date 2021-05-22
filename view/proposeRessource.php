@@ -19,7 +19,7 @@
 				<main>
 
 				<!--
-						a mettre si l'utilisateur veut faire un recherche pour toruver si la ressource existe déjà
+						a mettre si l'utilisateur veut faire un recherche pour trouver si la ressource existe déjà
 					<form action="index.php" method="get" id='searchBarWrapper'>
 						<div> </div>
 						<input type='text' name='search' id='searchBar'> </input>
