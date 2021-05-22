@@ -15,7 +15,7 @@
 		<?php
 			require("view/headerView.php");
 		?>
-						
+		
 		<main>				
 			<h2 id='mainTitle'> <?=$media['title']?> </h2>
 
@@ -23,6 +23,7 @@
 				<img src=<?=$imagePath?> alt='Image du produit' class='image'>
 				
 				<div id='labels'> 
+
 					<p> Auteur: <?=$media['author']?> </p>
 					<?php if($media['mediaType'] != 0) echo "<p>Quantité: $media[quantity] </p>"; ?>
 					<p> Genre: <?=$media['kind']?> </p>
@@ -54,8 +55,9 @@
 							echo "</form>";
 						}
 					}
-					
+			
 					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]' id='editMedia'> Modifier le média </a>"; 
+
 					?>
 				</div>
 			</div>
@@ -67,10 +69,16 @@
 			<?php
 			if(isset($error))
 				echo "<p class='error'><strong> $error </strong></p>";
+
 			else if(isset($valid)) 
 				echo "<p class='valid'><strong> $valid </strong></p>";
 				
 			?>			
+
 		</main>
+		<?php
+			require("view/footerView.php");
+		?>
 	</body>
 </html>
+

@@ -27,12 +27,14 @@ require_once("controller/manageClientController.php");
 require_once("controller/manageGestionaireController.php");
 require_once("controller/authenticatePageController.php");
 require_once("controller/borrowMediaController.php");
+require_once("controller/manageReservationPageController.php");
+require_once("controller/managerCreatesCustomerPageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
 require_once 'model/PHPMailer/src/SMTP.php';
 
-try {
+//try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST['log_email']) && isset($_POST['log_password'])) {
 			authenticate($_POST['log_email'], $_POST['log_password']);
@@ -44,6 +46,10 @@ try {
 			} else {
 				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
 			}
+		}
+		// Manager creates account
+		else if (isset($_POST['manager_login_creation'])) {
+			managerCreatesAccount($_POST['log_last_name'], $_POST['log_first_name'], $_POST['log_email'], $_POST['log_gender'], $_POST['log_adress'], $_POST['log_premium']);
 		}
 		// Edit account
 		else if(isset($_POST['validEdition'])) {
@@ -72,8 +78,11 @@ try {
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-	} else if(count($_GET) > 0) {
-		if (isset($_GET['action'])) {
+	}
+  else if(count($_GET) > 0) {
+
+    ///début des cas GET action
+  	if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
 				loginPage();
@@ -122,11 +131,35 @@ try {
 			else if($_GET['action'] === 'editMedia') {
 				editMediaPage($_GET['mid']);
 			}
-			// Renew subscription
+
+			else if($_GET['action'] === 'validReservation') {
+				validReservation($_GET['id_reservation']);
+			}
+
+			else if($_GET['action'] === 'deleteReservation') {
+				deleteReservation($_GET['id_reservation']);
+			}
+
+			else if($_GET['action'] === 'managerCreatesCustomer') {
+				managerCreatesCustomerPage();
+			}
+
+			else if($_GET['action'] === 'ClientSee') {
+				//echo "seeClient";
+				require("view/reviewClient.php");
+			}
+			else if($_GET['action'] === 'GestionnaireSee') {
+				//echo "seeGes";
+				getListGestionnaire();
+				//require("view/reviewGestionnaire.php");
+			}
+			// Manager list
+			else if($_GET['action'] === 'gestionnaireListView') {
+				getListGestionnaire();
+			}
+
 			else if($_GET['action'] === 'renewSubscription') {
 				renewSubscriptionPage();
-			} else if($_GET['action'] === 'gestionnaireListView') {
-				getListGestionnaire();
 			}
 			// Disconnect
 			else if($_GET['action'] === 'disconnect') {
@@ -142,10 +175,9 @@ try {
 			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
 				lostMedia($_GET['hid']);
 			}
-		} else if (isset($_GET['search']) && trim($_GET['search']) != "") {
+		}
+		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
-		} else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
-			searchClient($_GET['searchClient']);
 		}
 		// Search a customer
 		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
@@ -153,6 +185,7 @@ try {
 		}
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
+
 			banClient($_GET['banClient']);
 		}
 		// Add manager
@@ -160,14 +193,25 @@ try {
 			//$lastName, $firstName, $email, $gender, $password, $adress
 			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
 		}
-		// Manager list
+		// Unban a client
+		else if (isset($_GET['unbanClient'])) {
+		  unbanClient($_GET['unbanClient']);
+		}
+		// Ban a manager
+		else if (isset($_GET['banGestionnaire'])){
+		  banGestionnaire($_GET['banGestionnaire']);
+		}
+		// Add a manager
+		if (isset($_GET['type_form'])) {
+				addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
+		}
+		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {
-			echo "i get you";
 			getListGestionnaire();
 		}
 	} else {
 		mainPage();
 	}
-} catch(Exception $e) {
+/*} catch(Exception $e) {
 	$errorMessage = $e->getMessage();
-}
+}*/

@@ -22,9 +22,17 @@ function banClient($cid){
   //non accessible si on n'avait pas eu de client
   $admin = new Administrator;
   $clients = $admin->banCustomer($cid);
-    echo "<p>Client banni: </p>";
-    echo $cid;
-    require("view/clientListView.php");
+  $awnser='Client banni:'.$cid;
+    require("view/ReviewClient.php");
 }
+
+function unbanClient($cid){
+  //non accessible si on n'avait pas eu de client
+  $admin = new Administrator;
+  $clients = $admin->unbanCustomer($cid);
+  $awnser= 'Client réhabilité:'.$cid;
+  require("view/ReviewClient.php");
+}
+
 
 ?>
