@@ -36,9 +36,9 @@
 			</div>
 
 			<a href='index.php?action=editAccount' id='editAccount'> Modifier mon compte </a>
-			<a href='index.php?action=deconnection' id='deconnection'> Déconnexion </a>
+
 			<?php
-			if($account['premium'] == 0) {
+			if(isset($account['premium']) && $account['premium'] == 0) {
 				echo "<a href='index.php?action=goPremium' id='goPremium'> Passer au premium </a>";
 			}
 			if(isset($renew)) {
