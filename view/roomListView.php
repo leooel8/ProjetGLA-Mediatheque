@@ -3,10 +3,10 @@
 	<head>
 		<meta charset = "utf-8"/>
 		<meta name="viewport" content="width=device-width">
-		<title> Bienvenue dans votre médiathèque </title>
+		<title> Liste des salles </title>
 		<link href='public/css/mainStyle.css' rel='stylesheet'/>
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
-		<link href='public/css/mediaListStyle.css' rel='stylesheet'/>
+		<link href='public/css/roomListStyle.css' rel='stylesheet'/>
 	</head>
 
 	<body>
@@ -19,15 +19,15 @@
 		
 			<div id='list'>
 				<?php
-					while($room = $rooms->fetch()) {
-						echo "<a href='index.php?action=roomPage&number=$room[number]'> <div class='room'>";
-							print_r($room);
-						echo "</div> </a>";
+					while($room = $rooms->fetch()) {				
+						echo "<div class='room'>";
+							echo "<p> Salle numéro: $room[number] </p>";
+							echo "<p> Capacité: $room[capacity] </p>";
+							echo "<a href='index.php?action=roomPage&number=$room[number]'> Visualiser </a>";
+						echo "</div>";
 					}
 				?>
 			<div>
 		</main>
 	</body>
-	
-</div>
 </html>

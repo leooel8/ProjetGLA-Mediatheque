@@ -59,15 +59,13 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Borrow media
 		else if(isset($_POST['borrowMedia'])) {
-			if($_SESSION['status'] === 'anonymous') {
-				loginPage();
-			} else {
 				borrowMediaPage($_POST['mid'], $_POST['title']);
-			}
+		} else if(isset($_POST['virtualBorrowMedia'])) {
+				virtualBorrowMedia($_POST['mid']);
 		}
 		// Valid barrow media
 		else if(isset($_POST['validBorrowMedia'])) {
-			borrowMedia($_POST['mid'], $_POST['sheduledDate']);
+			borrowMedia($_POST['mid'], $_POST['sheduledDate'], $_POST['hour']);
 		}
 		// Edit media
 		else if(isset($_POST['editMedia'])) {
@@ -95,6 +93,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if ($_GET['action'] === 'myAccount') {
 				myAccountPage();
 			}
+			// Edit my account
 			else if($_GET['action'] === 'editAccount') {
 				editAccountPage();
 			}
@@ -152,21 +151,15 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			}
 
 			else if($_GET['action'] === 'ClientSee') {
-				echo "seeClient";
+				//echo "seeClient";
 				require("view/reviewClient.php");
 			}
 			else if($_GET['action'] === 'GestionnaireSee') {
-				echo "seeGes";
-				require("view/reviewGestionnaire.php");
+				//echo "seeGes";
+				getListGestionnaire();
+				//require("view/reviewGestionnaire.php");
 			}
-			else if($_GET['action'] === 'deconnection') {
-				//editMediaPage($_GET['mid']);
-				//session_destroy();
-				//session_start();
-				$_SESSION['status']="anonymous";
-				mainPage();
-			}
-
+			// Manager list
 			else if($_GET['action'] === 'gestionnaireListView') {
 				getListGestionnaire();
 			}
@@ -200,8 +193,21 @@ require_once 'model/PHPMailer/src/SMTP.php';
 				validateMedia($_GET['id_media']);
 			}
 
+			// Disconnect
+			else if($_GET['action'] === 'disconnect') {
+				$_SESSION['status'] = 'anonymous';
+				$_SESSION['id'] = null;
+				mainPage();
+			}
+			// Extend media duration
+			else if($_GET['action'] === 'extendDuration' && isset($_GET['hid'])) {
+				extendMediaDuration($_GET['hid']);
+			}	
+			// Lost media
+			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
+				lostMedia($_GET['hid']);
+			}
 		}
-
 		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
 		}
@@ -209,16 +215,22 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_GET['searchClient']) && trim($_GET['searchClient']) != "") {
 			searchClient($_GET['searchClient']);
 		}
-
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
+
 			banClient($_GET['banClient']);
 		}
-
-		//ajouter un gestionnaire
+		// Unban a client
+		else if (isset($_GET['unbanClient'])) {
+		  unbanClient($_GET['unbanClient']);
+		}
+		// Ban a manager
+		else if (isset($_GET['banGestionnaire'])){
+		  banGestionnaire($_GET['banGestionnaire']);
+		}
+		// Add a manager
 		if (isset($_GET['type_form'])) {
-			//$lastName, $firstName, $email, $gender, $password, $adress
-			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'], $_GET['logCreate_password'],$_GET['logCreate_adress']);
+				addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
 		}
 		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {

@@ -17,6 +17,14 @@ main {
 	margin-top: 50px;
 }
 
+#editAccount {
+	margin-bottom: 50px;
+}
+
+#disconnect {
+	margin-top: 50px;
+}
+
 form {
 	display: flex;
 	flex-direction: column;

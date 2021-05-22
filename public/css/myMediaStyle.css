@@ -1,0 +1,28 @@
+main {
+	margin-top: 100px;
+}
+
+#mainTitle {
+	text-align: center;
+}
+
+.media {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.media > * {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.visualize {
+	background: green;
+	padding: 10px;
+	border-radius: 5px;
+	border: none;
+	color: white;
+}

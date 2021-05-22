@@ -86,6 +86,22 @@
 	background: rgb(0, 150, 255);
 }
 
+#action4 {
+	background: rgb(255, 100, 150);
+}
+
+#action5 {
+	background: rgb(255, 150, 100);
+}
+
+#action6 {
+	background: rgb(150, 255, 100);
+}
+
+#action7 {
+	background: rgb(100, 150, 255);
+}
+
 @media (max-width: 1920px) {	
 	#lastUpdate {
 		margin-left: 10%;

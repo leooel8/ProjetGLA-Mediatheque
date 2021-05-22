@@ -5,7 +5,7 @@ class Customer {
 	public function myMedia($cid) {
 		$db = dbConnect();
 		
-		$req = $db->prepare('SELECT hid, title, author, format FROM historique AS h, media AS m WHERE cid = ? AND h.mid = m.mid AND virtual = true');	
+		$req = $db->prepare('SELECT h.mid, title, author, format FROM historique AS h, media AS m WHERE cid = ? AND h.mid = m.mid AND virtualMedia = true');	
 		$req->execute(array($cid));
 
 		return $req;	
@@ -14,7 +14,7 @@ class Customer {
 	public function myHistory($cid) {
 		$db = dbConnect();
 		
-		$req = $db->prepare('SELECT hid, borrowingDate, renderingDate, virtual, title, author, format FROM historique AS h, media AS m WHERE cid = ? AND h.mid = m.mid AND virtual = true');	
+		$req = $db->prepare('SELECT hid, borrowingDate, renderingDate, virtualMedia, extend, lost, title, author, format FROM historique AS h, media AS m WHERE cid = ? AND h.mid = m.mid AND virtualMedia = true');	
 		$req->execute(array($cid));
 
 		return $req;	
@@ -38,7 +38,7 @@ class Customer {
 		$db = dbConnect();
 		
 		// Check if all reserved media have been returned
-		$req = $db->prepare('SELECT null FROM historique WHERE cid = ? AND virtual = false AND renderingDate = null');
+		$req = $db->prepare('SELECT null FROM historique WHERE cid = ? AND virtualMedia = false AND renderingDate = null');
 		$req->execute(array($cid));
 		
 		if($req->rowCount() == 0) {
@@ -98,7 +98,7 @@ class Customer {
 		$premium = $req->fetch()['premium'];
 		
 		// Check current number reservation
-		$req = $db->prepare('SELECT null FROM historique, media WHERE cid = ? AND virtual = false AND renderingDate = null AND media.mid = historique.mid AND media.format = ?');
+		$req = $db->prepare('SELECT null FROM historique, media WHERE cid = ? AND virtualMedia = false AND renderingDate = null AND media.mid = historique.mid AND media.format = ?');
 		if($format === 'livre' || $format === 'periodique') {
 			$req->execute(array($cid, $format));
 		} else if($format === 'audio' || $format === 'film') {
@@ -135,15 +135,24 @@ class Customer {
 	
 	public function borrowMedia($cid, $mid) {
 		$db = dbConnect();
+		// Check if already borrow
+		$req = $db->prepare('SELECT null FROM historique WHERE cid = ? AND mid = ? AND renderingDate IS NULL');
+		$req->execute(array($cid, $mid));
 		
+		if($req->rowCount() != 0) {
+			return false;
+		}
+			
 		// Is client premium
 		$req = $db->prepare('SELECT premium FROM client WHERE cid = ?');
 		$req->execute(array($cid));
 		$premium = $req->fetch()['premium'];
 		
 		// Add media
-		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium virtual) VALUES(?, ?, ?, true)');
+		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtualMedia) VALUES(?, ?, ?, true)');
 		$req->execute(array($cid, $mid, $premium));
+		
+		return true;
 	}
 	
 	public function renewAccount($cid) {

@@ -28,11 +28,12 @@
 				<div>
 					<?php
 					for($i=0; $i<count($imagePath); $i++) {
-						echo '<div>';
+						echo "<a href='index.php?action=mediaPage&id=$mid[$i]'>";
 						    echo "<h3> $title[$i] </h3>";
 							echo "<img src=$imagePath[$i] alt='Image du produit' class='image'>";
-						echo '</div>';
-					}
+
+						echo '</a>';
+					}			
 					?>
 				</div>
 			</div>

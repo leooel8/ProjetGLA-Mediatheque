@@ -3,10 +3,10 @@
 	<head>
 		<meta charset = "utf-8"/>
 		<meta name="viewport" content="width=device-width">
-		<title> Bienvenue dans votre médiathèque </title>
+		<title> Mes médias </title>
 		<link href='public/css/mainStyle.css' rel='stylesheet'/>
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
-		<link href='public/css/mediaListStyle.css' rel='stylesheet'/>
+		<link href='public/css/myMediaStyle.css' rel='stylesheet'/>
 	</head>
 
 	<body>
@@ -15,15 +15,21 @@
 		?>
 						
 		<main>
-			<h2 id='searchTitle'> Mes médias </h2>
+			<h2 id='mainTitle'> Mes médias: </h2>
 		
 			<div id='list'>
 				<?php
-					while($media = $medias->fetch()) {
+				while($media = $medias->fetch()) {
+					echo "<form action='index.php' method='post'>";
 						echo "<div class='media'>";
-							print_r($media);
+							echo "<p> <strong> Titre: </strong> $media[title] </p>";
+							echo "<p> <strong> Auteur: </strong> $media[author] </p>";
+							echo "<p> <strong> Format: </strong> $media[format] </p>";
+							echo "<input type='hidden' name='mid' value='$media[mid]'>";
+							echo "<input type='submit' name='visualizeMedia' value='Visualiser' class='visualize'>";
 						echo "</div>";
-					}
+					echo "</form>";
+				}
 				?>
 			<div>
 		</main>
