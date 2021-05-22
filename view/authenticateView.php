@@ -7,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
+    <?php
+		/* logo de mediatheque */
+		require("view/headerView.php");
+	?>
     <div id="authentication_div">
         <form id="authenticationWrapper" method="post" action="index.php">
             <h3>Authentification</h3>

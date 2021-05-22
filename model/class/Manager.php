@@ -98,26 +98,6 @@ class Manager {
 		} else {
 			return $success;
 		}
-		
-		// if($this->accountPasswordMail($email, $password)) {	
-					
-		// 	$db = dbConnect();
-			
-		// 	// Add account
-		// 	$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
-		// 	$req->execute(array($email, $adress, $passwordHash));
-			
-		// 	// Get id
-		// 	$req = $db->prepare('SELECT LAST_INSERT_ID()');
-        //     $req->execute();
-        //     $id = $req->fetch()[0];
-			
-		// 	// Add client
-		// 	$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
-		// 	$req->execute(array($id, $lastName, $firstName, $gender, $premium));
-		// } else {
-		// 	throw new Exception('Erreur lors de l\'envoie du mail');
-		// }
 	}
 	
 	public function reservationList() {
@@ -182,6 +162,31 @@ class Manager {
 		$req = $db->prepare('SELECT firstName, lastName, number, sheduledDate , morning FROM reservationSalle AS r, client AS c WHERE sheduledDate >= NOW() AND r.cid = c.cid');
 		$req->execute(array());		
 		
+		return $req;
+	}
+
+	public function getValidatesCustomer() {
+		$db = dbConnect();
+		
+		$req = $db->prepare('SELECT * from client WHERE validate=0');
+		$req->execute();
+		return $req;
+	}
+
+	public function getValidatesProvider() {
+		$db = dbConnect();
+		
+		$req = $db->prepare('SELECT * from fournisseur WHERE validate=0');
+		$req->execute();
+		return $req;
+	}
+
+	public function getValidatesMedias() {
+		$db = dbConnect();
+
+		$req = $db->prepare('SELECT pid, mid, compagnyName, title, format, quantity FROM proposition AS p, fournisseur AS f, media as m WHERE p.accepted = 0 AND m.mid = p.mid AND f.fid = p.fid');
+		$req->execute(array());
+
 		return $req;
 	}
 	

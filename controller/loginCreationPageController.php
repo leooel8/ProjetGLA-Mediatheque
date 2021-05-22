@@ -34,7 +34,7 @@ function createProvider($company_name, $email, $password, $cpassword, $adress) {
     $res = $anonymousCustomer->createProviderAccount($company_name, $email, $password, $cpassword, $adress);
     if ($res===true) {
         echo "<p>Created successfully</p>";
-        echo "<p> Company Name : " . $company_name . " | Email : " . $email . " | Password : " . $password . " | Adress : " . $adress ."</p>";
+        authenticate($email, $password);
     } else {
         echo "<p>Problem : " . $res . "</p>";
     }

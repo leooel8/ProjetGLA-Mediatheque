@@ -46,8 +46,8 @@ function mainPage() {
 			$action7 = 'Planning des salles';
 			$link1 = 'index.php?action=manageReservation';
 			$link2 = '#';
-			$link3 = '#';
-			$link4 = '#';
+			$link3 = 'index.php?action=managerValidatesAccount';
+			$link4 = 'index.php?action=managerValidatesMedia';
 			$link5 = 'index.php?action=managerCreatesCustomer';
 			$link6 = 'index.php?action=mediaCreation';
 			$link7 = '#';

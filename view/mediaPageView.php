@@ -6,6 +6,9 @@
 		<title> Bienvenue dans votre médiathèque </title>
 		<link href='public/css/mainStyle.css' rel='stylesheet'/>
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
+		<link href='public/css/mainStyle.css' rel='stylesheet'/>
+		<link href='public/css/mainPageStyle.css' rel='stylesheet'/>
+		<link href='public/css/footerStyle.css' rel='stylesheet'/>
 	</head>
 
 	<body>
