@@ -11,3 +11,10 @@
         
         managerValidatesMediaPage();
     }
+
+    function refuseMedia($mid, $format) {
+        $manager = new Manager();
+        $manager->deleteMedia($mid, $format);
+
+        managerValidatesMediaPage();
+    }

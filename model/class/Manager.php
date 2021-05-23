@@ -24,11 +24,25 @@ class Manager {
 		$req->execute(array($mid));
 	}
 
-	public function deleteMedia($mid) {
+	public function deleteMedia($mid, $format) {
 		$db = dbConnect();
 
-		$req = $db->prepare('DELETE FROM media WHERE mid = ?');
+		if($format === "livre") {
+			$req = $db->prepare('DELETE FROM livre WHERE mid = ?');
+		}
+		else if($format === "film") {
+			$req = $db->prepare('DELETE FROM film WHERE mid = ?');
+		}
+		else if($format === "periodique") {
+			$req = $db->prepare('DELETE FROM periodique WHERE mid = ?');
+		}
+		else if($format === "audio") {
+			$req = $db->prepare('DELETE FROM audio WHERE mid = ?');
+		}
+
+	$req = $db->prepare('DELETE FROM media INNER JOIN proposition ON media.mid = proposition.mid WHERE m.mid = ?');
 		$req->execute(array($mid));
+		
 	}
 
 	//cas uniquement physique

@@ -31,6 +31,7 @@
                     echo "Quantitée : " . $current_media['quantity'] . "</br>";
 
                     echo "<a  href=index.php?action=validateMedia&id_media=" . $current_media['mid'] ."><button class='validate_button'>Valider</button></a></li>";
+                    echo "<a  href=index.php?action=refuseMedia&id_media=" . $current_media['mid'] ."&formatMedia=" . $current_media['format'] . "><button class='validate_button'>Refuser</button></a></li>";
                     echo "</div>";
                 }
                 echo "</ul>";

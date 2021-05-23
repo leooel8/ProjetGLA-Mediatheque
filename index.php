@@ -208,6 +208,11 @@ require_once 'model/PHPMailer/src/SMTP.php';
 				validateMedia($_GET['id_media']);
 			}
 
+			// Manager refuses media
+			else if($_GET['action'] === 'refuseMedia') {
+				refuseMedia($_GET['id_media'], $_GET['formatMedia']);
+			}
+
 			// Disconnect
 			else if($_GET['action'] === 'disconnect') {
 				$_SESSION['status'] = 'anonymous';
