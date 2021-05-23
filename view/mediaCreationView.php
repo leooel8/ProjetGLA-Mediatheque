@@ -44,7 +44,7 @@
     ?>
     <div id="mediaCreation_div">
         <div id="mediaCreation_form">
-            <form method="post" action="index.php">
+            <form method="post" action="index.php"  enctype="multipart/form-data" >
                 <h3>Création de média</h3>
 
                 <label for="media_name">Nom</label>
@@ -116,9 +116,9 @@
                 <textarea id="media_description" rows="6" cols="40" name="media_description" required >
                 </textarea>
 
-                  <!-- la page qu'on affichera sur le site en gros obligatoire-->
+<!-- la page qu'on affichera sur le site en gros obligatoire-->
                   <label for="first_image">Première de couverture / Poster :  </label>
-                  <input type='file' name='first_image' accept=".png, .jpg, .jpeg" id='first_image' required />
+                  <input type='file' name='first_image' accept=".jpg" id='first_image' required />
 
                 <label for="media_date">Date de sortie</label>
 

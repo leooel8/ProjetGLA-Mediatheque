@@ -46,6 +46,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			if ($_POST['type_form'] === 'customer') {
 				createCustomer($_POST['logCreate_last_name'], $_POST['logCreate_first_name'], $_POST['logCreate_email'], $_POST['genre'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['account_type'], $_POST['logCreate_adress']);
 			} else {
+
 				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
 			}
 		}
@@ -78,9 +79,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Create media
 		else if (isset($_POST['media_format'])) {
-      /*var_dump($_POST['first_image']);
-      var_dump($_POST['picture']);
-			*/createMedia();
+			createMedia();
 		}
 	}
   else if(count($_GET) > 0) {

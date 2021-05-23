@@ -10,7 +10,7 @@
     <link href='public/css/mainPageStyle.css' rel='stylesheet'/>
     <link href='public/css/headerStyle.css' rel='stylesheet'/>
     <link href='public/css/footerStyle.css' rel='stylesheet'/>
-    
+
 </head>
 <body>
     <?php
@@ -19,7 +19,7 @@
 	?>
     <div id="loginCreation_div">
         <div id="logCustomerForm_div">
-            <form method="post" action="index.php">
+            <form method="post" action="index.php" enctype="multipart/form-data">
                 <button id="changeProvider_button" type="button"  onclick="showProviderDiv()">Créer un compte Fournisseur</button>
                 <h3>Création de compte Client</h3>
                 <input type="hidden" id="customerHidden" name="type_form" value="customer">
@@ -46,9 +46,9 @@
 
                 <label for="password_valid">Mot de passe à nouveau* :</label>
                 <input type="password" name="logCreate_password_valid" required/>
-                
-                <label for="id_image">Pièce d'identité* :</label>
-                <input type="file" name="logCreate_id_image" accept="image/png image/jpeg" required/>
+
+                <label for="logCreate_id_image">Pièce d'identité* :</label>
+                <input type="file" name="logCreate_id_image"   id="logCreate_id_image" accept="image/png image/jpeg" required/>
 
                 <label for="account_type">Type de compte</label>
                 <select name="account_type" id="account_type">
@@ -56,13 +56,14 @@
                     <option value="premium_account">Premium | Prix : 15€</option>
                 </select>
 
+
                 <input type="submit" value="To Payment" />
-                
+
             </form>
         </div>
 
         <div id="logProviderForm_div" class="hide">
-        <form method="post" action="index.php">
+        <form method="post" action="index.php" enctype="multipart/form-data">
         <button id="changeCustomer_button" type="button"  onclick="showCustomerDiv()">Créer un compte Client</button>
             <h3>Création de compte Fournisseur</h3>
             <input type="hidden" id="customerHidden" name="type_form" value="provider">
@@ -70,7 +71,7 @@
             <input type="text" name="logCreate_company_name" required/>
             <label for="email">Email* :</label>
             <input type="text" name="logCreate_email" required/>
-            
+
             <label for="adress">Adresse* :</label>
             <input type="text" name="logCreate_adress" required/>
 
@@ -79,12 +80,12 @@
 
             <label for="password_valid">Mot de passe à nouveau* :</label>
             <input type="password" name="logCreate_password_valid" required/>
-            
+
             <label for="id_image">Document d'identification* :</label>
-            <input type="file" name="logCreate_id_image" accept="image/png image/jpeg" required/>
+            <input type="file" name="logCreate_id_image"   id="logCreate_id_image" accept="image/png image/jpeg" required/>
 
             <input type="submit" value="Validate" />
-                
+
             </form>
         </div>
     </div>
