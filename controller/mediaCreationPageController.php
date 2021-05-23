@@ -273,7 +273,4 @@ function createMedia() {
 
     header($message);
 
-
-
-
 }

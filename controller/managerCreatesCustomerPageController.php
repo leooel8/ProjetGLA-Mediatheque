@@ -20,7 +20,8 @@
             $gender = 1;
         }
 
-        echo $manager->createCustomerAccount($last_name, $first_name, $email, $gender, $address, $final_premium);
+        $manager->createCustomerAccount($last_name, $first_name, $email, $gender, $address, $final_premium);
+        managerCreatesCustomerPage();
     
     }
 
