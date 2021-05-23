@@ -34,7 +34,6 @@ function getSelectToLivre() {
     let newSelect = document.createElement('select')
     newSelect.setAttribute("name", "media_type")
     newSelect.id = "media_type"
-
     let newOption_1 = document.createElement('option')
     newOption_1.value = "type_livre_roman"
     newOption_1.appendChild(document.createTextNode('Roman'))
@@ -67,6 +66,8 @@ function getSelectToLivre() {
     newOption_8.value = "type_livre_poesie"
     newOption_8.appendChild(document.createTextNode('Poésie'))
     newSelect.appendChild(newOption_8)
+    
+
 
     input_select_type_div.appendChild(newSelect)
     input_select_type = document.querySelector("#media_type")
@@ -89,6 +90,7 @@ function getSelectToFilm() {
     newOption_3.value = "type_film_moyen"
     newOption_3.appendChild(document.createTextNode('Moyen métrage'))
     newSelect.appendChild(newOption_3)
+
 
     input_select_type_div.appendChild(newSelect)
     input_select_type = document.querySelector("#media_type")
@@ -275,3 +277,5 @@ function setOptionnelToPeriodique() {
     input_optionnel_div.appendChild(newDiv)
     input_contenu_div = document.querySelector("#contenu")
 }
+
+//function to store the file
