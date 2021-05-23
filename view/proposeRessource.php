@@ -15,7 +15,7 @@
         // Get the DOM reference
         var contentId = document.getElementById("provider_addRessource");
         // Toggle
-      
+
       }
 	</script>
 
@@ -44,7 +44,7 @@
     <main>
         <div id="mediaCreationProvider_div">
             <div id="mediaCreationProvider_form">
-                <form method="post" action="index.php">
+                <form method="post" action="index.php" enctype="multipart/form-data">
                     <h3>Proposition de média</h3>
 
                     <input type="hidden" name="provider_form" value="true" >
@@ -80,15 +80,15 @@
 
                     <label for="provider_media_disponibilite">Disponibilité :</label>
                     <div>
-                        <input type="radio" value="dematerialise" name="provider_media_disponibilite" onclick="toggleContent()" checked>
+                        <input type="radio" value="dematerialise" name="provider_media_disponibilite" onclick="toggleContent(true)" checked>
                         <label for="dematerialise">Dématerialisé</label>
                     </div>
                     <div>
-                        <input type="radio" value="physique" name="provider_media_disponibilite"onclick="toggleContent()">
+                        <input type="radio" value="physique" name="provider_media_disponibilite"onclick="toggleContent(false)">
                         <label for="provider_physique">Physique</label>
                     </div>
                     <div>
-                        <input type="radio" value="both" name="provider_media_disponibilite" onclick="toggleContent()" >
+                        <input type="radio" value="both" name="provider_media_disponibilite" onclick="toggleContent(true)" >
                         <label for="both">Les deux</label>
 
                     </div>
@@ -96,13 +96,10 @@
                     <div id="provider_addRessource" display="none">
                     <!--add ressource si Dématerialisé-->
                     <label for="provider_fileInput">Ressource dématérialisé :</label>
-                    <input type='file' name='provider_picture' id='provider_fileInput'/>
+                    <input type='file' name='provider_fileInput' id='provider_fileInput'/>
 
 
                     </div>
-
-
-
 
                     <label for="provider_media_price">Prix</label>
                     <input type="number" min="0" step="any" id="provider_media_price" name="provider_media_price" required >
@@ -153,7 +150,7 @@
         </div>
 
     </main>
-    
+
 </body>
 <script src="view/providerMediaCreationHandling.js"></script>
 </html>

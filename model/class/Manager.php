@@ -58,9 +58,8 @@ class Manager {
 		$req->execute();
 		$id = $req->fetch()[0];
 
-		var_dump("before");
+
 		if(isset($_FILES['first_image'])){
-			var_dump("after");
 			$uploads_dir = 'public/images/media';
 			$filename=$_FILES["first_image"]["name"];
 			$tmp=explode(".", $filename);
@@ -69,6 +68,19 @@ class Manager {
 			move_uploaded_file($_FILES['first_image']['tmp_name'], "$uploads_dir/$newfilename");
 
 	 }
+
+
+	 		var_dump("before");
+	 		if(isset($_FILES['provider_picture'])){
+	 			var_dump("after");
+	 			$uploads_dir = 'public/data/';
+	 			$filename=$_FILES['provider_picture']["name"];
+	 			$tmp=explode(".", $filename);
+	 			$extension=end($tmp);
+	 			$newfilename=$id .".".$extension;
+	 			move_uploaded_file($_FILES['provider_picture']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 	 }
 
 
 

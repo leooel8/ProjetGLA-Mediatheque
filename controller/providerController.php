@@ -5,8 +5,8 @@ function proposeRessource() {
 	require("view/proposeRessource.php");
 }
 function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type){
-   
-  
+
+
     //include("model/class/Provider.php");
   $p = new Provider;
 
@@ -26,42 +26,6 @@ function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $auth
   $description = $_POST['provider_media_description'];
   //Date de sortie du média
   $date = $_POST['provider_media_date'];
-
-  //store the first image
-if (is_uploaded_file($_POST['provider_first_image']))
-{
-
- if(empty($_FILES['provider_first_image']['name']))
- {
-   echo " File name is empty! ";
-   exit;
- }
-
- $upload_file_name =$_FILES['provider_first_image']['provider_media_name'];
- if(strlen ($upload_file_name)>100)
- {
-   echo " too long file name ";
-   exit;
- }
-
- $upload_file_name = preg_replace("/[^A-Za-z0-9 \.\-_]/", '', $upload_file_name);
-
-
- if ($_FILES['provider_first_image']['provider_media_name']> 1000000)
- {
- echo " too big file ";
-   exit;
- }
-
- //Saving  the file here
- $dest=__DIR__.'/public/images'.$upload_file_name;
- if (move_uploaded_file($_FILES['first_image']['media_name'], $dest))
- {
-   echo 'File Has Been Uploaded !';
- }
-}
-
-
 
 
   //Traduction du format et du type
@@ -140,14 +104,14 @@ if (is_uploaded_file($_POST['provider_first_image']))
 
   if ($_POST['provider_media_disponibilite'] === 'dematerialise') {
       $mediaType = 0;
-      storeFile($_POST['picture'],$name);
   }
+
   else if ($_POST['provider_media_disponibilite'] === 'physique') {
       $mediaType = 1;
   }
   else if ($_POST['provider_media_disponibilite'] === 'both') {
       $mediaType = 2;
-      storeFile($_POST['provider_fileInput'],$name);
+
   }
 
   //Vérification des informations entrées par l'utilisateur
@@ -284,22 +248,18 @@ if (is_uploaded_file($_POST['provider_first_image']))
 
   if (strlen($error) == 0) {
       $p->proposeMedia($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type);
-     
+
       $message = "Location: index.php?action=proposeRessource&success=Nouveau média créé!";
   } else {
       $message = "Location: index.php?action=proposeRessource&error=" . $error;
   }
 
   header($message);
-
-
-  
-  //var_dump($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type);
 }
 
 function myPropositionPage() {
 	$p = new Provider;
 	$propositions = $p->myProposition($_SESSION['id']);
-	
+
 	require("view/myPropositionView.php");
 }

@@ -101,27 +101,12 @@ function createMedia() {
 
     if ($_POST['media_disponibilite'] === 'dematerialise') {
         $mediaType = 0;
-        if(isset($_FILES['picture'])){
-            $uploads_dir = 'public/images/ressource/';
-            $nameIm =  $_FILES['picture']['name'];
-            move_uploaded_file($_FILES['picture']['tmp_name'], "$uploads_dir/$nameIm");
-         }
     }
     else if ($_POST['media_disponibilite'] === 'physique') {
         $mediaType = 1;
     }
     else if ($_POST['media_disponibilite'] === 'both') {
         $mediaType = 2;
-        if(isset($_FILES['picture'])){
-          /*echo "Filename: " . $_FILES['first_image']['name']."<br>";
-          echo "Type : " . $_FILES['first_image']['type'] ."<br>";
-          echo "Size : " . $_FILES['first_image']['size'] ."<br>";
-          echo "Temp name: " . $_FILES['first_image']['tmp_name'] ."<br>";
-          echo "Error : " . $_FILES['first_image']['error'] . "<br>";
-          */  $uploads_dir = 'public/images/ressource/';
-            $nameIm =  $_FILES['picture']['name'];
-            move_uploaded_file($_FILES['picture']['tmp_name'], "$uploads_dir/$nameIm");
-         }
 
     }
 
@@ -264,7 +249,7 @@ function createMedia() {
     } else {
         $message = "Location: index.php?action=mediaCreation&error=" . $error;
     }
-
-    header($message);
+    echo $message;
+    //header($message);
 
 }

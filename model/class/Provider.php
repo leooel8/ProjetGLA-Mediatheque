@@ -14,17 +14,31 @@ class Provider {
 		$req->execute();
 		$mid = $req->fetch()[0];
 
-		//var_dump("before");
- 	 if(isset($_FILES['first_image'])){
- 		 //var_dump("after");
- 		 $uploads_dir = 'public/images/media';
- 		 $filename=$_FILES["first_image"]["name"];
- 		 $tmp=explode(".", $filename);
- 		 $extension=end($tmp);
- 		 $newfilename=$id .".".$extension;
- 		 move_uploaded_file($_FILES['first_image']['tmp_name'], "$uploads_dir/$newfilename");
+		if(isset($_FILES['provider_first_image'])){
 
- 	}
+
+			$uploads_dir = 'public/images/media';
+			$filename=$_FILES["provider_first_image"]["name"];
+			$tmp=explode(".", $filename);
+			$extension=end($tmp);
+			$newfilename=$mid .".".$extension;
+			move_uploaded_file($_FILES['provider_first_image']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 }
+
+
+
+	 		if(isset($_FILES['provider_fileInput'])){
+	 			
+	 			$uploads_dir = 'public/data/';
+	 			$filename=$_FILES['provider_fileInput']["name"];
+	 			$tmp=explode(".", $filename);
+	 			$extension=end($tmp);
+	 			$newfilename=$mid .".".$extension;
+	 			move_uploaded_file($_FILES['provider_fileInput']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 	 }
+
 
 
 		//Insertion dans la table spécialisée pour le format
