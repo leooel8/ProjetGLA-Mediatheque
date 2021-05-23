@@ -25,9 +25,7 @@
 						echo "</div>";
 					}
 				?>
-			<div>
+			</div>
 		</main>
 	</body>
-
-</div>
 </html>

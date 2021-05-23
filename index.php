@@ -31,6 +31,7 @@ require_once("controller/manageReservationPageController.php");
 require_once("controller/managerCreatesCustomerPageController.php");
 require_once("controller/managerValidatesAccountPageController.php");
 require_once("controller/managerValidatesMediaPageController.php");
+require_once("controller/providerController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -76,11 +77,15 @@ require_once 'model/PHPMailer/src/SMTP.php';
 
 			editMedia($_POST['mid'], $_POST['format'], $_POST['title'], $_POST['author'], $_POST['quantity'], $_POST['kind'], $_POST['releaseDate'], $_POST['type'], $_POST['price'], $_POST['description'], $_POST['mediaType'], $_POST['edition'], $_POST['editor'], $_POST['productor'], $_POST['duration']);
 		}
-		// Create media
-		else if (isset($_POST['media_format'])) {
-      /*var_dump($_POST['first_image']);
-      var_dump($_POST['picture']);
-			*/createMedia();
+		// Manager creates media 
+		else if (isset($_POST['manager_form'])) {
+			createMedia();
+		}
+
+		// Provider creates media 
+		else if (isset($_POST['provider_form']) && isset($_SESSION['id'])) {
+			
+			createRessource($_SESSION['id'], $_POST['provider_media_type'], $_POST['provider_media_delivery_date'], $_POST['provider_media_format'], $_POST['provider_media_name'], $_POST['provider_media_author'], $_POST['provider_media_price'], $_POST['provider_media_quantity'], $_POST['provider_media_genre'], $_POST['provider_media_description'],  $_POST['provider_media_date'], $_POST['provider_media_type']);
 		}
 	}
   else if(count($_GET) > 0) {
@@ -118,6 +123,10 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			// Media creation
 			else if ($_GET['action'] === 'mediaCreation') {
 				mediaCreationPage();
+			}
+			// Media creation by provider
+			else if ($_GET['action'] === 'proposeRessource') {
+				proposeRessource();
 			}
 			// My media
 			else if($_GET['action'] === 'myMedia') {

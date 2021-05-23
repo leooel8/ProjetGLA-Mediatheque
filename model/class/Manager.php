@@ -58,7 +58,7 @@ class Manager {
 			$req->execute(array($id, $_POST['media_editor'], $_POST['media_edition'], $_POST['media_duration']));
 		}
 		else if ($format === "periodique") {
-			$req = $db->prepare('INSERT INTO pariodique (mid, editor) VALUES (?, ?)');
+			$req = $db->prepare('INSERT INTO periodique (mid, editor) VALUES (?, ?)');
 			$req->execute(array($id, $_POST['media_editor']));
 		}
 	}
@@ -98,6 +98,11 @@ class Manager {
 		$anoCustomer = new AnonymousCustomer();
 		$success = $anoCustomer->createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $password, $premium);
 		if($success === true) {
+			$db = dbConnect();
+
+			$req = $db->prepare('UPDATE client SET validate = true, WHERE email = ?');
+			$req->execute(array($email));
+
 			return $this->accountPasswordMail($email, $password);
 		} else {
 			return $success;
@@ -195,7 +200,7 @@ class Manager {
 	public function getValidatesMedias() {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT pid, mid, compagnyName, title, format, quantity FROM proposition AS p, fournisseur AS f, media as m WHERE p.accepted = 0 AND m.mid = p.mid AND f.fid = p.fid');
+		$req = $db->prepare('SELECT p.pid, p.mid, companyName, title, format, quantity FROM proposition AS p, fournisseur AS f, media as m WHERE p.accepted IS NULL AND m.mid = p.mid AND f.fid = p.fid');
 		$req->execute(array());
 
 		return $req;

@@ -18,17 +18,20 @@
 	?>
 
     <main>
-        <h3>Validation des Médias</h3>
-
         <div id="mediasList_div">
+            <h2>Validation des Médias</h2>
             <h3>Médias proposés</h3>
             <?php
                 echo "<ul>";
-                while($current_media = $medias_list->fetch()) {
-                    
-                    echo "<li>Nom de la companie : " . $current_media['companyName'] . " | Titre : " . $current_account['title'] . " | Format = " . $current_account['format'] . "  | Quantitée : " . $current_account['quantity'];
+                while($current_media = $media_list->fetch()) {
+                    echo "<div id='liste_item_div'>";
+                    echo "Nom de la companie : " . $current_media['companyName'] . "</br>";
+                    echo "Titre : " . $current_media['title'] . "</br>";
+                    echo "Format : " . $current_media['format'] . "</br>";
+                    echo "Quantitée : " . $current_media['quantity'] . "</br>";
 
-                    echo " | <a  href=index.php?action=validateMedia&id_media=" . $current_account['mid'] ."><button>Valider</button></a></li>";
+                    echo "<a  href=index.php?action=validateMedia&id_media=" . $current_media['mid'] ."><button class='validate_button'>Valider</button></a></li>";
+                    echo "</div>";
                 }
                 echo "</ul>";
             ?>

@@ -7,9 +7,8 @@
     <title>Document</title>
     
     <link href='public/css/mainStyle.css' rel='stylesheet'/>
-    <link href='public/css/mainPageStyle.css' rel='stylesheet'/>
     <link href='public/css/headerStyle.css' rel='stylesheet'/>
-    <link href='public/css/footerStyle.css' rel='stylesheet'/>
+    <link href='public/css/managerCreatesCustomerViewStyle.css' rel='stylesheet'/>
     
 </head>
 <body>
@@ -17,39 +16,43 @@
 		/* logo de mediatheque */
 		require("view/headerView.php");
 	?>
-    <div id="loginCreation_div">
-        <div id="logCustomerForm_div">
-            <form method="post" action="index.php">
-                <h3>Création de compte Client</h3>
-                <input type="hidden" id="customerHidden" name="manager_login_creation" value="customer">
-                <label for="lastName">Nom de famille* :</label>
-                <input type="text" name="log_last_name" required/>
-                <label for="firstName">Prénom* :</label>
-                <input type="text" name="log_first_name" required/>
-                <label for="email">Email* :</label>
-                <input type="text" name="log_email" required/>
-                <label for="lastName">Genre* :</label>
-                <div>
-                    <input type="radio" value="Femme" name="log_gender" checked>
-                    <label for="Femme">Femme</label>
-                </div>
-                <div>
-                    <input type="radio" value="Homme" name="log_gender">
-                    <label for="Homme">Homme</label>
-                </div>
-                <label for="adress">Adresse* :</label>
-                <input type="text" name="log_adress" required/>
 
-                <label for="account_type">Type de compte</label>
-                <select name="log_premium" id="account_type">
-                    <option value="basic_account">Basique | Prix : 10€</option>
-                    <option value="premium_account">Premium | Prix : 15€</option>
-                </select>
+    <main>
+        <div id="loginCreation_div">
+            <div id="logCustomerForm_div">
+                <form method="post" action="index.php">
+                    <h3>Création de compte Client</h3>
+                    <input type="hidden" id="customerHidden" name="manager_login_creation" value="customer">
+                    <label for="lastName">Nom de famille* :</label>
+                    <input type="text" name="log_last_name" required/>
+                    <label for="firstName">Prénom* :</label>
+                    <input type="text" name="log_first_name" required/>
+                    <label for="email">Email* :</label>
+                    <input type="text" name="log_email" required/>
+                    <label for="lastName">Genre* :</label>
+                    <div>
+                        <input type="radio" value="Femme" name="log_gender" checked>
+                        <label for="Femme">Femme</label>
+                    </div>
+                    <div>
+                        <input type="radio" value="Homme" name="log_gender">
+                        <label for="Homme">Homme</label>
+                    </div>
+                    <label for="adress">Adresse* :</label>
+                    <input type="text" name="log_adress" required/>
 
-                <input type="submit" value="Valider" />
-                
-            </form>
+                    <label for="account_type">Type de compte</label>
+                    <select name="log_premium" id="account_type">
+                        <option value="basic_account">Basique | Prix : 10€</option>
+                        <option value="premium_account">Premium | Prix : 15€</option>
+                    </select>
+
+                    <input type="submit" value="Valider" />
+                    
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
+    
 </body>
 </html>

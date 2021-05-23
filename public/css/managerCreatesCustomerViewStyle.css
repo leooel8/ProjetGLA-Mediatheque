@@ -1,0 +1,23 @@
+main {
+    margin-top: 100px;
+}
+
+#loginCreation_div {
+    margin: 0 auto;
+    width: 255px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgb(135, 135, 245);
+    padding: 15px;
+    padding-top: 3px;
+    border-radius: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type=text], input[type=submit], #account_type{
+    width: 250px;
+}

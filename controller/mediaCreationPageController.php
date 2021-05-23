@@ -288,9 +288,6 @@ if (is_uploaded_file($_POST['first_image']))
 
     header($message);
 
-
-
-
 }
 
 function storeFile($upload, $uploadName){
