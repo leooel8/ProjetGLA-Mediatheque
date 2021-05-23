@@ -7,14 +7,17 @@ class Authenticated {
 		$_SESSION['status'] = 'anonymous';
 	}
 
-	public function changePassword($email) {
+	public function changePassword() {
 		$db = dbConnect();
-
-		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');
-		$req->execute(array($email));
+		
+		$req = $db->prepare('SELECT email FROM compte WHERE id = ?');
+		$req->execute(array($_SESSION['id']));
 
 		if($req->rowCount() > 0) {
-			$this->changePasswordMail($email);
+			$email = $req->fetch()['email'];
+			$token= bin2hex(openssl_random_pseudo_bytes(32));
+			
+			return $this->changePasswordMail($email, $token);
 		}
 	}
 
@@ -41,7 +44,7 @@ class Authenticated {
 	}
 
 	/*---------- Private functions ----------*/
-	private function changePasswordMail($destination) {
+	private function changePasswordMail($destination, $token) {
 		$mail = new PHPMailer();
 		$mail->isSMTP();
 		$mail->Host = "smtp.gmail.com";
@@ -57,7 +60,7 @@ class Authenticated {
 		$mail->addAddress($destination);
 
 		$mail->Subject = 'Changement de votre mot de passe sur votre médiathèque en ligne !';
-		$mail->Body = "<p>Voici votre lien pour changer votre mot de passe:</p> <strong>lien ici</strong>";
+		$mail->Body = "<p>Voici votre lien pour changer votre mot de passe:</p> <strong>nomDeDomaine?action=resetPassword&token=$token</strong>";
 		$mail->IsHTML(true);
 
 		if($mail->send()) {

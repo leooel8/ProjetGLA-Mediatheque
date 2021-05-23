@@ -86,51 +86,57 @@ class Customer {
 	
 	public function reserveMedia($cid, $mid, $sheduledDate) {
 		$db = dbConnect();
-		
-		// Get the format of the media
-		$req = $db->prepare('SELECT format FROM media WHERE mid = ?');
+		// Get quantity
+		$req = $db->prepare('SELECT quantity FROM media WHERE mid = ?');
 		$req->execute(array($mid));
-		$format = $req->fetch()['format']; 
-		
-		// Is client premium
-		$req = $db->prepare('SELECT premium FROM client WHERE cid = ?');
-		$req->execute(array($cid));
-		$premium = $req->fetch()['premium'];
-		
-		// Check current number reservation
-		$req = $db->prepare('SELECT null FROM historique, media WHERE cid = ? AND virtualMedia = false AND renderingDate = null AND media.mid = historique.mid AND media.format = ?');
-		if($format === 'livre' || $format === 'periodique') {
-			$req->execute(array($cid, $format));
-		} else if($format === 'audio' || $format === 'film') {
-			$req->execute(array($cid, $format));
-		} else {
-			throw new Exception('Format de média inconnu');
-		}
-		$reservedNumber = $req->rowCount();
-				
-		if($premium) {
-			if(($format === 'livre' || $format === 'periodique') && $reservedNumber < 30) {
-				$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
-				$req->execute(array($cid, $mid, $sheduledDate));
-				return true;
-			} else if(($format === 'audio' || $format === 'film') && $reservedNumber < 10) {
-				$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
-				$req->execute(array($cid, $mid, $sheduledDate));
-				return true;
+		$quantity = intval($req->fetch()['quantity']); 
+	
+		if($quantity > 0) {			
+			// Get the format of the media
+			$req = $db->prepare('SELECT format FROM media WHERE mid = ?');
+			$req->execute(array($mid));
+			$format = $req->fetch()['format']; 
+			
+			// Is client premium
+			$req = $db->prepare('SELECT premium FROM client WHERE cid = ?');
+			$req->execute(array($cid));
+			$premium = $req->fetch()['premium'];
+			
+			// Check current number reservation
+			$req = $db->prepare('SELECT null FROM historique, media WHERE cid = ? AND virtualMedia = false AND renderingDate = null AND media.mid = historique.mid AND media.format = ?');
+			if($format === 'livre' || $format === 'periodique') {
+				$req->execute(array($cid, $format));
+			} else if($format === 'audio' || $format === 'film') {
+				$req->execute(array($cid, $format));
+			} else {
+				throw new Exception('Format de média inconnu');
 			}
-		} else {
-			if(($format === 'livre' || $format === 'periodique') && $reservedNumber < 10) {
-				$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
-				$req->execute(array($cid, $mid, $sheduledDate));
-				return true;
-			} else if(($format === 'audio' || $format === 'film') && $reservedNumber < 3) {
-				$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
-				$req->execute(array($cid, $mid, $sheduledDate));
-				return true;
+			$reservedNumber = $req->rowCount();
+					
+			if($premium) {
+				if(($format === 'livre' || $format === 'periodique') && $reservedNumber < 30) {
+					$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
+					$req->execute(array($cid, $mid, $sheduledDate));
+					return true;
+				} else if(($format === 'audio' || $format === 'film') && $reservedNumber < 10) {
+					$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
+					$req->execute(array($cid, $mid, $sheduledDate));
+					return true;
+				}
+			} else {
+				if(($format === 'livre' || $format === 'periodique') && $reservedNumber < 10) {
+					$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
+					$req->execute(array($cid, $mid, $sheduledDate));
+					return true;
+				} else if(($format === 'audio' || $format === 'film') && $reservedNumber < 3) {
+					$req = $db->prepare('INSERT INTO reservationMedia (cid, mid, sheduledDate) VALUES(?, ?, ?)');
+					$req->execute(array($cid, $mid, $sheduledDate));
+					return true;
+				}
 			}
+			return 'Vous avez atteint la limite de réservation physique maximun pour se format de média, veuillez d\'abord en rendre avant d\'en ré-emprunter';
 		}
-		
-		return false;
+		return 'Ce média n\'est plus disponible physiquement, nous somme désolé';		
 	}
 	
 	public function borrowMedia($cid, $mid) {

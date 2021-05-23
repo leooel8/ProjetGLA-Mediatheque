@@ -31,6 +31,7 @@ require_once("controller/manageReservationPageController.php");
 require_once("controller/managerCreatesCustomerPageController.php");
 require_once("controller/managerValidatesAccountPageController.php");
 require_once("controller/managerValidatesMediaPageController.php");
+require_once("controller/visualizePageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -66,7 +67,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Valid barrow media
 		else if(isset($_POST['validBorrowMedia'])) {
-			borrowMedia($_POST['mid'], $_POST['sheduledDate'], $_POST['hour']);
+			borrowMedia($_POST['mid'], $_POST['title'], $_POST['sheduledDate'], $_POST['hour']);
 		}
 		// Edit media
 		else if(isset($_POST['editMedia'])) {
@@ -81,11 +82,13 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		else if (isset($_POST['media_format'])) {
 			createMedia();
 		}
-	}
-  else if(count($_GET) > 0) {
-
-    ///début des cas GET action
-  	if (isset($_GET['action'])) {
+		// Go premium
+		else if (isset($_POST['goPremium'])) {
+			goPremium();
+		}	
+	} else if(count($_GET) > 0) {
+		//début des cas GET action
+		if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
 				loginPage();
@@ -208,6 +211,18 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
 				lostMedia($_GET['hid']);
 			}
+			// Visualize media
+			else if($_GET['action'] === 'visualize' && isset($_GET['mid']) && isset($_GET['format'])) {
+				visualizePage($_GET['mid'], $_GET['format']);
+			}
+			// Change password
+			else if($_GET['action'] === 'changePassword') {
+				changePassword();
+			}
+			// Go Premium
+			else if($_GET['action'] === 'goPremium' && isset($_GET['dayLeft'])) {
+				goPremiumPage($_GET['dayLeft']);
+			}
 		}
 		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
@@ -218,7 +233,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
-
 			banClient($_GET['banClient']);
 		}
 		// Unban a client
@@ -231,7 +245,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Add a manager
 		if (isset($_GET['type_form'])) {
-				addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
+			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
 		}
 		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {

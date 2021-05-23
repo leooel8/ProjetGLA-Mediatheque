@@ -14,18 +14,24 @@ function borrowMediaPage($mid, $title) {
 	require("view/borrowMediaView.php");
 }
 
-function borrowMedia($mid, $sheduledDate, $hour) {
+function borrowMedia($mid, $title, $sheduledDate, $hour) {
 	if($_SESSION['status'] === 'anonymous') {
 		header('Location: index.php?action=login');
 		exit;
 	} else {
 		$sheduledDate = $sheduledDate . " " . $hour;
 		$c = new Customer;
-		if($c->reserveMedia($_SESSION['id'], $mid, $sheduledDate)) {
+		$res = $c->reserveMedia($_SESSION['id'], $mid, $sheduledDate);
+		if($res === true) {
 			header('Location: index.php');
 			exit;	
 		} else {
-			$error = 'Vous avez atteint la limite de réservation physique maximun pour se format de média, veuillez d\'abord en rendre avant d\'en ré-emprunter';		
+			$error = $res;	
+			$min = (new DateTime('now'))->format("Y-m-d");
+			$max = new DateTime('now');
+			$interval = new DateInterval('P7D');
+			$max->add($interval);
+			$max = $max->format("Y-m-d");			
 			require("view/borrowMediaView.php");		
 		}
 	}

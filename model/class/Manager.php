@@ -94,13 +94,30 @@ class Manager {
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
 		// Generate random password and send it by email
 		$password= bin2hex(openssl_random_pseudo_bytes(5));
+	
+		$res = $this->isValidLogin($email, $password, $password);
+		if($res === true) {
+			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-		$anoCustomer = new AnonymousCustomer();
-		$success = $anoCustomer->createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $password, $premium);
-		if($success === true) {
+			$db = dbConnect();
+
+			// Add account
+			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+			$req->execute(array($email, $adress, $passwordHash));
+			//Get id
+			$req = $db->prepare('SELECT LAST_INSERT_ID()');
+			$req->execute();
+			$id = $req->fetch()[0];
+
+			// Add client
+			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium, validate) VALUES(?, ?, ?, ?, ?, true)");
+			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
+		}
+		
+		if($res === true) {
 			return $this->accountPasswordMail($email, $password);
 		} else {
-			return $success;
+			return $res;
 		}
 	}
 

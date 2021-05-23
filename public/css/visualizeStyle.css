@@ -1,0 +1,9 @@
+main {
+	margin-bottom: 0;
+}
+
+#visualize {
+	width: 100%;
+	height: calc(100vh - 75px);
+}
+

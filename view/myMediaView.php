@@ -20,20 +20,15 @@
 			<div id='list'>
 				<?php
 				while($media = $medias->fetch()) {
-					echo "<form action='index.php' method='post'>";
-						echo "<div class='media'>";
-							echo "<p> <strong> Titre: </strong> $media[title] </p>";
-							echo "<p> <strong> Auteur: </strong> $media[author] </p>";
-							echo "<p> <strong> Format: </strong> $media[format] </p>";
-							echo "<input type='hidden' name='mid' value='$media[mid]'>";
-							echo "<input type='submit' name='visualizeMedia' value='Visualiser' class='visualize'>";
-						echo "</div>";
-					echo "</form>";
+					echo "<div class='media'>";
+						echo "<p> <strong> Titre: </strong> $media[title] </p>";
+						echo "<p> <strong> Auteur: </strong> $media[author] </p>";
+						echo "<p> <strong> Format: </strong> $media[format] </p>";
+						echo "<a href='index.php?action=visualize&mid=$media[mid]&format=$media[format]' class='visualize'> Visualiser </a>";
+					echo "</div>";
 				}
 				?>
-			<div>
+			</div>
 		</main>
 	</body>
-	
-</div>
 </html>
