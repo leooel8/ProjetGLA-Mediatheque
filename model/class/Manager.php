@@ -24,11 +24,25 @@ class Manager {
 		$req->execute(array($mid));
 	}
 
-	public function deleteMedia($mid) {
+	public function deleteMedia($mid, $format) {
 		$db = dbConnect();
 
-		$req = $db->prepare('DELETE FROM media WHERE mid = ?');
+		if($format === "livre") {
+			$req = $db->prepare('DELETE FROM livre WHERE mid = ?');
+		}
+		else if($format === "film") {
+			$req = $db->prepare('DELETE FROM film WHERE mid = ?');
+		}
+		else if($format === "periodique") {
+			$req = $db->prepare('DELETE FROM periodique WHERE mid = ?');
+		}
+		else if($format === "audio") {
+			$req = $db->prepare('DELETE FROM audio WHERE mid = ?');
+		}
+
+	$req = $db->prepare('DELETE FROM media INNER JOIN proposition ON media.mid = proposition.mid WHERE m.mid = ?');
 		$req->execute(array($mid));
+
 	}
 
 	//cas uniquement physique
@@ -73,7 +87,7 @@ class Manager {
 			$req->execute(array($id, $_POST['media_editor'], $_POST['media_edition'], $_POST['media_duration']));
 		}
 		else if ($format === "periodique") {
-			$req = $db->prepare('INSERT INTO pariodique (mid, editor) VALUES (?, ?)');
+			$req = $db->prepare('INSERT INTO periodique (mid, editor) VALUES (?, ?)');
 			$req->execute(array($id, $_POST['media_editor']));
 		}
 	}
@@ -107,34 +121,34 @@ class Manager {
 	}
 
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
-		// Generate random password and send it by email
-		$password= bin2hex(openssl_random_pseudo_bytes(5));
+        // Generate random password and send it by email
+        $password= bin2hex(openssl_random_pseudo_bytes(5));
 
-		$res = $this->isValidLogin($email, $password, $password);
-		if($res === true) {
-			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $res = $this->isValidLogin($email, $password, $password);
+        if($res === true) {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-			$db = dbConnect();
+            $db = dbConnect();
 
-			// Add account
-			$req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
-			$req->execute(array($email, $adress, $passwordHash));
-			//Get id
-			$req = $db->prepare('SELECT LAST_INSERT_ID()');
-			$req->execute();
-			$id = $req->fetch()[0];
+            // Add account
+            $req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+            $req->execute(array($email, $adress, $passwordHash));
+            //Get id
+            $req = $db->prepare('SELECT LAST_INSERT_ID()');
+            $req->execute();
+            $id = $req->fetch()[0];
 
-			// Add client
-			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium, validate) VALUES(?, ?, ?, ?, ?, true)");
-			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
-		}
+            // Add client
+            $req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium, validate) VALUES(?, ?, ?, ?, ?, true)");
+            $req->execute(array($id, $lastName, $firstName, $gender, $premium));
+        }
 
-		if($res === true) {
-			return $this->accountPasswordMail($email, $password);
-		} else {
-			return $res;
-		}
-	}
+        if($res === true) {
+            return $this->accountPasswordMail($email, $password);
+        } else {
+            return $res;
+        }
+    }
 
 	public function reservationList() {
 		$db = dbConnect();
@@ -182,9 +196,9 @@ class Manager {
 		// Select email and title
 		$req = $db->prepare('SELECT email, title FROM compte AS c, media AS m, reservationmedia AS rm WHERE rm.rmid = ? AND rm.cid = c.id AND m.mid = rm.mid');
 		$req->execute(array($rmid));
-		$res = $red->fetch();
+		$res = $req->fetch();
 
-		cancelReservationMail($res['email'], $res['title']);
+		$this->cancelReservationMail($res['email'], $res['title']);
 	}
 
 	public function mediaReturn($mid, $cid) {
@@ -227,7 +241,7 @@ class Manager {
 	public function getValidatesMedias() {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT pid, mid, compagnyName, title, format, quantity FROM proposition AS p, fournisseur AS f, media as m WHERE p.accepted = 0 AND m.mid = p.mid AND f.fid = p.fid');
+		$req = $db->prepare('SELECT p.pid, p.mid, companyName, title, format, quantity FROM proposition AS p, fournisseur AS f, media as m WHERE p.accepted IS NULL AND m.mid = p.mid AND f.fid = p.fid');
 		$req->execute(array());
 
 		return $req;
