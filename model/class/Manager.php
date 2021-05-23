@@ -49,7 +49,6 @@ class Manager {
 	public function addMedia($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType) {
 		$db = dbConnect();
 
-
 		//Insertion dans la table média générale
 		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 		$req->execute(array($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType));
@@ -103,8 +102,6 @@ class Manager {
 			$req->execute(array($id, $_POST['media_editor']));
 		}
 	}
-
-
 
 	public function editMedia($mid, $format, $title, $author, $quantity, $kind, $releaseDate, $type, $price, $description, $mediaType, $edition, $editor, $productor, $duration) {
 		$db = dbConnect();

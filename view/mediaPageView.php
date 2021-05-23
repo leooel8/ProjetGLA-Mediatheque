@@ -32,7 +32,7 @@
 					<?php if($media['mediaType'] != 0) echo "<p>Prix: $media[price]€ </p>"; ?>
 				</div>
 				
-				<div>
+				<div id='descriptionWrapper'>
 					<h2> Description: </h2>
 					<p id='description'> <?=$media['description']?> </p>
 				</div>
