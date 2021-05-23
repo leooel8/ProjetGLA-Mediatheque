@@ -17,9 +17,9 @@
 		<main>
 			<?php
 				if($format ==='.pdf') {
-					echo "<embed src='public/data/$mid$format' id='visualize'/>";
+					echo "<embed src='public/data/$mid$format' id='visualizePDF'/>";
 				} else if($format ==='.mp3') {
-					echo "<audio controls src='public/data/$mid$format'> Votre navigateur ne supporte pas le format audio </audio>";
+					echo "<audio controls src='public/data/$mid$format' id='visualizeMP3'> Votre navigateur ne supporte pas le format audio </audio>";
 				} else if($format ==='.mp4') {
 					echo "<video controls>"; 			
 						echo "<source src='public/data/$mid$format' type='video/mp4'>";

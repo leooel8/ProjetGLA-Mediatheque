@@ -1,9 +1,16 @@
 main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	margin-bottom: 0;
 }
 
-#visualize {
+#visualizePDF {
 	width: 100%;
 	height: calc(100vh - 75px);
 }
 
+#visualizeMP3 {
+	margin-top: 30px;
+	width: 50%;
+}
