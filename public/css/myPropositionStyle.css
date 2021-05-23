@@ -1,0 +1,11 @@
+main {
+	margin-top: 100px;
+}
+
+#mainTitle {
+	text-align: center;
+}
+
+.proposition {
+	display: flex;
+}

@@ -15,6 +15,52 @@
       contentId.style.display = "block";
       }
 		</script>
+
+
+			<style type="text/css">
+
+			#addGetionnaire_button{
+				display: flex;
+				justify-content: center;
+				padding-top: 10px;
+				padding-bottom: 10px;
+
+			}
+			#return{
+				display: flex;
+				justify-content: left;
+				padding-top: 10px;
+				padding-bottom: 10px;
+
+			}
+			#oneG{
+				background-color: rgb(0,200,255);
+				display: flex;
+				justify-content: center;
+				margin-top: 1%;
+				margin-bottom: 1%;
+				margin-left: 25%;
+				font-size: 1.00em;
+				height: 50%;
+				width: 50%;
+				border-radius: 5px;
+				 font-style: italic;
+			}
+			input[type=submit] {
+	        background-color: rgba(0, 0, 255, 0.3);
+					  border-radius: 15px;
+	        border: none;
+	        color: #fff;
+	        padding: 5px 5px;
+	        text-decoration: none;
+	        margin: 4px 2px;
+					margin-left: 75%;
+	        cursor: pointer;
+	      }
+
+			</style>
+
+
 	</head>
 <body>
 	<?php
@@ -29,7 +75,7 @@
 
 
   <!-- la liste des gestionnaires-->
-  <div id='listGestionnaire'>
+
     <?php
     if($gestionnaires==false){
       echo "il n'y a pas de gestionnaire enregistré";
@@ -42,6 +88,7 @@
 				//var_dump( $gestionnaire[0]);
 				$i=0;
 				$gid=0;
+				echo '<p  id="oneG">';
 				foreach($gestionnaire as $elements){
 					if($i==0){$gid=$elements;}
 					if($i%2==0){
@@ -49,12 +96,13 @@
 					}
 					$i++;
 				}
-					echo" Bannir : ".'<form action="index.php" method="get" id="banGestionnaire"> <a></a> <input type="submit" value='.$gid.' name="banGestionnaire" id="banGestionnaire"> </input> </form>';
-		//		echo "<br />";
 
+					echo '<form action="index.php" method="get" id="banGestionnaire"> <input type="submit" value='.$gid.' name="banGestionnaire" id="banGestionnaire"> </input>Bannir définitivement </form>'.'</div>';
+					echo "</p>";
 			}
     }
     ?>
+
 
 <!---formulaire de création de gestionnaire-->
 <div id="content" style="display:none;">
@@ -88,10 +136,14 @@
         <input type="submit" value="Confirmer " />
     </form>
 </div>
+
 </main>
+
+<div id= "return">
 <form action="index.php">
 	<input type='submit' value='Retour Page acceuil'> </input>
 </form>
+</div>
 <?php
 	require("view/footerView.html");
 ?>

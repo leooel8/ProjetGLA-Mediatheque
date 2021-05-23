@@ -5,7 +5,13 @@ function loginCreationPage() {
 }
 
 function createCustomer($last_name, $first_name, $email, $gender, $password, $cpassword, $premium, $adress) {
-    
+
+  if(isset($_FILES['logCreate_id_image'])){
+      $uploads_dir = 'public/images/id/';
+      $nameIm =  $_FILES['logCreate_id_image']['name'];
+      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$nameIm");
+
+   }
     $anonymousCustomer = new AnonymousCustomer();
 
     if ($premium === 'basic_account') {
@@ -30,12 +36,23 @@ function createCustomer($last_name, $first_name, $email, $gender, $password, $cp
 }
 
 function createProvider($company_name, $email, $password, $cpassword, $adress) {
-    $anonymousCustomer = new AnonymousCustomer();
+
+  if(isset($_FILES['logCreate_id_image'])){
+      $uploads_dir = 'public/images/id/';
+      $nameIm =  $_FILES['logCreate_id_image']['name'];
+      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$nameIm");
+      var_dump($nameIm);
+   }
+
+    /*$anonymousCustomer = new AnonymousCustomer();
     $res = $anonymousCustomer->createProviderAccount($company_name, $email, $password, $cpassword, $adress);
+
+
+
     if ($res===true) {
         echo "<p>Created successfully</p>";
         authenticate($email, $password);
     } else {
         echo "<p>Problem : " . $res . "</p>";
     }
-}
+*/}

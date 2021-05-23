@@ -39,7 +39,7 @@
 
 			<?php
 			if(isset($account['premium']) && $account['premium'] == 0) {
-				echo "<a href='index.php?action=goPremium' id='goPremium'> Passer au premium </a>";
+				echo "<a href='index.php?action=goPremium&dayLeft=$dayLeft' id='goPremium'> Passer au premium </a>";
 			}
 			if(isset($renew)) {
 				echo "<a href='index.php?action=renewSubscription' id='renewSubscription'> Renouveller mon abonnement </a>";
@@ -50,6 +50,4 @@
 
 		</main>
 	</body>
-
-</div>
 </html>

@@ -41,6 +41,7 @@
 					<option value="17:30">17h30</option>				
 				</select>
 				<input type='hidden' name='mid' value=<?=$mid?>>
+				<input type='hidden' name='title' value=<?php echo"'$title'";?>>
 				<input type='submit' name='validBorrowMedia' value='Valider la réservation'>
 			</form>
 			

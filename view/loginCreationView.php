@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="login_creation_container_div">
-                    <form method="post" action="index.php">
+                    <form method="post" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" id="customerHidden" name="type_form" value="customer">
                         <label for="lastName">Nom de famille* :</label>
                         <input type="text" name="logCreate_last_name" required/>
@@ -52,8 +52,8 @@
                         <label for="password_valid">Mot de passe à nouveau* :</label>
                         <input type="password" name="logCreate_password_valid" required/>
                         
-                        <label for="id_image">Pièce d'identité* :</label>
-                        <input type="file" name="logCreate_id_image" accept="image/png image/jpeg" required/>
+                        <label for="logCreate_id_image">Pièce d'identité* :</label>
+                        <input type="file" name="logCreate_id_image" id="logCreate_id_image" accept="image/jpg" required/>
 
                         <label for="account_type">Type de compte</label>
                         <select name="account_type" id="account_type">
@@ -99,8 +99,6 @@
                     
                     </form>
                 </div>
-            
-               
             </div>
         </div>
     </main>

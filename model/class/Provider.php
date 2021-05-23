@@ -49,7 +49,7 @@ class Provider {
 	public function myProposition($fid) {
 		$db = dbConnect();
 				
-		$req = $db->prepare('SELECT mid, propositionDate, accepted, mediaType, received FROM proposition WHERE fid = ?');
+		$req = $db->prepare('SELECT title, format, propositionDate, accepted, p.mediaType, received FROM proposition AS p, media AS m WHERE p.fid = ? AND m.mid = p.mid');
 		$req->execute(array($fid));	
 		
 		return $req->fetch();	

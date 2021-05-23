@@ -58,7 +58,9 @@
 		?>
 	<main>
 		<?php
+			if(isset($awnser)){
 			echo '<div id=awnser>'.$awnser.'</div>';
+		  }
 		 ?>
 		<!--partie pour chercher un client-->
     <form action="index.php" method="get" id='searchBarWrapper'>

@@ -32,6 +32,7 @@ require_once("controller/managerCreatesCustomerPageController.php");
 require_once("controller/managerValidatesAccountPageController.php");
 require_once("controller/managerValidatesMediaPageController.php");
 require_once("controller/providerController.php");
+require_once("controller/visualizePageController.php");
 // PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 require_once 'model/PHPMailer/src/PHPMailer.php';
@@ -47,6 +48,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			if ($_POST['type_form'] === 'customer') {
 				createCustomer($_POST['logCreate_last_name'], $_POST['logCreate_first_name'], $_POST['logCreate_email'], $_POST['genre'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['account_type'], $_POST['logCreate_adress']);
 			} else {
+
 				createProvider($_POST['logCreate_company_name'], $_POST['logCreate_email'], $_POST['logCreate_password'], $_POST['logCreate_password_valid'], $_POST['logCreate_adress']);
 			}
 		}
@@ -66,7 +68,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Valid barrow media
 		else if(isset($_POST['validBorrowMedia'])) {
-			borrowMedia($_POST['mid'], $_POST['sheduledDate'], $_POST['hour']);
+			borrowMedia($_POST['mid'], $_POST['title'], $_POST['sheduledDate'], $_POST['hour']);
 		}
 		// Edit media
 		else if(isset($_POST['editMedia'])) {
@@ -87,11 +89,13 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			
 			createRessource($_SESSION['id'], $_POST['provider_media_type'], $_POST['provider_media_delivery_date'], $_POST['provider_media_format'], $_POST['provider_media_name'], $_POST['provider_media_author'], $_POST['provider_media_price'], $_POST['provider_media_quantity'], $_POST['provider_media_genre'], $_POST['provider_media_description'],  $_POST['provider_media_date'], $_POST['provider_media_type']);
 		}
-	}
-  else if(count($_GET) > 0) {
-
-    ///début des cas GET action
-  	if (isset($_GET['action'])) {
+		// Go premium
+		else if (isset($_POST['goPremium'])) {
+			goPremium();
+		}	
+	} else if(count($_GET) > 0) {
+		//début des cas GET action
+		if (isset($_GET['action'])) {
 			// Login
 			if ($_GET['action'] === 'login') {
 				loginPage();
@@ -218,6 +222,18 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
 				lostMedia($_GET['hid']);
 			}
+			// Visualize media
+			else if($_GET['action'] === 'visualize' && isset($_GET['mid']) && isset($_GET['format'])) {
+				visualizePage($_GET['mid'], $_GET['format']);
+			}
+			// Change password
+			else if($_GET['action'] === 'changePassword') {
+				changePassword();
+			}
+			// Go Premium
+			else if($_GET['action'] === 'goPremium' && isset($_GET['dayLeft'])) {
+				goPremiumPage($_GET['dayLeft']);
+			}
 		}
 		else if (isset($_GET['search']) && trim($_GET['search']) != "") {
 			searchMedia($_GET['search']);
@@ -228,7 +244,6 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Ban a customer
 		else if (isset($_GET['banClient'])) {
-
 			banClient($_GET['banClient']);
 		}
 		// Unban a client

@@ -298,5 +298,8 @@ if (is_uploaded_file($_POST['provider_first_image']))
 }
 
 function myPropositionPage() {
+	$p = new Provider;
+	$propositions = $p->myProposition($_SESSION['id']);
+	
 	require("view/myPropositionView.php");
 }
