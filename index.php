@@ -78,7 +78,9 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Create media
 		else if (isset($_POST['media_format'])) {
-			createMedia();
+      /*var_dump($_POST['first_image']);
+      var_dump($_POST['picture']);
+			*/createMedia();
 		}
 	}
   else if(count($_GET) > 0) {
@@ -202,7 +204,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			// Extend media duration
 			else if($_GET['action'] === 'extendDuration' && isset($_GET['hid'])) {
 				extendMediaDuration($_GET['hid']);
-			}	
+			}
 			// Lost media
 			else if($_GET['action'] === 'lost' && isset($_GET['hid'])) {
 				lostMedia($_GET['hid']);
