@@ -1,0 +1,31 @@
+main {
+    margin-top: 100px;
+}
+
+#mediasList_div {
+    margin: 0 auto;
+    width: 300px;
+}
+
+#liste_item_div {
+    align-content: center;
+    background-color: rgb(135, 135, 245);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin-top: 50px;
+}
+
+.validate_button {
+    color: rgb(97, 96, 96);
+    border-radius: 10px;
+	margin-top: 10px;
+    margin: 10px;
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(168, 168, 168);
+}
+
+.validate_button:hover {
+    border-color: rgb(48, 48, 48);
+}
