@@ -52,7 +52,7 @@ class Provider {
 		$req = $db->prepare('SELECT title, format, propositionDate, accepted, p.mediaType, received FROM proposition AS p, media AS m WHERE p.fid = ? AND m.mid = p.mid');
 		$req->execute(array($fid));	
 		
-		return $req->fetch();	
+		return $req;	
 	}
 	
 }

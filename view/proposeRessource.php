@@ -129,7 +129,7 @@
                     <label for="provider_media_delivery_date">Date de livraison</label>
 
                     <input type="date" id="provider_media_delivery_date" name="provider_media_delivery_date"
-                        min="0001-01-01" value=<?php echo $max; ?> max=<?php echo $max; ?> required >
+                        value=<?php echo $max; ?> min=<?php echo $max; ?> required >
 
 
                     <div id="provider_optionnel">

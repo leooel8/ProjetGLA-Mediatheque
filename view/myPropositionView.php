@@ -33,18 +33,18 @@
 					}
 					
 					if(!isset($proposition['accepted'])) {
-						$proposition['accepted'] = 'En attente'
+						$proposition['accepted'] = 'En attente';
 					} else if($proposition['accepted'] == 0) {
-						$proposition['accepted'] = 'Refuser'
+						$proposition['accepted'] = 'Refuser';
 					}  else if($proposition['accepted'] == 1) {
-						$proposition['accepted'] = 'Accepté'
+						$proposition['accepted'] = 'Accepté';
 					}
 					
 					echo "<div class='proposition'>";
-						echo "<p><strong>Format: </strong> '$proposition[format]' </p>"
-						echo "<p><strong>Titre: </strong> '$proposition[title]' </p>"
-						echo "<p><strong>Disponibilité: </strong> '$proposition[mediaType]' </p>"
-						echo "<p><strong>Etat: </strong> '$proposition[accepted]' </p>"
+						echo "<p><strong>Format: </strong> '$proposition[format]' </p>";
+						echo "<p><strong>Titre: </strong> '$proposition[title]' </p>";
+						echo "<p><strong>Disponibilité: </strong> '$proposition[mediaType]' </p>";
+						echo "<p><strong>Etat: </strong> '$proposition[accepted]' </p>";
 					echo "</div>";
 				}
 				?>
