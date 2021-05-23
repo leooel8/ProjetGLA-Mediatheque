@@ -6,13 +6,21 @@ function loginCreationPage() {
 
 function createCustomer($last_name, $first_name, $email, $gender, $password, $cpassword, $premium, $adress) {
 
-  if(isset($_FILES['logCreate_id_image'])){
+      $anonymousCustomer = new AnonymousCustomer();
+
+    if(isset($_FILES['logCreate_id_image'])){
+
       $uploads_dir = 'public/images/id/';
-      $nameIm =  $_FILES['logCreate_id_image']['name'];
-      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$nameIm");
+      $id= $anonymousCustomer->GetID($email, $password);
+      $filename=$_FILES["logCreate_id_image"]["name"];
+      $tmp=explode(".", $filename);
+      $extension=end($tmp);
+      $newfilename=$id .".".$extension;
+
+      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$newfilename");
 
    }
-    $anonymousCustomer = new AnonymousCustomer();
+
 
     if ($premium === 'basic_account') {
         $final_premium = 0;
@@ -28,6 +36,8 @@ function createCustomer($last_name, $first_name, $email, $gender, $password, $cp
     }
 
     $res = $anonymousCustomer->createClientAccount($last_name, $first_name, $email, $final_gender, $adress, $password, $cpassword, $final_premium);
+
+
     if ($res===true) {
         authenticate($email, $password);
     } else {
@@ -37,14 +47,22 @@ function createCustomer($last_name, $first_name, $email, $gender, $password, $cp
 
 function createProvider($company_name, $email, $password, $cpassword, $adress) {
 
-  if(isset($_FILES['logCreate_id_image'])){
+    $anonymousCustomer = new AnonymousCustomer();
+
+    if(isset($_FILES['logCreate_id_image'])){
+
       $uploads_dir = 'public/images/id/';
-      $nameIm =  $_FILES['logCreate_id_image']['name'];
-      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$nameIm");
-      var_dump($nameIm);
+      $id= $anonymousCustomer->GetID($email, $password);
+      $filename=$_FILES["logCreate_id_image"]["name"];
+      $tmp=explode(".", $filename);
+      $extension=end($tmp);
+      $newfilename=$id .".".$extension;
+
+      move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$newfilename");
+
    }
 
-    /*$anonymousCustomer = new AnonymousCustomer();
+
     $res = $anonymousCustomer->createProviderAccount($company_name, $email, $password, $cpassword, $adress);
 
 
@@ -55,4 +73,4 @@ function createProvider($company_name, $email, $password, $cpassword, $adress) {
     } else {
         echo "<p>Problem : " . $res . "</p>";
     }
-*/}
+}

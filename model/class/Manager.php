@@ -42,7 +42,7 @@ class Manager {
 
 	$req = $db->prepare('DELETE FROM media INNER JOIN proposition ON media.mid = proposition.mid WHERE m.mid = ?');
 		$req->execute(array($mid));
-		
+
 	}
 
 	//cas uniquement physique
@@ -56,6 +56,33 @@ class Manager {
 		$req = $db->prepare('SELECT LAST_INSERT_ID()');
 		$req->execute();
 		$id = $req->fetch()[0];
+
+
+		if(isset($_FILES['first_image'])){
+			$uploads_dir = 'public/images/media';
+			$filename=$_FILES["first_image"]["name"];
+			$tmp=explode(".", $filename);
+			$extension=end($tmp);
+			$newfilename=$id .".".$extension;
+			move_uploaded_file($_FILES['first_image']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 }
+
+
+	 		var_dump("before");
+	 		if(isset($_FILES['provider_picture'])){
+	 			var_dump("after");
+	 			$uploads_dir = 'public/data/';
+	 			$filename=$_FILES['provider_picture']["name"];
+	 			$tmp=explode(".", $filename);
+	 			$extension=end($tmp);
+	 			$newfilename=$id .".".$extension;
+	 			move_uploaded_file($_FILES['provider_picture']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 	 }
+
+
+
 
 		//Insertion dans la table spécialisée pour le format
 		if ($format === "livre") {
@@ -103,22 +130,34 @@ class Manager {
 	}
 
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
-		// Generate random password and send it by email
-		$password= bin2hex(openssl_random_pseudo_bytes(5));
+        // Generate random password and send it by email
+        $password= bin2hex(openssl_random_pseudo_bytes(5));
 
-		$anoCustomer = new AnonymousCustomer();
-		$success = $anoCustomer->createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $password, $premium);
-		if($success === true) {
-			$db = dbConnect();
+        $res = $this->isValidLogin($email, $password, $password);
+        if($res === true) {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-			$req = $db->prepare('UPDATE client SET validate = true, WHERE email = ?');
-			$req->execute(array($email));
+            $db = dbConnect();
 
-			return $this->accountPasswordMail($email, $password);
-		} else {
-			return $success;
-		}
-	}
+            // Add account
+            $req = $db->prepare("INSERT INTO compte (email, adress, password) VALUES(?, ?, ?)");
+            $req->execute(array($email, $adress, $passwordHash));
+            //Get id
+            $req = $db->prepare('SELECT LAST_INSERT_ID()');
+            $req->execute();
+            $id = $req->fetch()[0];
+
+            // Add client
+            $req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium, validate) VALUES(?, ?, ?, ?, ?, true)");
+            $req->execute(array($id, $lastName, $firstName, $gender, $premium));
+        }
+
+        if($res === true) {
+            return $this->accountPasswordMail($email, $password);
+        } else {
+            return $res;
+        }
+    }
 
 	public function reservationList() {
 		$db = dbConnect();
@@ -167,7 +206,7 @@ class Manager {
 		$req = $db->prepare('SELECT email, title FROM compte AS c, media AS m, reservationmedia AS rm WHERE rm.rmid = ? AND rm.cid = c.id AND m.mid = rm.mid');
 		$req->execute(array($rmid));
 		$res = $req->fetch();
-		
+
 		$this->cancelReservationMail($res['email'], $res['title']);
 	}
 

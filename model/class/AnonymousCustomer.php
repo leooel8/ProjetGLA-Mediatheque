@@ -55,16 +55,16 @@ class AnonymousCustomer {
 
 		return $req->fetch();
 	}
-	
+
 	public function getRoomPlanning($number) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare("SELECT sheduledDate, morning FROM reservationsalle WHERE number = ?");
 		$req->execute(array($number));
-		
+
 		return $req;
 	}
-	
+
 	public function createClientAccount($lastName, $firstName, $email, $gender, $adress, $password, $cpassword, $premium) {
 		$res = $this->isValidLogin($email, $password, $cpassword);
 
@@ -80,6 +80,13 @@ class AnonymousCustomer {
 			$req = $db->prepare('SELECT LAST_INSERT_ID()');
 			$req->execute();
 			$id = $req->fetch()[0];
+
+			if(isset($_FILES['logCreate_id_image'])){
+					 $uploads_dir = 'public/images/id/';
+					 move_uploaded_file($_FILES['logCreate_id_image']['tmp_name'], "$uploads_dir/$id");
+				}
+
+
 
 			// Add client
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium) VALUES(?, ?, ?, ?, ?)");
@@ -114,6 +121,68 @@ class AnonymousCustomer {
 		return $res;
 	}
 
+	public function GetID($email, $password){
+
+		$db = dbConnect();
+
+		// Check banned
+		$req = $db->prepare('SELECT null FROM client, compte WHERE id = cid AND email = ? AND banned = true');
+		$req->execute(array($email));
+
+		if($req->rowCount() > 0) {
+			return 'banned';
+		}
+
+		// Get user id and password
+		$req = $db->prepare('SELECT id, password FROM compte WHERE email = ?');
+		$req->execute(array($email));
+		$res = $req->fetch();
+		$passwordHash = $res['password'];
+		$id = $res['id'];
+
+
+		// Password match
+		if(password_verify($password, $passwordHash)) {
+			// Is client
+			$req = $db->prepare('SELECT null FROM client WHERE cid = ?');
+			$req->execute(array($id));
+
+			if($req->rowCount() > 0) {
+				return $id;
+			}
+
+			// Is provider
+			$req = $db->prepare('SELECT null FROM fournisseur WHERE fid = ?');
+			$req->execute(array($id));
+
+			if($req->rowCount() > 0) {
+
+				return $id;
+			}
+
+			// Is manager
+			$req = $db->prepare('SELECT null FROM gestionnaire WHERE gid = ?');
+			$req->execute(array($id));
+
+			if($req->rowCount() > 0) {
+				return $id;
+			}
+
+			// Is administrator
+			$req = $db->prepare('SELECT null FROM administrateur WHERE aid = ?');
+			$req->execute(array($id));
+
+			if($req->rowCount() > 0) {
+				return $id;
+			}
+		}
+
+		return null;
+	}
+
+
+
+
 	public function Authenticate($email, $password) {
 		$db = dbConnect();
 
@@ -131,6 +200,7 @@ class AnonymousCustomer {
 		$res = $req->fetch();
 		$passwordHash = $res['password'];
 		$id = $res['id'];
+
 
 		// Password match
 		if(password_verify($password, $passwordHash)) {
@@ -186,12 +256,12 @@ class AnonymousCustomer {
 		$req->execute(array($email));
 
 		if($req->rowCount() > 0) {
-			$id = $req->fetch()['id'];			
+			$id = $req->fetch()['id'];
 			$token= bin2hex(openssl_random_pseudo_bytes(32));
-			
+
 			$req = $db->prepare('INSERT INTO token (id, token) VALUES(?, ?) ON DUPLICATE KEY UPDATE token=?, createAt=NOW()');
 			$req->execute(array($id, $token, $token));
-			
+
 			$this->forgottenPasswordMail($email, $token);
 		}
 	}
