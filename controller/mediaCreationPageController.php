@@ -23,12 +23,6 @@ function createMedia() {
     //Date de sortie du média
     $date = $_POST['media_date'];
 
-    //store firstImage
-    if(isset($_FILES['first_image'])){
-        $uploads_dir = 'public/images/media/';
-        $nameIm =  $_FILES['first_image']['name'];
-        move_uploaded_file($_FILES['first_image']['tmp_name'], "$uploads_dir/$nameIm");
-     }
 
 
     //Traduction du format et du type

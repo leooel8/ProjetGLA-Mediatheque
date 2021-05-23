@@ -44,6 +44,21 @@ class Manager {
 		$req->execute();
 		$id = $req->fetch()[0];
 
+		var_dump("before");
+		if(isset($_FILES['first_image'])){
+			var_dump("after");
+			$uploads_dir = 'public/images/media';
+			$filename=$_FILES["first_image"]["name"];
+			$tmp=explode(".", $filename);
+			$extension=end($tmp);
+			$newfilename=$id .".".$extension;
+			move_uploaded_file($_FILES['first_image']['tmp_name'], "$uploads_dir/$newfilename");
+
+	 }
+
+
+
+
 		//Insertion dans la table spécialisée pour le format
 		if ($format === "livre") {
 			$req = $db->prepare('INSERT INTO livre (mid, editor, edition) VALUES (?, ?, ?)');
@@ -94,7 +109,7 @@ class Manager {
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
 		// Generate random password and send it by email
 		$password= bin2hex(openssl_random_pseudo_bytes(5));
-	
+
 		$res = $this->isValidLogin($email, $password, $password);
 		if($res === true) {
 			$passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -113,7 +128,7 @@ class Manager {
 			$req = $db->prepare("INSERT INTO client (cid, lastName, firstName, gender, premium, validate) VALUES(?, ?, ?, ?, ?, true)");
 			$req->execute(array($id, $lastName, $firstName, $gender, $premium));
 		}
-		
+
 		if($res === true) {
 			return $this->accountPasswordMail($email, $password);
 		} else {
