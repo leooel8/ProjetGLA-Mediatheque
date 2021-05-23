@@ -230,7 +230,7 @@ require_once 'model/PHPMailer/src/SMTP.php';
 		}
 		// Add a manager
 		if (isset($_GET['type_form'])) {
-				addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
+			addGestionnaire($_GET['logCreate_last_name'], $_GET['logCreate_first_name'], $_GET['logCreate_email'], $_GET['genre'],$_GET['logCreate_adress'],$_GET['logCreate_password'],$_GET['logCreate_password_valid']);
 		}
 		///Voir la liste des gestionnaires
 		else if (isset($_GET['reviewGestionnaire'])) {

@@ -146,9 +146,9 @@ class Manager {
 		// Select email and title
 		$req = $db->prepare('SELECT email, title FROM compte AS c, media AS m, reservationmedia AS rm WHERE rm.rmid = ? AND rm.cid = c.id AND m.mid = rm.mid');
 		$req->execute(array($rmid));
-		$res = $red->fetch();
+		$res = $req->fetch();
 		
-		cancelReservationMail($res['email'], $res['title']);
+		$this->cancelReservationMail($res['email'], $res['title']);
 	}
 	
 	public function mediaReturn($mid, $cid) {
