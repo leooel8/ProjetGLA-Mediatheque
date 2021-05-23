@@ -1,38 +1,40 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
-class Manager {	
+class Manager {
 
 	/*---------- Public functions ----------*/
 	public function validCustomerAccount($cid) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('UPDATE client SET validate = true WHERE cid = ?');
 		$req->execute(array($cid));
 	}
-	
+
 	public function validProviderAccount($fid) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('UPDATE fournisseur SET validate = true WHERE fid = ?');
 		$req->execute(array($fid));
 	}
-	
+
 	public function validMedia($mid) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('UPDATE proposition SET accepted = true WHERE mid = ?');
 		$req->execute(array($mid));
 	}
-	
+
 	public function deleteMedia($mid) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('DELETE FROM media WHERE mid = ?');
 		$req->execute(array($mid));
 	}
-	
+
+	//cas uniquement physique
 	public function addMedia($format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType) {
 		$db = dbConnect();
+
 
 		//Insertion dans la table média générale
 		$req = $db->prepare('INSERT INTO media (format, title, author, price, quantity, kind, description, releaseDate, type, mediaType) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -60,13 +62,15 @@ class Manager {
 			$req->execute(array($id, $_POST['media_editor']));
 		}
 	}
-	
+
+
+
 	public function editMedia($mid, $format, $title, $author, $quantity, $kind, $releaseDate, $type, $price, $description, $mediaType, $edition, $editor, $productor, $duration) {
 		$db = dbConnect();
 
 		$req = $db->prepare('UPDATE media SET title = ?, author = ?, price = ?, quantity = ?, kind = ?, description = ?, releaseDate = ?, type = ?, mediaType = ? WHERE mid = ?');
 		$req->execute(array($title, $author, $price, $quantity, $kind, $description, $releaseDate, $type, $mediaType, $mid));
-		
+
 		switch($format) {
 			case 'livre':
 				$req = $db->prepare('UPDATE livre SET editor = ?, edition = ? WHERE mid = ?');
@@ -86,7 +90,7 @@ class Manager {
 				break;
 		}
 	}
-	
+
 	public function createCustomerAccount($lastName, $firstName, $email, $gender, $adress, $premium) {
 		// Generate random password and send it by email
 		$password= bin2hex(openssl_random_pseudo_bytes(5));
@@ -116,19 +120,19 @@ class Manager {
 			return $res;
 		}
 	}
-	
+
 	public function reservationList() {
 		$db = dbConnect();
-	
+
 		$req = $db->prepare('SELECT rmid, cancelled, format, title, author, firstName, lastName FROM client AS c, reservationmedia AS r, media AS m WHERE m.mid = r.mid AND c.cid = r.cid');
 		$req->execute();
-		
+
 		return $req;
 	}
-	
+
 	public function validReservation($rmid) {
 		$db = dbConnect();
-		
+
 		// Get media id and customer id
 		$req = $db->prepare('SELECT mid from reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
@@ -136,15 +140,15 @@ class Manager {
 		$req = $db->prepare('SELECT cid from reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
 		$cid = $req->fetch()['cid'];
-		
+
 		// Decrease quantity
 		$req = $db->prepare('UPDATE media SET quantity = quantity-1 WHERE mid = ?');
 		$req->execute(array($mid));
-		
+
 		// Delete reservation
 		$req = $db->prepare('DELETE FROM reservationmedia WHERE rmid = ?');
 		$req->execute(array($rmid));
-		
+
 		// Is client premium
 		$req = $db->prepare('SELECT premium from client WHERE cid = ?');
 		$req->execute(array($cid));
@@ -153,45 +157,45 @@ class Manager {
 		$req = $db->prepare('INSERT INTO historique (cid, mid, clientPremium, virtualMedia) VALUES(?, ?, ?, false)');
 		$req->execute(array($cid, $mid, $premium));
 	}
-	
+
 	public function cancelReservation($rmid) {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('UPDATE reservationmedia SET cancelled = true WHERE rmid = ?');
 		$req->execute(array($rmid));
-		
+
 		// Select email and title
 		$req = $db->prepare('SELECT email, title FROM compte AS c, media AS m, reservationmedia AS rm WHERE rm.rmid = ? AND rm.cid = c.id AND m.mid = rm.mid');
 		$req->execute(array($rmid));
 		$res = $red->fetch();
-		
+
 		cancelReservationMail($res['email'], $res['title']);
 	}
-	
+
 	public function mediaReturn($mid, $cid) {
 		$db = dbConnect();
-		
+
 		// Increase quantity
 		$req = $db->prepare('UPDATE media SET quantity = quantity+1 WHERE mid = ?');
 		$req->execute(array($mid));
-		
+
 		// Add return date to history
 		$req = $db->prepare('UPDATE historique SET lost = false, renderingDate = NOW() WHERE cid = ? AND mid = ?');
 		$req->execute(array($cid, $mid));
 	}
-	
+
 	public function roomPlanning() {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('SELECT firstName, lastName, number, sheduledDate , morning FROM reservationSalle AS r, client AS c WHERE sheduledDate >= NOW() AND r.cid = c.cid');
-		$req->execute(array());		
-		
+		$req->execute(array());
+
 		return $req;
 	}
 
 	public function getValidatesCustomer() {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('SELECT * from client WHERE validate=0');
 		$req->execute();
 		return $req;
@@ -199,7 +203,7 @@ class Manager {
 
 	public function getValidatesProvider() {
 		$db = dbConnect();
-		
+
 		$req = $db->prepare('SELECT * from fournisseur WHERE validate=0');
 		$req->execute();
 		return $req;
@@ -213,7 +217,7 @@ class Manager {
 
 		return $req;
 	}
-	
+
 	/*---------- Private functions ----------*/
 	private function accountPasswordMail($destination, $password) {
 		$mail = new PHPMailer();
@@ -238,9 +242,9 @@ class Manager {
 			return true;
 		} else {
 			return false;
-		}    	
+		}
 	}
-	
+
 	private function cancelReservationMail($destination, $title) {
 		$mail = new PHPMailer();
 		$mail->isSMTP();
@@ -264,7 +268,7 @@ class Manager {
 			return true;
 		} else {
 			return false;
-		}    	
+		}
 	}
-	
+
 }

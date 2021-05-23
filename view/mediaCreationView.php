@@ -10,21 +10,33 @@
     <link href='public/css/mainPageStyle.css' rel='stylesheet'/>
     <link href='public/css/headerStyle.css' rel='stylesheet'/>
     <link href='public/css/footerStyle.css' rel='stylesheet'/>
+
+    <script>
+      function toggleContent() {
+        // Get the DOM reference
+        var contentId = document.getElementById("addRessource");
+        // Toggle
+      contentId.style.display == "block" ? contentId.style.display = "none" :
+      contentId.style.display = "block";
+      }
+		</script>
+
+
 </head>
 <body>
 
     <?php
         /* logo de mediatheque */
-		require("view/headerView.php");
+	//	require("view/headerView.php");
 
         if (isset($_GET['error'])) {
-            
+
             if (strlen($_GET['error']) != 0) {
                 echo "<div class='errorMessage_div'><p>" . $_GET['error'] . "</p></div>";
             }
         }
         else if (isset($_GET['success'])) {
-            
+
             if (strlen($_GET['success']) != 0) {
                 echo "<div class='successMessage_div'><p>" . $_GET['success'] . "</p></div>";
             }
@@ -34,7 +46,7 @@
         <div id="mediaCreation_form">
             <form method="post" action="index.php">
                 <h3>Création de média</h3>
-                
+
                 <label for="media_name">Nom</label>
                 <input type="text" id="media_name" name="media_name" required >
 
@@ -67,18 +79,30 @@
 
                 <label for="media_disponibilite">Disponibilité :</label>
                 <div>
-                    <input type="radio" value="dematerialise" name="media_disponibilite" checked>
+                    <input type="radio" value="dematerialise" name="media_disponibilite" onclick="toggleContent()"onclick="toggleContent()" checked>
                     <label for="dematerialise">Dématerialisé</label>
                 </div>
                 <div>
-                    <input type="radio" value="physique" name="media_disponibilite">
+                    <input type="radio" value="physique" name="media_disponibilite"onclick="toggleContent()">
                     <label for="physique">Physique</label>
                 </div>
                 <div>
-                    <input type="radio" value="both" name="media_disponibilite">
+                    <input type="radio" value="both" name="media_disponibilite" onclick="toggleContent()" >
                     <label for="both">Les deux</label>
+
                 </div>
-                
+
+                <div id="addRessource" display="none">
+                <!--add ressource si Dématerialisé-->
+                <label for="fileInput">Ressource dématérialisé :</label>
+                <input type='file' name='picture' id='fileInput'/>
+
+
+                </div>
+
+
+
+
                 <label for="media_price">Prix</label>
                 <input type="number" min="0" step="any" id="media_price" name="media_price" required >
 
@@ -91,6 +115,10 @@
                 <label for="media_description">Description</label>
                 <textarea id="media_description" rows="6" cols="40" name="media_description" required >
                 </textarea>
+
+                  <!-- la page qu'on affichera sur le site en gros obligatoire-->
+                  <label for="first_image">Première de couverture / Poster :  </label>
+                  <input type='file' name='first_image' accept=".png, .jpg, .jpeg" id='first_image' required />
 
                 <label for="media_date">Date de sortie</label>
 
@@ -105,12 +133,20 @@
 
                         <label for="media_edition">Edition</label>
                         <input type="number" min="0" step="1" id="media_edition" name="media_edition">
+
+                        <!--Store the média-->
+
                     </div>
-                </div> 
+                </div>
 
                 <input type="submit" value="Create media" />
             </form>
         </div>
+    </div>
+    <div id="return">
+      <form action="index.php">
+        <input type='submit' value='Retour Page acceuil'> </input>
+      </form>
     </div>
 </body>
 <script src="view/mediaCreationHandling.js"></script>

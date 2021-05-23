@@ -22,7 +22,44 @@ function createMedia() {
     $description = $_POST['media_description'];
     //Date de sortie du média
     $date = $_POST['media_date'];
-    
+
+    //store the first image
+if (is_uploaded_file($_POST['first_image']))
+  {
+
+   if(empty($_FILES['first_image']['name']))
+   {
+     echo " File name is empty! ";
+     exit;
+   }
+
+   $upload_file_name =$_FILES['first_image']['media_name'];
+   if(strlen ($upload_file_name)>100)
+   {
+     echo " too long file name ";
+     exit;
+   }
+
+   $upload_file_name = preg_replace("/[^A-Za-z0-9 \.\-_]/", '', $upload_file_name);
+
+
+   if ($_FILES['first_image']['media_name']> 1000000)
+   {
+   echo " too big file ";
+     exit;
+   }
+
+   //Saving  the file here
+   $dest=__DIR__.'/public/images'.$upload_file_name;
+   if (move_uploaded_file($_FILES['first_image']['media_name'], $dest))
+   {
+     echo 'File Has Been Uploaded !';
+   }
+ }
+
+
+
+
     //Traduction du format et du type
     if ($_POST['media_format'] === 'format_livre') {
         $format = 'livre';
@@ -99,12 +136,14 @@ function createMedia() {
 
     if ($_POST['media_disponibilite'] === 'dematerialise') {
         $mediaType = 0;
+        storeFile($_POST['picture'],$name);
     }
     else if ($_POST['media_disponibilite'] === 'physique') {
         $mediaType = 1;
     }
     else if ($_POST['media_disponibilite'] === 'both') {
         $mediaType = 2;
+        storeFile($_POST['fileInput'],$name);
     }
 
     //Vérification des informations entrées par l'utilisateur
@@ -240,18 +279,50 @@ function createMedia() {
     }
 
     if (strlen($error) == 0) {
+
         $manager->addMedia($format, $name, $autheur, $price, $quantity, $kind, $description, $date, $type, $mediaType);
         $message = "Location: index.php?action=mediaCreation&success=Nouveau média créé!";
     } else {
         $message = "Location: index.php?action=mediaCreation&error=" . $error;
     }
-    
+
     header($message);
 
-    
+
 
 
 }
 
+function storeFile($upload, $uploadName){
+  if (is_uploaded_file($_FILES['image']['media_name']))
+    {
+
+     if(empty($_FILES['image']['media_name']))
+     {
+       echo " File name is empty! ";
+       exit;
+     }
+
+     $upload_file_name =$_FILES['image']['media_name'];
+     if(strlen ($upload_file_name)>100)
+     {
+       echo " too long file name ";
+       exit;
+     }
+
+     $upload_file_name = preg_replace("/[^A-Za-z0-9 \.\-_]/", '', $upload_file_name);
 
 
+     if ($_FILES['image']['media_name']> 1000000)
+     {
+     echo " too big file ";
+       exit;
+     }
+
+     $dest=__DIR__.'/public/images'.$upload_file_name;
+     if (move_uploaded_file($_FILES['image']['media_name'], $dest))
+     {
+       echo 'File Has Been Uploaded !';
+     }
+   }
+}
