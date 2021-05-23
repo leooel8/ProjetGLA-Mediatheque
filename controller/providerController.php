@@ -11,5 +11,8 @@ function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $auth
 }
 
 function myPropositionPage() {
+	$p = new Provider;
+	$propositions = $p->myProposition($_SESSION['id']);
+	
 	require("view/myPropositionView.php");
 }

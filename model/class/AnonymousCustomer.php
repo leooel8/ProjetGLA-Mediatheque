@@ -182,16 +182,22 @@ class AnonymousCustomer {
 	public function forgottenPassword($email) {
 		$db = dbConnect();
 
-		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');
+		$req = $db->prepare('SELECT id FROM compte WHERE email = ?');
 		$req->execute(array($email));
 
 		if($req->rowCount() > 0) {
-			$this->forgottenPasswordMail($email);
+			$id = $req->fetch()['id'];			
+			$token= bin2hex(openssl_random_pseudo_bytes(32));
+			
+			$req = $db->prepare('INSERT INTO token (id, token) VALUES(?, ?) ON DUPLICATE KEY UPDATE token=?, createAt=NOW()');
+			$req->execute(array($id, $token, $token));
+			
+			$this->forgottenPasswordMail($email, $token);
 		}
 	}
 
 	/*---------- Private functions ----------*/
-	private function forgottenPasswordMail($destination) {
+	private function forgottenPasswordMail($destination, $token) {
 		$mail = new PHPMailer();
 		$mail->isSMTP();
 		$mail->Host = "smtp.gmail.com";
@@ -207,7 +213,7 @@ class AnonymousCustomer {
 		$mail->addAddress($destination);
 
 		$mail->Subject = 'Réinitialisation de votre mot de passe sur votre médiathèque en ligne !';
-		$mail->Body = "<p>Voici votre lien de réinitialisation de votre mot de passe:</p> <strong>lien ici</strong>";
+		$mail->Body = "<p>Voici votre lien de réinitialisation de votre mot de passe:</p> <strong>nomDeDomaine?action=resetPassword&token=$token</strong>";
 		$mail->IsHTML(true);
 
 		if($mail->send()) {

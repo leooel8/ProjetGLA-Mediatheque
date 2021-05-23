@@ -7,17 +7,27 @@ class Administrator {
 
 		$req = $db->prepare('UPDATE client SET banned = true WHERE cid = ?');
 		$req->execute(Array($cid));
+		
+		// Get email
+		$req = $db->prepare('SELECT email FROM compte WHERE id = ?');
+		$req->execute(Array($cid));
+		$email = $req->fetch()['email'];
+		
+		return banCustomerMail($email);
 	}
 	public function unbanCustomer($cid) {
 		$db = dbConnect();
 
 		$req = $db->prepare('UPDATE client SET banned = false WHERE cid = ?');
 		$req->execute(Array($cid));
+		
+		// Get email
+		$req = $db->prepare('SELECT email FROM compte WHERE id = ?');
+		$req->execute(Array($cid));
+		$email = $req->fetch()['email'];
+		
+		return unbanCustomerMail($email);
 	}
-
-
-
-
 
 	public function addManager($lastName, $firstName, $email, $gender, $adress, $password, $cpassword) {
 		$res = $this->isValidLogin($email, $password, $cpassword);
@@ -83,45 +93,95 @@ class Administrator {
 		return $req;
 	}
 
-
-
-		private function isValidLogin($email, $password, $cpassword) {
-			// Check valid email
-			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				return 'invalidEmail';
-			}
-
-			$db = dbConnect();
-
-			// Check email taken
-			$req = $db->prepare('SELECT null FROM compte WHERE email = ?');
-			$req->execute(array($email));
-
-			if($req->rowCount() > 0) {
-				return 'emailTaken';
-			}
-
-			// Check password difference
-			if($password !== $cpassword) {
-				return 'differentPassword';
-			}
-
-			// Check password length
-			if(strlen($password) < 8) {
-				return 'shortPassword';
-			}
-
-			if(strlen($password) > 32) {
-				return 'longPassword';
-			}
-
-			// Check password valid character
-			$pwdValid = array('-', '_', '!');
-			if (!ctype_alnum(str_replace($pwdValid, '', $password))) {
-				return 'invalidPassword';
-			}
-
-			return true;
+	private function isValidLogin($email, $password, $cpassword) {
+		// Check valid email
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			return 'invalidEmail';
 		}
 
+		$db = dbConnect();
+
+		// Check email taken
+		$req = $db->prepare('SELECT null FROM compte WHERE email = ?');
+		$req->execute(array($email));
+
+		if($req->rowCount() > 0) {
+			return 'emailTaken';
+		}
+
+		// Check password difference
+		if($password !== $cpassword) {
+			return 'differentPassword';
+		}
+
+		// Check password length
+		if(strlen($password) < 8) {
+			return 'shortPassword';
+		}
+
+		if(strlen($password) > 32) {
+			return 'longPassword';
+		}
+
+		// Check password valid character
+		$pwdValid = array('-', '_', '!');
+		if (!ctype_alnum(str_replace($pwdValid, '', $password))) {
+			return 'invalidPassword';
+		}
+
+		return true;
 	}
+	
+	private function banCustomerMail($destination) {
+		$mail = new PHPMailer();
+		$mail->isSMTP();
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 587;
+		$mail->SMTPAuth = true;
+		$mail->CharSet = 'UTF-8';
+		// Authentification
+		$mail->Username = 'mediatheque.noreply@gmail.com';
+		$mail->Password = 'projetGLA';
+
+		$mail->setFrom('mediatheque.noreply@gmail.com');
+
+		$mail->addAddress($destination);
+
+		$mail->Subject = 'Banissement de votre compte !';
+		$mail->Body = "<p>Bonjour, nous vous annoncons que votre compte à été <strong>bannis</strong> pour le non respect de la sainte-chartre </p>";
+		$mail->IsHTML(true);
+
+		if($mail->send()) {
+			return true;
+		} else {
+			return false;
+		}    	
+	}
+	
+		private function unbanCustomerMail($destination) {
+		$mail = new PHPMailer();
+		$mail->isSMTP();
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 587;
+		$mail->SMTPAuth = true;
+		$mail->CharSet = 'UTF-8';
+		// Authentification
+		$mail->Username = 'mediatheque.noreply@gmail.com';
+		$mail->Password = 'projetGLA';
+
+		$mail->setFrom('mediatheque.noreply@gmail.com');
+
+		$mail->addAddress($destination);
+
+		$mail->Subject = 'Dé-banissement de votre compte !';
+		$mail->Body = "<p>Bonjour, nous vous annoncons que votre compte à été <strong>dé-bannis</strong> </p>";
+		$mail->IsHTML(true);
+
+		if($mail->send()) {
+			return true;
+		} else {
+			return false;
+		}    	
+	}
+
+}

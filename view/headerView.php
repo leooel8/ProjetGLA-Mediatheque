@@ -9,6 +9,8 @@
 	} else if($_SESSION['status'] === 'provider') {
 		if(isset($account)) {
 			echo "<a href='index.php?action=myProposition' id='myProposition'> Mes propositions </a>";
+		} else {
+			echo "<div> </div>";
 		}
 	} else {
 		echo "<div> </div>";

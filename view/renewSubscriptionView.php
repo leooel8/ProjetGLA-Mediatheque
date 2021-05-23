@@ -6,7 +6,7 @@
 		<title> Renouvellement de mon abonnement </title>
 		<link href='public/css/mainStyle.css' rel='stylesheet'/>
 		<link href='public/css/headerStyle.css' rel='stylesheet'/>
-		<link href='public/css/accountStyle.css' rel='stylesheet'/>
+		<link href='public/css/renewSubscriptionStyle.css' rel='stylesheet'/>
 		<!-- JAVASCRIPT -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="public/script/renewSubscription.js"></script>
