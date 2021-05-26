@@ -1,4 +1,5 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 class Administrator {
 
 	/*---------- Public functions ----------*/
@@ -7,26 +8,26 @@ class Administrator {
 
 		$req = $db->prepare('UPDATE client SET banned = true WHERE cid = ?');
 		$req->execute(Array($cid));
-		
+
 		// Get email
 		$req = $db->prepare('SELECT email FROM compte WHERE id = ?');
 		$req->execute(Array($cid));
 		$email = $req->fetch()['email'];
-		
-		return banCustomerMail($email);
+
+		return $this->banCustomerMail($email);
 	}
 	public function unbanCustomer($cid) {
 		$db = dbConnect();
 
 		$req = $db->prepare('UPDATE client SET banned = false WHERE cid = ?');
 		$req->execute(Array($cid));
-		
+
 		// Get email
 		$req = $db->prepare('SELECT email FROM compte WHERE id = ?');
 		$req->execute(Array($cid));
 		$email = $req->fetch()['email'];
-		
-		return unbanCustomerMail($email);
+
+		return $this->unBanCustomerMail($email);
 	}
 
 	public function addManager($lastName, $firstName, $email, $gender, $adress, $password, $cpassword) {
@@ -131,8 +132,8 @@ class Administrator {
 
 		return true;
 	}
-	
-	private function banCustomerMail($destination) {
+
+	public function banCustomerMail($destination) {
 		$mail = new PHPMailer();
 		$mail->isSMTP();
 		$mail->Host = "smtp.gmail.com";
@@ -155,10 +156,10 @@ class Administrator {
 			return true;
 		} else {
 			return false;
-		}    	
+		}
 	}
-	
-		private function unbanCustomerMail($destination) {
+
+		public function unBanCustomerMail($destination) {
 		$mail = new PHPMailer();
 		$mail->isSMTP();
 		$mail->Host = "smtp.gmail.com";
@@ -181,7 +182,7 @@ class Administrator {
 			return true;
 		} else {
 			return false;
-		}    	
+		}
 	}
 
 }

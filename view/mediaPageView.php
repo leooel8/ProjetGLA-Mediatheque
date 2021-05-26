@@ -15,14 +15,14 @@
 		<?php
 			require("view/headerView.php");
 		?>
-		
-		<main>				
+
+		<main>
 			<h2 id='mainTitle'> <?=$media['title']?> </h2>
 
 			<div id='content'>
 				<img src=<?=$imagePath?> alt='Image du produit' class='image'>
-				
-				<div id='labels'> 
+
+				<div id='labels'>
 
 					<p> Auteur: <?=$media['author']?> </p>
 					<?php if($media['mediaType'] != 0) echo "<p>Quantité: $media[quantity] </p>"; ?>
@@ -31,18 +31,18 @@
 					<p> Type: <?=$media['type']?> </p>
 					<?php if($media['mediaType'] != 0) echo "<p>Prix: $media[price]€ </p>"; ?>
 				</div>
-				
+
 				<div id='descriptionWrapper'>
 					<h2> Description: </h2>
 					<p id='description'> <?=$media['description']?> </p>
 				</div>
-				
+
 				<div id='actions'>
 					<button id='moreDetail' onClick="moreDetail(<?=$media['mid'].', '."'".$media['format']."'"?>)"> Plus de détails </button>
 					<?php
 					if($_SESSION['status'] == 'anonymous' || $_SESSION['status'] == 'customer') {
 						if($media['mediaType'] != 0) {
-							echo "<form action='index.php' method='post'>";								
+							echo "<form action='index.php' method='post'>";
 								echo "<input type='hidden' name='mid' value=$media[mid]>";
 								echo "<input type='hidden' name='title' value='$media[title]'>";
 								echo "<input type='submit' id='borrowMedia' name='borrowMedia' value='Emprunter le média'>";
@@ -55,27 +55,26 @@
 							echo "</form>";
 						}
 					}
-			
-					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]' id='editMedia'> Modifier le média </a>"; 
+
+					if($_SESSION['status'] === 'manager') echo "<a href='index.php?action=editMedia&mid=$media[mid]' id='editMedia'> Modifier le média </a>";
 
 					?>
 				</div>
 			</div>
-			
+
 			<div id='moreContent'>
-				
+
 			</div>
 
 			<?php
 			if(isset($error))
 				echo "<p class='error'><strong> $error </strong></p>";
 
-			else if(isset($valid)) 
+			else if(isset($valid))
 				echo "<p class='valid'><strong> $valid </strong></p>";
-				
-			?>			
+
+			?>
 
 		</main>
 	</body>
 </html>
-

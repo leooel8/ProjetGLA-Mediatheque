@@ -7,13 +7,18 @@
 		<link href='public/css/footerStyle.css' rel='stylesheet'/>
 
 		<script>
-      function toggleContent() {
-        // Get the DOM reference
-        var contentId = document.getElementById("content");
-        // Toggle
-        contentId.style.display == "block" ? contentId.style.display = "none" :
-      contentId.style.display = "block";
-      }
+		function toggleContent() {
+			// Get the DOM reference
+			var contentId = document.getElementById("content");
+			// Toggle
+			contentId.style.display == "block" ? contentId.style.display = "none" :
+		contentId.style.display = "block";
+
+		var liste = document.getElementById("oneG");
+		// Toggle
+		liste.style.display == "none" ? liste.style.display = "block" :
+		liste.style.display = "none";
+		}
 		</script>
 
 
@@ -33,11 +38,11 @@
 				padding-bottom: 10px;
 
 			}
-			#oneG{
+			.oneG{
 				background-color: rgb(0,200,255);
 				display: flex;
 				justify-content: center;
-				margin-top: 1%;
+				/*margin-top: 1%;
 				margin-bottom: 1%;
 				margin-left: 25%;
 				font-size: 1.00em;
@@ -45,7 +50,7 @@
 				width: 50%;
 				border-radius: 5px;
 				 font-style: italic;
-			}
+			*/}
 			input[type=submit] {
 	        background-color: rgba(0, 0, 255, 0.3);
 					  border-radius: 15px;
@@ -75,7 +80,6 @@
 
 
   <!-- la liste des gestionnaires-->
-
     <?php
     if($gestionnaires==false){
       echo "il n'y a pas de gestionnaire enregistré";
@@ -88,7 +92,7 @@
 				//var_dump( $gestionnaire[0]);
 				$i=0;
 				$gid=0;
-				echo '<p  id="oneG">';
+				echo '<p  class="oneG">';
 				foreach($gestionnaire as $elements){
 					if($i==0){$gid=$elements;}
 					if($i%2==0){

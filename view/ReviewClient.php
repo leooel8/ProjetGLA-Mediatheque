@@ -40,7 +40,7 @@
 		}
 		#awnser{
 			background-color: rgb(0,200,255);
-			margin-top: 5%;
+			margin-top: 10%;
 			font-size: 1.00em;
 			margin-left: 2%;
 			height: 10%;

@@ -28,6 +28,10 @@ function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $auth
   $date = $_POST['provider_media_date'];
 
 
+
+
+
+
   //Traduction du format et du type
   if ($_POST['provider_media_format'] === 'format_livre') {
       $format = 'livre';
@@ -248,8 +252,7 @@ function createRessource($fid, $mediaType, $deliveryDate, $format, $title, $auth
 
   if (strlen($error) == 0) {
       $p->proposeMedia($fid, $mediaType, $deliveryDate, $format, $title, $author, $price, $quantity, $kind, $description, $releaseDate, $type);
-
-      $message = "Location: index.php?action=proposeRessource&success=Nouveau média créé!";
+      $message = "Location: index.php";
   } else {
       $message = "Location: index.php?action=proposeRessource&error=" . $error;
   }

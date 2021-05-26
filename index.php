@@ -76,23 +76,23 @@ require_once 'model/PHPMailer/src/SMTP.php';
 			if(!isset($_POST['editor'])) $_POST['editor'] = null;
 			if(!isset($_POST['duration'])) $_POST['duration'] = null;
 			if(!isset($_POST['productor'])) $_POST['productor'] = null;
-
+      //$mid, $format, $title, $author, $quantity, $kind, $releaseDate, $type, $price, $description, $mediaType, $edition, $editor, $productor, $duration
 			editMedia($_POST['mid'], $_POST['format'], $_POST['title'], $_POST['author'], $_POST['quantity'], $_POST['kind'], $_POST['releaseDate'], $_POST['type'], $_POST['price'], $_POST['description'], $_POST['mediaType'], $_POST['edition'], $_POST['editor'], $_POST['productor'], $_POST['duration']);
 		}
-		// Manager creates media 
+		// Manager creates media
 		else if (isset($_POST['manager_form'])) {
 			createMedia();
 		}
 
-		// Provider creates media 
+		// Provider creates media
 		else if (isset($_POST['provider_form']) && isset($_SESSION['id'])) {
-			
-			createRessource($_SESSION['id'], $_POST['provider_media_type'], $_POST['provider_media_delivery_date'], $_POST['provider_media_format'], $_POST['provider_media_name'], $_POST['provider_media_author'], $_POST['provider_media_price'], $_POST['provider_media_quantity'], $_POST['provider_media_genre'], $_POST['provider_media_description'],  $_POST['provider_media_date'], $_POST['provider_media_type']);
+
+			createRessource($_SESSION['id'], $_POST['provider_media_type'], $_POST['provider_media_delivery_date'], $_POST['provider_media_format'], $_POST['provider_media_name'], $_POST['provider_media_author'], $_POST['provider_media_price'], $_POST['provider_media_quantity'], $_POST['provider_media_genre'], $_POST['provider_media_description'],  $_POST['provider_media_date'], $_POST['provider_media_type'],$_POST['provider_fileInput'],$_POST['provider_first_image']);
 		}
 		// Go premium
 		else if (isset($_POST['goPremium'])) {
 			goPremium();
-		}	
+		}
 	} else if(count($_GET) > 0) {
 		//début des cas GET action
 		if (isset($_GET['action'])) {

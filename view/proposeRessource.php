@@ -27,18 +27,6 @@
         /* logo de mediatheque */
 		require("view/headerView.php");
 
-        if (isset($_GET['error'])) {
-
-            if (strlen($_GET['error']) != 0) {
-                echo "<div class='errorMessage_div'><p>" . $_GET['error'] . "</p></div>";
-            }
-        }
-        else if (isset($_GET['success'])) {
-
-            if (strlen($_GET['success']) != 0) {
-                echo "<div class='successMessage_div'><p>" . $_GET['success'] . "</p></div>";
-            }
-        }
     ?>
 
     <main>
@@ -148,7 +136,21 @@
                 </form>
             </div>
         </div>
+        <?php
+        if (isset($_GET['error'])) {
 
+            if (strlen($_GET['error']) != 0) {
+                echo "<div class='errorMessage_div'><p>" . $_GET['error'] . "</p></div>";
+            }
+        }
+        else if (isset($_GET['success'])) {
+
+            if (strlen($_GET['success']) != 0) {
+                echo "<div class='successMessage_div'><p>" . $_GET['success'] . "</p></div>";
+            }
+        }
+
+         ?>
     </main>
 
 </body>

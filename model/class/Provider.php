@@ -15,21 +15,18 @@ class Provider {
 		$mid = $req->fetch()[0];
 
 		if(isset($_FILES['provider_first_image'])){
-
-
 			$uploads_dir = 'public/images/media';
 			$filename=$_FILES["provider_first_image"]["name"];
 			$tmp=explode(".", $filename);
 			$extension=end($tmp);
 			$newfilename=$mid .".".$extension;
 			move_uploaded_file($_FILES['provider_first_image']['tmp_name'], "$uploads_dir/$newfilename");
-
 	 }
 
 
 
 	 		if(isset($_FILES['provider_fileInput'])){
-	 			
+
 	 			$uploads_dir = 'public/data/';
 	 			$filename=$_FILES['provider_fileInput']["name"];
 	 			$tmp=explode(".", $filename);
@@ -77,9 +74,9 @@ class Provider {
 		$db = dbConnect();
 
 		$req = $db->prepare('SELECT title, format, propositionDate, accepted, p.mediaType, received FROM proposition AS p, media AS m WHERE p.fid = ? AND m.mid = p.mid');
-		$req->execute(array($fid));	
-		
-		return $req;	
+		$req->execute(array($fid));
+
+		return $req;
 	}
 
 }
