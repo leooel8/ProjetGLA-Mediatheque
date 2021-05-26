@@ -15,8 +15,8 @@
 
 		<main>
 			<form action='index.php' method='post'>
-				<input type='hidden' name='mid' value=<?=$media['mid']?>>
-				<input type='hidden' name='format' value=<?=$media['format']?>>
+				<input type='hidden' name='mid' value=<?=htmlspecialchars("'$media[mid]'")?>>
+				<input type='hidden' name='format' value=<?=htmlspecialchars("'$media[format]'")?>>
 				<h2> <input type='text' name='title' value=<?=htmlspecialchars("'$media[title]'")?>> </h2>
 
 				<div id='content'>
@@ -53,7 +53,7 @@
 						?>
 					</div>
 
-					<p id='description'> Description:  <textarea name='description'><?=$media['description']?></textarea> </p>
+					<p id='description'> Description:  <textarea name='description'><?=htmlspecialchars("'$media[description]'")?></textarea> </p>
 
 				</div>
 

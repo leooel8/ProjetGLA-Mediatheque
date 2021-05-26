@@ -17,12 +17,12 @@
 		<main>
 			<div id='info'>
 				<?php
-					if($_SESSION['status'] === 'provider') {
-						echo "<p> Nom de la société: " . htmlspecialchars($account['companyName']) . "</p>";
-					} else {
-						echo "<p> Nom: " . htmlspecialchars($account['lastName']) . "</p>";
-						echo "<p> Prénom: " . htmlspecialchars($account['firstName']) . "</p>";
-					}
+				if($_SESSION['status'] === 'provider') {
+					echo "<p> Nom de la société: " . htmlspecialchars($account['companyName']) . "</p>";
+				} else {
+					echo "<p> Nom: " . htmlspecialchars($account['lastName']) . "</p>";
+					echo "<p> Prénom: " . htmlspecialchars($account['firstName']) . "</p>";
+				}
 				?>
 				<p> Email: <?= htmlspecialchars($account['email']) ?> </p>
 				<p> Adresse: <?= htmlspecialchars($account['adress']) ?> </p>
